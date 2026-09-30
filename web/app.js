@@ -258,7 +258,7 @@
     const item = items[i];
     item.slot.classList.add("is-active");
     turn(item, 1, opts);
-    if (!opts.instant) {
+    if (!opts.instant && !opts.quiet) {
       sway(item, prev < 0 || i > prev ? -5 : 5);
       ripple(i, 2.8);
     }
@@ -414,32 +414,18 @@
     const nextI = (detailIndex + dir + items.length) % items.length;
     const next = items[nextI];
 
-    // Keep the rack behind in step with the detail view.
+    // Keep the rack behind in step with the detail view (quietly: it's blurred).
     prev.swing.style.visibility = "";
-    activate(nextI, { instant: true });
+    activate(nextI, { quiet: true });
     next.swing.style.visibility = "hidden";
     detailIndex = nextI;
 
-    // The current garment turns to its side and slides out; the next one
-    // slides in on its side and turns to face you.
-    const out = detailTurn;
-    const tl = gsap.timeline();
-    tl.to(out, { p: 0, duration: dur(0.42), ease: "power2.in", onUpdate: () => renderTurn(out) }, 0)
-      .to(figure, { x: -dir * 80, opacity: 0, duration: dur(0.36), ease: "power2.in" }, dur(0.12))
-      .to(info, { opacity: 0, y: 6, duration: dur(0.2) }, 0)
-      .add(() => {
-        fillDetail(next, 0);
-        gsap.set(figure, { x: dir * 80 });
-      })
-      .to(figure, { x: 0, opacity: 1, duration: dur(0.45), ease: "power2.out" })
-      .to(info, { opacity: 1, y: 0, duration: dur(0.3) }, "<0.1")
-      .add(() => {
-        const t = detailTurn;
-        gsap.to(t, {
-          p: 1, duration: dur(0.75), ease: "power2.inOut", onUpdate: () => renderTurn(t),
-          onComplete: () => { busy = false; },
-        });
-      }, "<0.05");
+    // A light crossfade: the garment is already facing you, so no turn here.
+    const shift = 18 * dir;
+    gsap.timeline({ onComplete: () => { busy = false; } })
+      .to([figure, info], { opacity: 0, x: -shift, duration: dur(0.18), ease: "power1.in" })
+      .add(() => fillDetail(next))
+      .fromTo([figure, info], { opacity: 0, x: shift }, { opacity: 1, x: 0, duration: dur(0.32), ease: "power2.out" });
   }
 
   function setDrawer(open) {
