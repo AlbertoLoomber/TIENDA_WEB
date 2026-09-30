@@ -3,8 +3,9 @@
  * Every garment is a stack of cut-outs (side 80° → … → front 0°) that share one
  * canvas with the hanger hook at the same point. A "turn" renders a progress p
  * (0 = side, 1 = front) over that stack: garments with real in-between angles
- * crossfade through them; garments with only side + front get a 3D swing
- * (the side view swings away, the front swings in from the hook).
+ * step through them (each new view starts squeezed to the previous one's width
+ * and opens up underneath it, so there is no see-through double image);
+ * garments with only side + front get a 3D swing instead.
  * The rack slot widens with the turn and pushes its neighbours aside.
  */
 (() => {
@@ -39,7 +40,6 @@
   const handle = $("handle");
   const detailSee = $("detail-see");
   const closeBtn = $("close");
-  const cursor = $("cursor");
 
   let items = [];
   let garmentH = 420;
@@ -76,7 +76,14 @@
       return img;
     });
     container.appendChild(box);
-    return { frames, imgs, p: 0 };
+    // Give each step time in proportion to how much the silhouette changes,
+    // so near-identical views don't stall the turn.
+    const weights = frames.slice(1).map((f, k) => Math.max(0.22, Math.abs(extent(f) - extent(frames[k]))));
+    const total = weights.reduce((a, b) => a + b, 0);
+    const stops = [0];
+    weights.forEach((w) => stops.push(stops.at(-1) + w / total));
+    stops[stops.length - 1] = 1;
+    return { frames, imgs, stops, p: 0 };
   }
 
   function renderTurn(t) {
@@ -98,27 +105,46 @@
       return;
     }
 
-    const x = p * (n - 1);
-    const i = Math.min(Math.floor(x), n - 1);
-    const f = x - i;
+    const [i, f] = segment(t, p);
+    const ratio = extent(frames[i]) / extent(frames[i + 1]);
     imgs.forEach((img, k) => {
-      img.style.opacity = k === i ? 1 : k === i + 1 ? f : 0;
+      if (k === i) {
+        // Outgoing view stays on top and fades, easing toward the next width.
+        img.style.zIndex = "2";
+        img.style.opacity = 1 - smooth(clamp((f - 0.15) / 0.6));
+        img.style.transform = `scaleX(${lerp(1, Math.min(1 / ratio, 1.3), smooth(f))})`;
+      } else if (k === i + 1) {
+        // Incoming view sits underneath, starts at the outgoing width and opens up.
+        img.style.zIndex = "1";
+        img.style.opacity = smooth(clamp(f / 0.25));
+        img.style.transform = `scaleX(${lerp(ratio, 1, smooth(f))})`;
+      } else {
+        img.style.zIndex = "0";
+        img.style.opacity = 0;
+        img.style.transform = "";
+      }
     });
+  }
+
+  // Which step of the turn p falls in, and how far through it.
+  function segment(t, p) {
+    const { stops } = t;
+    let i = 0;
+    while (i < stops.length - 2 && p >= stops[i + 1]) i++;
+    return [i, clamp((p - stops[i]) / (stops[i + 1] - stops[i]))];
   }
 
   /* ---------- geometry ---------- */
 
-  function extentAt(frames, p) {
-    const n = frames.length;
-    const x = clamp(p) * (n - 1);
-    const i = Math.min(Math.floor(x), n - 2);
-    return lerp(extent(frames[i]), extent(frames[i + 1]), x - i);
+  function extentAt(t, p) {
+    const [i, f] = segment(t, clamp(p));
+    return lerp(extent(t.frames[i]), extent(t.frames[i + 1]), smooth(f));
   }
 
   function slotWidth(item) {
     // wp may overshoot 1 (elastic ease) so the push bounces; the images use p.
     const wp = item.wp;
-    const e = wp <= 1 ? extentAt(item.frames, wp) : extentAt(item.frames, 1) * (1 + (wp - 1) * 0.6);
+    const e = wp <= 1 ? extentAt(item.turn, wp) : extentAt(item.turn, 1) * (1 + (wp - 1) * 0.6);
     return e * lerp(PACK_SIDE, PACK_FRONT, clamp(wp)) * garmentW;
   }
 
@@ -182,13 +208,12 @@
       return;
     }
     const update = () => render(item);
-    gsap.to(item.turn, { p: to, duration: to ? 0.8 : 0.6, ease: "power2.inOut", onUpdate: update });
-    gsap.to(item, {
-      wp: to,
-      duration: to ? 1.15 : 0.75,
-      ease: to ? "elastic.out(1, 0.55)" : "power3.out",
-      onUpdate: update,
-    });
+    const d = item.frames.length > 2 ? 1 : 0.8;
+    gsap.to(item.turn, { p: to, duration: to ? d : 0.6, ease: "power2.inOut", onUpdate: update });
+    // The slot widens with the garment (not ahead of it) and settles with a small push.
+    gsap.to(item, to
+      ? { keyframes: [{ wp: 1.05, duration: d * 0.85, ease: "power2.inOut" }, { wp: 1, duration: 0.4, ease: "power2.out" }], onUpdate: update }
+      : { wp: 0, duration: 0.6, ease: "power2.inOut", onUpdate: update });
   }
 
   function ripple(i, strength) {
@@ -306,7 +331,6 @@
     busy = true;
     clearTimeout(hoverTimer);
     clearTimeout(leaveTimer);
-    hideCursor();
     activate(i, { instant: true });
     const item = items[i];
     gsap.killTweensOf(item.swing);
@@ -417,37 +441,20 @@
     }
   }
 
-  /* ---------- cursor & rail glint ---------- */
+  /* ---------- rail glint ---------- */
 
-  let cursorX = null;
-  let cursorY = null;
   let glintX = null;
   let glintMoved = false;
 
-  function setupPointerFx() {
+  function setupGlint() {
     if (!finePointer) return;
-    document.documentElement.classList.add("has-cursor");
-    const d = reduceMotion ? 0 : 0.35;
-    cursorX = gsap.quickTo(cursor, "x", { duration: d, ease: "power3" });
-    cursorY = gsap.quickTo(cursor, "y", { duration: d, ease: "power3" });
     glintX = gsap.quickTo(glint, "x", { duration: reduceMotion ? 0 : 0.9, ease: "power3" });
     addEventListener("pointermove", (e) => {
       if (e.pointerType !== "mouse") return;
-      cursorX(e.clientX);
-      cursorY(e.clientY);
       const r = glint.parentElement.getBoundingClientRect();
       glintX(clamp(e.clientX - r.left, 0, r.width));
       glintMoved = true;
     }, { passive: true });
-  }
-
-  function showCursor() {
-    if (!finePointer || detailIndex >= 0) return;
-    gsap.to(cursor, { scale: 1, duration: dur(0.3), ease: "back.out(2)", overwrite: "auto" });
-  }
-  function hideCursor() {
-    if (!finePointer) return;
-    gsap.to(cursor, { scale: 0, duration: dur(0.2), ease: "power2.in", overwrite: "auto" });
   }
 
   /* ---------- build ---------- */
@@ -483,12 +490,10 @@
         clearTimeout(leaveTimer);
         clearTimeout(hoverTimer);
         hoverTimer = setTimeout(() => activate(i), HOVER_DELAY);
-        showCursor();
       });
       slot.addEventListener("pointerleave", (e) => {
         if (e.pointerType !== "mouse") return;
         clearTimeout(hoverTimer);
-        hideCursor();
       });
       // Keyboard focus turns the garment; a tap's focus is left to the click handler.
       slot.addEventListener("focus", () => { if (detailIndex < 0 && slot.matches(":focus-visible")) activate(i); });
@@ -573,7 +578,7 @@
     const data = await fetch("prendas.json").then((r) => r.json());
     buildRack(data);
     wire();
-    setupPointerFx();
+    setupGlint();
     layout();
     setCaption(null);
     await firstFramesReady();

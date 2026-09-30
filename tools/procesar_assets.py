@@ -71,6 +71,32 @@ def place(arr, scale):
     return canvas
 
 
+def match_color(canvas, ref):
+    """Iguala el color de una vista intermedia al de la vista de frente.
+
+    Los ángulos intermedios se generan aparte y suelen salir con otro tono;
+    sin esto el giro "cambia de color" al llegar al frente. Se transfieren
+    media y desviación en espacio LAB, midiendo solo la tela (debajo del
+    gancho) y sin tocar el gancho.
+    """
+    import cv2
+
+    def lab_stats(arr):
+        lab = cv2.cvtColor(arr[:, :, :3], cv2.COLOR_RGB2LAB).astype(np.float32)
+        m = arr[:, :, 3] > 200
+        m[: int(0.22 * CANVAS_H)] = False
+        return lab, lab[m].mean(0), lab[m].std(0) + 1e-3
+
+    arr = np.array(canvas)
+    lab, mean, std = lab_stats(arr)
+    _, ref_mean, ref_std = lab_stats(np.array(ref))
+    graded = (lab - mean) / std * ref_std + ref_mean
+    ramp = np.clip((np.arange(CANVAS_H) / CANVAS_H - 0.15) / 0.07, 0, 1)[:, None, None]
+    lab = lab * (1 - ramp) + graded * ramp
+    arr[:, :, :3] = cv2.cvtColor(np.clip(lab, 0, 255).astype(np.uint8), cv2.COLOR_LAB2RGB)
+    return Image.fromarray(arr)
+
+
 def extent(canvas):
     """Ancho visible de la prenda, medido desde el gancho, en fracción del lienzo."""
     a = np.array(canvas)[:, :, 3]
@@ -90,11 +116,17 @@ def main():
 
         out_dir = OUT_IMG / item_id
         out_dir.mkdir(parents=True, exist_ok=True)
-        frames = []
-        for angle, arr in cutouts.items():
+        def placed(arr):
             # Todas las vistas se escalan a la misma altura (gancho → dobladillo).
             _, t, b = hook_anchor(arr[:, :, 3])
-            canvas = place(arr, GARMENT_H / (b - t))
+            return place(arr, GARMENT_H / (b - t))
+
+        front = placed(cutouts[0])
+        frames = []
+        for angle, arr in cutouts.items():
+            canvas = front if angle == 0 else placed(arr)
+            if angle not in (0, 80):
+                canvas = match_color(canvas, front)
             canvas.save(out_dir / f"{angle}.webp", "WEBP", quality=86, method=6)
             left, right = extent(canvas)
             frames.append({"angle": angle, "src": f"prendas/{item_id}/{angle}.webp", "left": left, "right": right})

@@ -189,7 +189,6 @@ body {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.has-cursor .slot { cursor: none; }
 .slot:focus-visible { outline: none; }
 .slot:focus-visible::after {
   content: "";
@@ -274,29 +273,6 @@ body {
 .detail__arrow:focus-visible, .handle:focus-visible, .sizes button:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
-}
-
-/* ---------- custom cursor ---------- */
-.cursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 50;
-  width: 64px;
-  height: 64px;
-  margin: -32px 0 0 -32px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--paper);
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  transform: scale(0);
-}
-.cursor span {
-  font: 500 9.5px/1 var(--font-ui);
-  letter-spacing: .18em;
-  text-transform: uppercase;
 }
 
 /* ---------- detail ---------- */
