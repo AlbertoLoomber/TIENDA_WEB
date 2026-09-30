@@ -1,132 +1,212 @@
 /* Nomad rack prototype.
  *
  * Every garment is a stack of cut-outs (side 80° → … → front 0°) that share one
- * canvas with the hanger hook at the same point, so turning a garment is just a
- * crossfade across the stack while its slot on the rail widens and pushes the
- * neighbours aside. Garments with only side + front get a squash on the front
- * image to fake the turn.
+ * canvas with the hanger hook at the same point. A "turn" renders a progress p
+ * (0 = side, 1 = front) over that stack: garments with real in-between angles
+ * crossfade through them; garments with only side + front get a 3D swing
+ * (the side view swings away, the front swings in from the hook).
+ * The rack slot widens with the turn and pushes its neighbours aside.
  */
 (() => {
   "use strict";
 
   const CANVAS_RATIO = 1000 / 1300;   // width / height of every cut-out
-  const RAIL_Y = 0.034;               // rail height as a fraction of the garment canvas
+  const HOOK_Y = 0.029;               // inner top of the hook curl, as a fraction of the canvas height
   const PACK_SIDE = 0.78;             // how tightly side views pack on the rail
   const PACK_FRONT = 0.9;             // same for the garment that is turned
+  const RAIL_OVER = 56;               // rail length past the outer garments, px
+  const HOVER_DELAY = 90;             // ms the cursor must rest before a garment turns
+  const LEAVE_DELAY = 260;            // ms after leaving the rack before it settles back
+  const IDLE_MS = 6500;               // quiet time before the rack stirs on its own
+  const LIFT = 14;                    // px a garment rises to come off the hook
   const MARQUEE = ["New designs daily", "Subscribe to our newsletter"];
 
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const $ = (id) => document.getElementById(id);
 
   const page = $("page");
   const rack = $("rack");
+  const rackInner = $("rack-inner");
+  const rail = $("rail");
+  const glint = $("glint");
   const row = $("rack-row");
   const caption = $("caption");
   const detail = $("detail");
   const figure = $("detail-figure");
-  const detailImg = $("detail-img");
+  const info = detail.querySelector(".detail__info");
   const drawer = $("drawer");
   const handle = $("handle");
   const detailSee = $("detail-see");
   const closeBtn = $("close");
+  const cursor = $("cursor");
 
   let items = [];
-  let garmentW = 320;
+  let garmentH = 420;
+  let garmentW = 323;
+  let narrow = false;
   let active = -1;
   let detailIndex = -1;
+  let detailTurn = null;
   let busy = false;
+  let hoverTimer = 0;
+  let leaveTimer = 0;
+  let lastInput = performance.now();
+  let lastPointer = "mouse";
 
+  const clamp = (v, a = 0, b = 1) => Math.min(Math.max(v, a), b);
   const lerp = (a, b, t) => a + (b - a) * t;
+  const smooth = (t) => t * t * (3 - 2 * t);
   const extent = (f) => f.right - f.left;
   const dur = (s) => (reduceMotion ? 0 : s);
 
+  /* ---------- the turn ---------- */
+
+  function makeTurn(container, frames) {
+    const box = document.createElement("div");
+    box.className = "turn";
+    const imgs = frames.map((f, k) => {
+      const img = document.createElement("img");
+      img.src = f.src;
+      img.alt = "";
+      img.decoding = "async";
+      img.draggable = false;
+      img.style.zIndex = String(k);
+      box.appendChild(img);
+      return img;
+    });
+    container.appendChild(box);
+    return { frames, imgs, p: 0 };
+  }
+
+  function renderTurn(t) {
+    const { frames, imgs } = t;
+    const n = frames.length;
+    const p = clamp(t.p);
+
+    if (n === 2) {
+      // The side view swings away while the front swings in from the hook. The
+      // front becomes opaque before the side fades, so the garment never looks
+      // see-through halfway.
+      const a = clamp(p / 0.6);
+      const b = clamp((p - 0.2) / 0.8);
+      const ratio = extent(frames[0]) / extent(frames[1]);
+      imgs[0].style.opacity = 1 - smooth(clamp((p - 0.3) / 0.3));
+      imgs[0].style.transform = `rotateY(${62 * smooth(a)}deg)`;
+      imgs[1].style.opacity = smooth(clamp((p - 0.12) / 0.3));
+      imgs[1].style.transform = `rotateY(${-58 * (1 - smooth(b))}deg) scaleX(${lerp(ratio, 1, smooth(b))})`;
+      return;
+    }
+
+    const x = p * (n - 1);
+    const i = Math.min(Math.floor(x), n - 1);
+    const f = x - i;
+    imgs.forEach((img, k) => {
+      img.style.opacity = k === i ? 1 : k === i + 1 ? f : 0;
+    });
+  }
+
   /* ---------- geometry ---------- */
 
-  function extentAt(item, p) {
-    const n = item.frames.length;
-    const x = Math.min(Math.max(p, 0), 1) * (n - 1);
+  function extentAt(frames, p) {
+    const n = frames.length;
+    const x = clamp(p) * (n - 1);
     const i = Math.min(Math.floor(x), n - 2);
-    return lerp(extent(item.frames[i]), extent(item.frames[i + 1]), x - i);
+    return lerp(extent(frames[i]), extent(frames[i + 1]), x - i);
   }
 
   function slotWidth(item) {
-    // wp may overshoot 1 (elastic ease) so the push bounces; frames use p.
+    // wp may overshoot 1 (elastic ease) so the push bounces; the images use p.
     const wp = item.wp;
-    const e = wp <= 1 ? extentAt(item, wp) : extentAt(item, 1) * (1 + (wp - 1) * 0.6);
-    return e * lerp(PACK_SIDE, PACK_FRONT, Math.min(Math.max(wp, 0), 1)) * garmentW;
+    const e = wp <= 1 ? extentAt(item.frames, wp) : extentAt(item.frames, 1) * (1 + (wp - 1) * 0.6);
+    return e * lerp(PACK_SIDE, PACK_FRONT, clamp(wp)) * garmentW;
   }
 
   function layout() {
     const stage = rack.parentElement;
-    const availH = stage.clientHeight - 110;
-    const narrow = stage.clientWidth <= 640;
-    const availW = stage.clientWidth - 32 - (narrow ? 36 : 70);
+    narrow = stage.clientWidth <= 640;
+    const availH = stage.clientHeight - (narrow ? 120 : 110);
     const sides = items.reduce((s, it) => s + extent(it.frames[0]) * PACK_SIDE, 0);
     const growth = Math.max(...items.map((it) => extent(it.frames.at(-1)) * PACK_FRONT - extent(it.frames[0]) * PACK_SIDE));
     const perHeight = (sides + growth) * CANVAS_RATIO;   // rack width per px of garment height
-    const h = Math.max(180, Math.min(availH, 560, availW / perHeight));
-    garmentW = h * CANVAS_RATIO;
 
-    rack.style.setProperty("--g-h", `${h}px`);
-    rack.style.setProperty("--g-w", `${garmentW}px`);
-    rack.style.setProperty("--rail-y", `${h * RAIL_Y - 5}px`);
-    rack.style.width = `${perHeight * h}px`;
+    if (narrow) {
+      // Phones: bigger garments on a rack you swipe.
+      garmentH = clamp(Math.min(availH, 470, stage.clientWidth * 1.2), 200, 470);
+    } else {
+      const availW = stage.clientWidth - 32 - 2 * RAIL_OVER;
+      garmentH = clamp(Math.min(availH, 560, availW / perHeight), 180, 560);
+    }
+    garmentW = garmentH * CANVAS_RATIO;
+    const tube = clamp(Math.round(garmentH * 0.021), 7, 12);
+    const over = narrow ? 18 : RAIL_OVER;
 
-    // Detail garment: leave room for the name block, and on phones for the full width.
+    const s = rackInner.style;
+    s.setProperty("--g-h", `${garmentH}px`);
+    s.setProperty("--g-w", `${garmentW}px`);
+    s.setProperty("--tube", `${tube}px`);
+    s.setProperty("--rail-top", `${garmentH * HOOK_Y}px`);
+    s.setProperty("--rail-over", `${over}px`);
+    s.setProperty("--rack-w", `${perHeight * garmentH}px`);
+    rackInner.style.paddingInline = narrow ? `${over + 16}px` : "";
+
     const roomW = stage.clientWidth - (narrow ? 32 : 32 + 2 * 130);
     const d = Math.min(stage.clientHeight - 160, 760, roomW / CANVAS_RATIO);
     detail.style.setProperty("--d-h", `${Math.max(220, d)}px`);
+    // Until the cursor moves it, the highlight sits where a ceiling light would put it.
+    if (!glintMoved) gsap.set(glint, { x: glint.parentElement.clientWidth * 0.32 });
     items.forEach(render);
   }
 
-  /* ---------- rendering ---------- */
-
   function render(item) {
-    const n = item.frames.length;
-    const p = Math.min(Math.max(item.p, 0), 1);
-    const x = p * (n - 1);
-    const i = Math.min(Math.floor(x), n - 1);
-    const f = x - i;
-
-    item.imgs.forEach((img, k) => {
-      img.style.opacity = k === i ? 1 : k === i + 1 ? f : 0;
-    });
-
-    if (n === 2) {
-      // Only side + front: start the front squeezed to the side's width.
-      const ratio = extent(item.frames[0]) / extent(item.frames[1]);
-      item.imgs[1].style.transform = `scaleX(${lerp(ratio, 1, p)})`;
-    }
-
+    renderTurn(item.turn);
     item.slot.style.width = `${slotWidth(item)}px`;
-  }
-
-  function tick(item) {
-    return () => render(item);
   }
 
   /* ---------- motion ---------- */
 
-  function sway(item, from) {
+  function sway(item, from, delay = 0) {
     if (reduceMotion) return;
-    gsap.fromTo(item.box, { rotation: from }, { rotation: 0, duration: 1.9, ease: "elastic.out(1, 0.22)", overwrite: "auto" });
+    gsap.fromTo(item.swing, { rotation: from }, {
+      rotation: 0, duration: 1.9, delay, ease: "elastic.out(1, 0.22)", overwrite: "auto",
+    });
   }
 
   function turn(item, to, { instant = false } = {}) {
-    gsap.killTweensOf(item, "p,wp");
+    gsap.killTweensOf(item.turn, "p");
+    gsap.killTweensOf(item, "wp");
     if (instant || reduceMotion) {
-      item.p = to;
+      item.turn.p = to;
       item.wp = to;
       render(item);
       return;
     }
-    gsap.to(item, { p: to, duration: 0.7, ease: "power2.inOut", onUpdate: tick(item) });
+    const update = () => render(item);
+    gsap.to(item.turn, { p: to, duration: to ? 0.8 : 0.6, ease: "power2.inOut", onUpdate: update });
     gsap.to(item, {
       wp: to,
-      duration: to ? 1.1 : 0.8,
+      duration: to ? 1.15 : 0.75,
       ease: to ? "elastic.out(1, 0.55)" : "power3.out",
-      onUpdate: tick(item),
+      onUpdate: update,
     });
+  }
+
+  function ripple(i, strength) {
+    items.forEach((it, j) => {
+      if (j === i) return;
+      const d = j - i;
+      sway(it, (d < 0 ? strength : -strength) / Math.abs(d), Math.abs(d) * 0.07);
+    });
+  }
+
+  function setCaption(item) {
+    if (item) {
+      caption.textContent = `${item.name} — ${item.category}`;
+      caption.classList.remove("is-hint");
+    } else {
+      caption.textContent = finePointer ? "Hover to turn · Click to view" : "Tap to turn · Tap again to view";
+      caption.classList.add("is-hint");
+    }
   }
 
   function activate(i, opts = {}) {
@@ -141,52 +221,119 @@
     item.slot.classList.add("is-active");
     turn(item, 1, opts);
     if (!opts.instant) {
-      const dir = prev < 0 ? 1 : Math.sign(i - prev);
-      sway(item, -5 * dir);
-      [i - 1, i + 1].forEach((j) => items[j] && j !== prev && sway(items[j], j < i ? 2.2 : -2.2));
+      sway(item, prev < 0 || i > prev ? -5 : 5);
+      ripple(i, 2.8);
     }
-    caption.textContent = `${item.name} — ${item.category}`;
+    setCaption(item);
+  }
+
+  function settle() {
+    if (active < 0 || detailIndex >= 0) return;
+    const item = items[active];
+    item.slot.classList.remove("is-active");
+    turn(item, 0);
+    sway(item, 3);
+    active = -1;
+    setCaption(null);
+  }
+
+  function breeze() {
+    items.forEach((it, j) => {
+      gsap.to(it.swing, {
+        keyframes: [
+          { rotation: 1.4, duration: 1, ease: "sine.inOut" },
+          { rotation: -0.9, duration: 1.2, ease: "sine.inOut" },
+          { rotation: 0, duration: 1.3, ease: "sine.inOut" },
+        ],
+        delay: j * 0.14,
+        overwrite: "auto",
+      });
+    });
+  }
+
+  function intro() {
+    const swings = items.map((it) => it.swing);
+    const tail = [caption, $("see")];
+    if (reduceMotion) return Promise.resolve();
+    gsap.set(swings, { y: -garmentH * 0.2, opacity: 0 });
+    gsap.set(tail, { opacity: 0 });
+    gsap.set(rail, { scaleX: 0, transformOrigin: "50% 50%" });
+    return new Promise((resolve) => {
+      const tl = gsap.timeline({ onComplete: resolve });
+      tl.to(rail, { scaleX: 1, duration: 0.8, ease: "power3.inOut" });
+      items.forEach((it, j) => {
+        tl.to(it.swing, {
+          keyframes: [
+            { y: 0, opacity: 1, duration: 0.42, ease: "power2.in" },
+            { y: -5, duration: 0.13, ease: "power1.out" },
+            { y: 0, duration: 0.17, ease: "power1.in" },
+          ],
+          onComplete: () => sway(it, j % 2 ? 3.5 : -3.5),
+        }, 0.45 + j * 0.1);
+      });
+      tl.to(tail, { opacity: 1, duration: 0.5, ease: "power2.out" }, ">-0.2");
+    });
   }
 
   /* ---------- detail view ---------- */
 
-  function fillDetail(item) {
-    detailImg.src = item.frames.at(-1).src;
-    detailImg.alt = `${item.name}, front view`;
+  // Rect of an element in the rack as it will be once the rack is back at scale 1.
+  function restingRect(el) {
+    const r = el.getBoundingClientRect();
+    const s = gsap.getProperty(rack, "scale");
+    if (s === 1) return r;
+    const c = rack.getBoundingClientRect();
+    const cx = c.left + c.width / 2;
+    const cy = c.top + c.height / 2;
+    return { left: cx + (r.left - cx) / s, top: cy + (r.top - cy) / s, width: r.width / s, height: r.height / s };
+  }
+
+  function fillDetail(item, p = 1) {
+    figure.replaceChildren();
+    detailTurn = makeTurn(figure, item.frames);
+    detailTurn.p = p;
+    renderTurn(detailTurn);
+    figure.setAttribute("aria-label", `${item.name}, front view`);
     $("detail-cat").textContent = item.category;
+    $("detail-count").textContent = `${String(items.indexOf(item) + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
     $("detail-name").textContent = item.name;
   }
 
-  function flight(fromEl, toEl) {
-    const a = fromEl.getBoundingClientRect();
-    const b = toEl.getBoundingClientRect();
-    return { x: a.left - b.left, y: a.top - b.top, scale: a.height / b.height };
-  }
-
-  const detailChrome = () => [$("prev"), $("next"), detail.querySelector(".detail__info"), handle];
+  const detailChrome = () => [$("prev"), $("next"), info, handle];
 
   function openDetail(i) {
-    if (busy || !items.length) return;
+    if (busy || !items.length || detailIndex >= 0) return;
     busy = true;
+    clearTimeout(hoverTimer);
+    clearTimeout(leaveTimer);
+    hideCursor();
     activate(i, { instant: true });
     const item = items[i];
-    gsap.killTweensOf(item.box);
-    gsap.set(item.box, { rotation: 0 });
+    gsap.killTweensOf(item.swing);
 
-    detailIndex = i;
-    fillDetail(item);
-    page.classList.add("is-detail");
-    detail.hidden = false;
-    closeBtn.hidden = false;
+    // Lift the garment off the hook, then carry it to the centre.
+    gsap.to(item.swing, {
+      y: -LIFT, rotation: 0, duration: dur(0.2), ease: "power2.out",
+      onComplete: () => {
+        detailIndex = i;
+        fillDetail(item);
+        page.classList.add("is-detail");
+        detail.hidden = false;
+        closeBtn.hidden = false;
 
-    const from = flight(item.box, figure);
-    item.box.style.visibility = "hidden";
-    gsap.fromTo(figure, { ...from, transformOrigin: "0 0" }, {
-      x: 0, y: 0, scale: 1, duration: dur(0.85), ease: "power3.inOut",
-      onComplete: () => { busy = false; },
+        const a = item.swing.getBoundingClientRect();
+        const b = figure.getBoundingClientRect();
+        item.swing.style.visibility = "hidden";
+        gsap.set(item.swing, { y: 0 });
+
+        gsap.to(rack, { scale: 0.95, duration: dur(0.85), ease: "power3.inOut" });
+        gsap.fromTo(figure,
+          { x: a.left - b.left, y: a.top - b.top, scale: a.height / b.height, opacity: 1, transformOrigin: "0 0" },
+          { x: 0, y: 0, scale: 1, duration: dur(0.85), ease: "power3.inOut", onComplete: () => { busy = false; } });
+        gsap.fromTo(detailChrome(), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: dur(0.45), delay: dur(0.45), stagger: 0.05 });
+        closeBtn.focus({ preventScroll: true });
+      },
     });
-    gsap.fromTo(detailChrome(), { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: dur(0.45), delay: dur(0.4), stagger: 0.05 });
-    closeBtn.focus({ preventScroll: true });
   }
 
   function closeDetail() {
@@ -197,18 +344,27 @@
     page.classList.remove("is-detail");
     gsap.to(detailChrome(), { opacity: 0, duration: dur(0.2) });
 
-    const to = flight(item.box, figure);
+    const to = restingRect(item.swing);
+    const from = figure.getBoundingClientRect();
+    gsap.to(rack, { scale: 1, duration: dur(0.75), ease: "power3.inOut" });
     gsap.to(figure, {
-      ...to, transformOrigin: "0 0", duration: dur(0.75), ease: "power3.inOut",
+      x: to.left - from.left,
+      y: to.top - LIFT - from.top,
+      scale: to.height / from.height,
+      transformOrigin: "0 0",
+      duration: dur(0.75),
+      ease: "power3.inOut",
       onComplete: () => {
-        item.box.style.visibility = "";
+        // Hang it back up: drop onto the hook and swing.
+        item.swing.style.visibility = "";
+        gsap.fromTo(item.swing, { y: -LIFT }, { y: 0, duration: dur(0.45), ease: "bounce.out" });
+        sway(item, 4);
         detail.hidden = true;
         closeBtn.hidden = true;
-        gsap.set(figure, { clearProps: "transform" });
-        sway(item, 4);
-        item.slot.focus({ preventScroll: true });
+        gsap.set(figure, { clearProps: "transform,opacity" });
         detailIndex = -1;
         busy = false;
+        item.slot.focus({ preventScroll: true });
       },
     });
   }
@@ -221,21 +377,32 @@
     const nextI = (detailIndex + dir + items.length) % items.length;
     const next = items[nextI];
 
-    prev.box.style.visibility = "";
+    // Keep the rack behind in step with the detail view.
+    prev.swing.style.visibility = "";
     activate(nextI, { instant: true });
-    next.box.style.visibility = "hidden";
+    next.swing.style.visibility = "hidden";
     detailIndex = nextI;
 
-    gsap.to(detailImg, {
-      opacity: 0, x: -dir * 28, duration: dur(0.2), ease: "power2.in",
-      onComplete: () => {
-        fillDetail(next);
-        gsap.fromTo(detailImg, { opacity: 0, x: dir * 28 }, {
-          opacity: 1, x: 0, duration: dur(0.4), ease: "power2.out",
+    // The current garment turns to its side and slides out; the next one
+    // slides in on its side and turns to face you.
+    const out = detailTurn;
+    const tl = gsap.timeline();
+    tl.to(out, { p: 0, duration: dur(0.42), ease: "power2.in", onUpdate: () => renderTurn(out) }, 0)
+      .to(figure, { x: -dir * 80, opacity: 0, duration: dur(0.36), ease: "power2.in" }, dur(0.12))
+      .to(info, { opacity: 0, y: 6, duration: dur(0.2) }, 0)
+      .add(() => {
+        fillDetail(next, 0);
+        gsap.set(figure, { x: dir * 80 });
+      })
+      .to(figure, { x: 0, opacity: 1, duration: dur(0.45), ease: "power2.out" })
+      .to(info, { opacity: 1, y: 0, duration: dur(0.3) }, "<0.1")
+      .add(() => {
+        const t = detailTurn;
+        gsap.to(t, {
+          p: 1, duration: dur(0.75), ease: "power2.inOut", onUpdate: () => renderTurn(t),
           onComplete: () => { busy = false; },
         });
-      },
-    });
+      }, "<0.05");
   }
 
   function setDrawer(open) {
@@ -244,10 +411,43 @@
     detailSee.setAttribute("aria-expanded", String(open));
     if (open) {
       drawer.hidden = false;
-      gsap.fromTo(drawer, { yPercent: 100 }, { yPercent: 0, duration: dur(0.45), ease: "power3.out" });
+      gsap.fromTo(drawer, { xPercent: -50, yPercent: 100 }, { xPercent: -50, yPercent: 0, duration: dur(0.45), ease: "power3.out" });
     } else {
       gsap.to(drawer, { yPercent: 100, duration: dur(0.3), ease: "power2.in", onComplete: () => { drawer.hidden = true; } });
     }
+  }
+
+  /* ---------- cursor & rail glint ---------- */
+
+  let cursorX = null;
+  let cursorY = null;
+  let glintX = null;
+  let glintMoved = false;
+
+  function setupPointerFx() {
+    if (!finePointer) return;
+    document.documentElement.classList.add("has-cursor");
+    const d = reduceMotion ? 0 : 0.35;
+    cursorX = gsap.quickTo(cursor, "x", { duration: d, ease: "power3" });
+    cursorY = gsap.quickTo(cursor, "y", { duration: d, ease: "power3" });
+    glintX = gsap.quickTo(glint, "x", { duration: reduceMotion ? 0 : 0.9, ease: "power3" });
+    addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      cursorX(e.clientX);
+      cursorY(e.clientY);
+      const r = glint.parentElement.getBoundingClientRect();
+      glintX(clamp(e.clientX - r.left, 0, r.width));
+      glintMoved = true;
+    }, { passive: true });
+  }
+
+  function showCursor() {
+    if (!finePointer || detailIndex >= 0) return;
+    gsap.to(cursor, { scale: 1, duration: dur(0.3), ease: "back.out(2)", overwrite: "auto" });
+  }
+  function hideCursor() {
+    if (!finePointer) return;
+    gsap.to(cursor, { scale: 0, duration: dur(0.2), ease: "power2.in", overwrite: "auto" });
   }
 
   /* ---------- build ---------- */
@@ -269,31 +469,47 @@
       slot.className = "slot";
       slot.setAttribute("aria-label", `${d.name}, ${d.category}`);
 
-      const frames = document.createElement("div");
-      frames.className = "slot__frames";
-      const imgs = d.frames.map((f, k) => {
-        const img = document.createElement("img");
-        img.src = f.src;
-        img.alt = "";
-        img.decoding = "async";
-        img.draggable = false;
-        img.style.zIndex = String(k);
-        frames.appendChild(img);
-        return img;
-      });
-      slot.appendChild(frames);
+      const contact = document.createElement("span");
+      contact.className = "slot__contact";
+      const swing = document.createElement("div");
+      swing.className = "slot__swing";
+      slot.append(contact, swing);
       row.appendChild(slot);
 
-      const item = { ...d, slot, box: frames, imgs, p: 0, wp: 0 };
-      slot.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse" && detailIndex < 0) activate(i); });
+      const item = { ...d, slot, swing, turn: makeTurn(swing, d.frames), wp: 0 };
+
+      slot.addEventListener("pointerenter", (e) => {
+        if (e.pointerType !== "mouse" || detailIndex >= 0) return;
+        clearTimeout(leaveTimer);
+        clearTimeout(hoverTimer);
+        hoverTimer = setTimeout(() => activate(i), HOVER_DELAY);
+        showCursor();
+      });
+      slot.addEventListener("pointerleave", (e) => {
+        if (e.pointerType !== "mouse") return;
+        clearTimeout(hoverTimer);
+        hideCursor();
+      });
       // Keyboard focus turns the garment; a tap's focus is left to the click handler.
       slot.addEventListener("focus", () => { if (detailIndex < 0 && slot.matches(":focus-visible")) activate(i); });
       slot.addEventListener("click", () => {
-        if (active !== i) activate(i);
-        else openDetail(i);
+        if (lastPointer === "mouse") return openDetail(i);
+        if (active !== i) {
+          activate(i);
+          if (narrow) setTimeout(() => slot.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", inline: "center", block: "nearest" }), 250);
+        } else {
+          openDetail(i);
+        }
       });
       return item;
     });
+
+    row.addEventListener("pointerleave", (e) => {
+      if (e.pointerType !== "mouse") return;
+      clearTimeout(leaveTimer);
+      leaveTimer = setTimeout(settle, LEAVE_DELAY);
+    });
+    row.addEventListener("pointerenter", () => clearTimeout(leaveTimer));
   }
 
   function wire() {
@@ -306,12 +522,20 @@
     drawer.querySelectorAll(".sizes button").forEach((b, _, all) => {
       b.addEventListener("click", () => all.forEach((o) => o.setAttribute("aria-checked", String(o === b))));
     });
+
+    addEventListener("pointerdown", (e) => { lastPointer = e.pointerType || "mouse"; }, { capture: true });
     document.addEventListener("keydown", (e) => {
+      lastPointer = "keyboard";
+      lastInput = performance.now();
       if (detailIndex < 0) return;
       if (e.key === "Escape") closeDetail();
       if (e.key === "ArrowLeft") step(-1);
       if (e.key === "ArrowRight") step(1);
     });
+    ["pointermove", "pointerdown", "wheel"].forEach((t) =>
+      addEventListener(t, () => { lastInput = performance.now(); }, { passive: true }));
+    rack.addEventListener("scroll", () => { lastInput = performance.now(); }, { passive: true });
+
     let raf = 0;
     addEventListener("resize", () => {
       cancelAnimationFrame(raf);
@@ -327,6 +551,21 @@
       startX = null;
       if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1);
     });
+
+    // Every so often, when nobody is touching it, the rack stirs.
+    if (!reduceMotion) {
+      setInterval(() => {
+        if (detailIndex >= 0 || busy || document.hidden) return;
+        if (performance.now() - lastInput < IDLE_MS) return;
+        lastInput = performance.now();
+        breeze();
+      }, 1000);
+    }
+  }
+
+  function firstFramesReady() {
+    const decodes = items.map((it) => it.turn.imgs[0].decode().catch(() => {}));
+    return Promise.race([Promise.all(decodes), new Promise((r) => setTimeout(r, 3000))]);
   }
 
   async function init() {
@@ -334,9 +573,13 @@
     const data = await fetch("prendas.json").then((r) => r.json());
     buildRack(data);
     wire();
+    setupPointerFx();
     layout();
+    setCaption(null);
+    await firstFramesReady();
+    await intro();
     // Open on a turned garment, like a shop assistant holding one up.
-    setTimeout(() => activate(0), reduceMotion ? 0 : 450);
+    if (active < 0) activate(0);
   }
 
   init().catch((err) => {

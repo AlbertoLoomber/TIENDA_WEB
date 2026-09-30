@@ -1,5 +1,5 @@
 /* Layout: one screen — header, the rack as the stage, a marquee band at the foot.
-   Single deliberate look (warm showroom paper + navy), same in light and dark. */
+   Single deliberate look (warm showroom wall + navy), same in light and dark. */
 :root {
   --paper: #e7e6e1;
   --dot: rgba(36, 44, 82, 0.13);
@@ -7,9 +7,10 @@
   --ink-soft: #5d6177;
   --band: #454f7c;
   --band-ink: #eceae3;
+  --shade: rgba(28, 30, 44, 0.16);
   --chrome-hi: #ffffff;
-  --chrome-mid: #b9bcc2;
-  --chrome-lo: #6f737b;
+  --chrome-mid: #c3c6cc;
+  --chrome-lo: #6c7079;
 
   --font-logo: "Yellowtail", "Brush Script MT", cursive;
   --font-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -34,6 +35,7 @@ body {
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
   background-color: var(--paper);
   background-image: radial-gradient(var(--dot) 1px, transparent 1.3px);
   background-size: 22px 22px;
@@ -46,6 +48,8 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: start;
   padding: 18px 24px 0;
+  position: relative;
+  z-index: 20;
 }
 .top__link, .top__close {
   font: 500 10.5px/1 var(--font-ui);
@@ -72,10 +76,11 @@ body {
 }
 .is-detail .top__link, .is-detail .logo { opacity: 0; pointer-events: none; }
 
-/* ---------- stage & rack ---------- */
+/* ---------- stage ---------- */
 .stage {
   position: relative;
   min-height: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,40 +91,86 @@ body {
 
 .rack {
   position: relative;
-  transition: filter .6s var(--ease-out), opacity .6s var(--ease-out);
+  max-width: 100%;
+  transition: filter .7s var(--ease-out), opacity .7s var(--ease-out);
 }
 .is-detail .rack, .is-detail .caption, .is-detail #see {
   filter: blur(9px);
-  opacity: .28;
+  opacity: .26;
   pointer-events: none;
 }
-.caption, #see { transition: filter .6s var(--ease-out), opacity .6s var(--ease-out); }
+.caption, #see { transition: filter .7s var(--ease-out), opacity .7s var(--ease-out); }
 
+.rack__inner {
+  position: relative;
+  width: var(--rack-w, 900px);
+}
+
+/* ---------- rail: chrome tube on two wall mounts ---------- */
 .rail {
   position: absolute;
-  left: -46px;
-  right: -46px;
-  top: var(--rail-y, 16px);
-  height: 11px;
+  left: calc(var(--rail-over, 56px) * -1);
+  right: calc(var(--rail-over, 56px) * -1);
+  top: var(--rail-top, 14px);
+  height: var(--tube, 10px);
   display: flex;
   align-items: center;
   z-index: 0;
 }
 .rail__tube {
+  position: relative;
   flex: 1;
-  height: 9px;
-  border-radius: 5px;
-  background: linear-gradient(180deg, var(--chrome-mid) 0%, var(--chrome-hi) 28%, var(--chrome-mid) 55%, var(--chrome-lo) 88%, var(--chrome-mid) 100%);
-  box-shadow: 0 3px 6px rgba(20, 24, 40, .16);
+  height: var(--tube, 10px);
+  border-radius: 999px;
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    #8e9299 0%, #eef0f3 18%, var(--chrome-hi) 27%, #d9dce1 38%,
+    var(--chrome-mid) 52%, #999da5 68%, var(--chrome-lo) 86%, #9ca0a8 100%);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .12);
 }
-.rail__cap {
-  width: 9px;
-  height: 20px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, var(--chrome-lo), var(--chrome-hi) 45%, var(--chrome-mid));
-  box-shadow: 0 2px 5px rgba(20, 24, 40, .2);
+.rail__glint {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 180px;
+  margin-left: -90px;
+  background: radial-gradient(ellipse 50% 60% at 50% 35%, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0) 70%);
+  mix-blend-mode: screen;
+}
+.rail__mount {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: calc(var(--tube, 10px) * 2.6);
+  height: calc(var(--tube, 10px) * 2.6);
+  margin-inline: calc(var(--tube, 10px) * -0.5);
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, var(--chrome-hi) 0%, #dfe1e5 22%, #a3a7ae 58%, var(--chrome-lo) 100%);
+  box-shadow: 0 1px 2px rgba(20, 24, 40, .25), 4px 10px 12px var(--shade);
+}
+.rail__mount::after {
+  /* the cup that holds the tube end */
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 60%, #f4f5f7, #9ea2a9 70%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
+}
+.rail__shadow {
+  /* the tube stands off the wall, so its shadow falls a little lower */
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: calc(var(--tube, 10px) * 1.7);
+  height: calc(var(--tube, 10px) * .8);
+  border-radius: 50%;
+  background: var(--shade);
+  filter: blur(6px);
 }
 
+/* ---------- garments ---------- */
 .rack__row {
   position: relative;
   z-index: 1;
@@ -138,37 +189,60 @@ body {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
+.has-cursor .slot { cursor: none; }
 .slot:focus-visible { outline: none; }
-.slot:focus-visible .slot__frames::after {
+.slot:focus-visible::after {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -10px;
+  bottom: -12px;
   width: 26px;
   height: 2px;
   margin-left: -13px;
   background: var(--ink);
 }
 .slot.is-active { z-index: 5; }
-.slot__frames {
+
+.slot__contact {
+  /* shadow the hook leaves on the tube */
+  position: absolute;
+  left: 50%;
+  top: calc(var(--rail-top, 14px) + var(--tube, 10px) * .55);
+  width: calc(var(--tube, 10px) * 1.8);
+  height: calc(var(--tube, 10px) * .5);
+  margin-left: calc(var(--tube, 10px) * -.9);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(20, 22, 34, .38), rgba(20, 22, 34, 0) 70%);
+  pointer-events: none;
+}
+
+.slot__swing {
   position: absolute;
   top: 0;
   left: 50%;
   width: var(--g-w, 323px);
   height: 100%;
   margin-left: calc(var(--g-w, 323px) / -2);
-  transform-origin: 50% 2.4%;
+  transform-origin: 50% 2.9%;
   pointer-events: none;
+  filter: drop-shadow(0 8px 10px rgba(30, 32, 44, .14)) drop-shadow(16px 26px 22px rgba(30, 32, 44, .1));
+  will-change: transform;
 }
-.slot__frames img {
+.turn {
+  position: absolute;
+  inset: 0;
+  perspective: 1500px;
+  perspective-origin: 50% 12%;
+}
+.turn img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   max-width: none;
   object-fit: contain;
-  transform-origin: 50% 50%;
-  filter: drop-shadow(0 10px 12px rgba(30, 32, 44, .16));
+  transform-origin: 50% 0;
+  backface-visibility: hidden;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -181,6 +255,7 @@ body {
   color: var(--ink-soft);
   text-align: center;
 }
+.caption.is-hint { opacity: .7; }
 
 .pill {
   font: 500 10px/1 var(--font-ui);
@@ -201,6 +276,29 @@ body {
   outline-offset: 3px;
 }
 
+/* ---------- custom cursor ---------- */
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transform: scale(0);
+}
+.cursor span {
+  font: 500 9.5px/1 var(--font-ui);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
 /* ---------- detail ---------- */
 .detail {
   position: absolute;
@@ -214,26 +312,21 @@ body {
   padding: 0 16px 12px;
 }
 .detail__figure {
+  position: relative;
   grid-column: 2;
   grid-row: 1;
-  margin: 0;
+  margin: 4px 0 0;
   height: var(--d-h, 60vh);
   aspect-ratio: 1000 / 1300;
   max-width: 100%;
-  transform-origin: 50% 0;
   align-self: start;
-  margin-top: 4px;
-}
-.detail__figure img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 14px 16px rgba(30, 32, 44, .18));
+  filter: drop-shadow(0 12px 14px rgba(30, 32, 44, .16)) drop-shadow(20px 34px 30px rgba(30, 32, 44, .1));
+  touch-action: pan-y;
 }
 .detail__arrow {
   grid-row: 1;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 1px solid var(--ink);
   background: transparent;
@@ -258,11 +351,14 @@ body {
 }
 .detail__cat {
   margin: 0;
+  display: flex;
+  gap: 12px;
   font: 500 9.5px/1 var(--font-ui);
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+.detail__count { font-variant-numeric: tabular-nums; opacity: .75; }
 .detail__name {
   margin: 0 0 6px;
   font: italic 400 clamp(17px, 2.1vw, 22px)/1.15 var(--font-ui);
@@ -344,6 +440,7 @@ body {
   width: max-content;
   animation: band 38s linear infinite;
 }
+.band:hover .band__track { animation-play-state: paused; }
 .band__track span {
   font: italic 500 10.5px/1 var(--font-ui);
   letter-spacing: .12em;
@@ -354,11 +451,23 @@ body {
 .band__track span::after { content: "•"; margin-left: 2.2em; font-style: normal; }
 @keyframes band { to { transform: translateX(-50%); } }
 
-/* ---------- small screens ---------- */
+/* ---------- phones: the rack scrolls sideways ---------- */
 @media (max-width: 640px) {
   .top { padding: 14px 16px 0; }
   .logo { font-size: 28px; }
-  .rail { left: -16px; right: -16px; }
+  .stage { padding-inline: 0; }
+  .rack {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    padding-block: 2px 36px;
+    margin-bottom: -20px;
+  }
+  .rack::-webkit-scrollbar { display: none; }
+  .rack__inner { margin-inline: auto; }
+  .slot { scroll-snap-align: center; }
   .detail__figure { grid-column: 1 / -1; }
   .detail__arrow { position: relative; z-index: 2; background: var(--paper); }
   .detail__arrow--prev { grid-column: 1; justify-self: start; margin: 0; }

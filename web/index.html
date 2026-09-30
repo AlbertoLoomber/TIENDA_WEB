@@ -21,8 +21,15 @@
 
   <main class="stage">
     <section class="rack" id="rack" aria-label="Clothing rack">
-      <div class="rail" id="rail" aria-hidden="true"><span class="rail__cap"></span><span class="rail__tube"></span><span class="rail__cap"></span></div>
-      <div class="rack__row" id="rack-row"></div>
+      <div class="rack__inner" id="rack-inner">
+        <div class="rail" id="rail" aria-hidden="true">
+          <span class="rail__shadow"></span>
+          <span class="rail__mount"></span>
+          <span class="rail__tube"><span class="rail__glint" id="glint"></span></span>
+          <span class="rail__mount"></span>
+        </div>
+        <div class="rack__row" id="rack-row"></div>
+      </div>
     </section>
 
     <p class="caption" id="caption" aria-live="polite">&nbsp;</p>
@@ -30,12 +37,10 @@
 
     <section class="detail" id="detail" aria-label="Garment detail" hidden>
       <button class="detail__arrow detail__arrow--prev" id="prev" type="button" aria-label="Previous garment"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6 8.5 12l6 6"/></svg></button>
-      <figure class="detail__figure" id="detail-figure">
-        <img id="detail-img" alt="">
-      </figure>
+      <figure class="detail__figure" id="detail-figure" role="img" aria-label=""></figure>
       <button class="detail__arrow detail__arrow--next" id="next" type="button" aria-label="Next garment"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
       <div class="detail__info">
-        <p class="detail__cat" id="detail-cat"></p>
+        <p class="detail__cat"><span id="detail-cat"></span><span class="detail__count" id="detail-count"></span></p>
         <h1 class="detail__name" id="detail-name"></h1>
         <button class="pill" id="detail-see" type="button" aria-expanded="false" aria-controls="drawer">See availability</button>
       </div>
@@ -52,6 +57,8 @@
       </div>
     </section>
   </main>
+
+  <div class="cursor" id="cursor" aria-hidden="true"><span>View</span></div>
 
   <footer class="band" aria-hidden="true">
     <div class="band__track" id="band-track"></div>
