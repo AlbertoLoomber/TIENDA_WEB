@@ -37,6 +37,8 @@ Front view of a [COLOR] [TIPO DE PRENDA] with [DESCRIPCIÓN DEL ESTAMPADO], hang
 
 ### Colección sugerida (10 prendas, igual que en el video)
 
+> **Decisión:** el prototipo usa solo las prendas **01 a 05**. Las 06–10 quedan como ideas para después.
+
 Copia cada línea en la plantilla de arriba y agrega el bloque de estilo.
 
 | # | Archivo | Prenda y estampado (para el prompt) |
