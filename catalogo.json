@@ -1,0 +1,122 @@
+{
+  "project": "NOMAD 5 prendas",
+  "angles": [
+    80,
+    60,
+    45,
+    25,
+    0
+  ],
+  "items": [
+    {
+      "id": "01-camo-overshirt",
+      "immutable_description": "Camisa oversize camuflaje abstracto marrón y taupe; cuello, botones, manga larga; conservar distribución del patrón.",
+      "front": "assets/raw/01-camo-overshirt-front.png",
+      "side": "assets/raw/01-camo-overshirt-side.png",
+      "candidate_60": "assets/candidatas_60/01-camo-overshirt-60-CANDIDATA.png",
+      "approved_angles": [
+        0,
+        60,
+        80
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        45,
+        25
+      ],
+      "revision_60": {
+        "estado": "aprobada",
+        "motivo": "Silueta, cuello, bolsa y camuflaje coherentes con frente y perfil."
+      },
+      "approved_60": "assets/aprobadas/01-camo-overshirt-60.png"
+    },
+    {
+      "id": "02-black-tee-minimal",
+      "immutable_description": "Playera negra heavyweight oversize, pequeño wordmark blanco NOMAD en el pecho.",
+      "front": "assets/raw/02-black-tee-minimal-front.png",
+      "side": "assets/raw/02-black-tee-minimal-side.png",
+      "candidate_60": "assets/candidatas_60/02-black-tee-minimal-60-CANDIDATA.png",
+      "approved_angles": [
+        0,
+        60,
+        80
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        45,
+        25
+      ],
+      "revision_60": {
+        "estado": "aprobada",
+        "motivo": "Coherente. El wordmark NOMAD sale un poco más grande y con serif; aceptable a este tamaño."
+      },
+      "approved_60": "assets/aprobadas/02-black-tee-minimal-60.png"
+    },
+    {
+      "id": "03-white-tee-dollar",
+      "immutable_description": "Playera blanca oversize, billete verde y frase More Than Money debajo; conservar ambos elementos.",
+      "front": "assets/raw/03-white-tee-dollar-front.png",
+      "side": "assets/raw/03-white-tee-dollar-side.png",
+      "candidate_60": "assets/candidatas_60/03-white-tee-dollar-60-CANDIDATA.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [
+        60
+      ],
+      "missing_angles": [
+        45,
+        25
+      ],
+      "revision_60": {
+        "estado": "rechazada",
+        "motivo": "Cambió el billete de 1 dólar por uno de 100 (retrato distinto) y es mucho más grande que en el frente."
+      }
+    },
+    {
+      "id": "04-black-tee-script",
+      "immutable_description": "Playera negra oversize, letras crema Good People Better Days en cuatro líneas.",
+      "front": "assets/raw/04-black-tee-script-front.png",
+      "side": "assets/raw/04-black-tee-script-side.png",
+      "candidate_60": "assets/candidatas_60/04-black-tee-script-60-CANDIDATA.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [
+        60
+      ],
+      "missing_angles": [
+        45,
+        25
+      ],
+      "revision_60": {
+        "estado": "rechazada",
+        "motivo": "La tipografía cambió de serif a script con remates y aparece una estrella que no existe en el frente."
+      }
+    },
+    {
+      "id": "05-green-crewneck",
+      "immutable_description": "Sudadera verde forestal de cuello redondo, manga larga, puños y cintura acanalados; CREATE GOOD HABITS y globo pequeño; sin capucha, sin cierre, sin óvalo.",
+      "front": "assets/raw/05-green-crewneck-front.png",
+      "side": "assets/raw/05-green-crewneck-side.png",
+      "candidate_60": "assets/candidatas_60/05-green-crewneck-60-CANDIDATA.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [
+        60
+      ],
+      "missing_angles": [
+        45,
+        25
+      ],
+      "revision_60": {
+        "estado": "rechazada",
+        "motivo": "Diseño distinto: CREATE en arco universitario y GOOD dentro de un óvalo (el catálogo pide sin óvalo)."
+      }
+    }
+  ]
+}
