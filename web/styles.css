@@ -8,9 +8,6 @@
   --band: #454f7c;
   --band-ink: #eceae3;
   --shade: rgba(28, 30, 44, 0.16);
-  --chrome-hi: #ffffff;
-  --chrome-mid: #c3c6cc;
-  --chrome-lo: #6c7079;
 
   --font-logo: "Yellowtail", "Brush Script MT", cursive;
   --font-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -106,69 +103,27 @@ body {
   width: var(--rack-w, 900px);
 }
 
-/* ---------- rail: chrome tube on two wall mounts ---------- */
+/* ---------- rail: photo of a real rod in three pieces ----------
+   The two wall mounts keep their proportions; the tube in between stretches
+   to the rack's width. Pieces and sizes come from tools/procesar_rail.py. */
 .rail {
   position: absolute;
   left: calc(var(--rail-over, 56px) * -1);
   right: calc(var(--rail-over, 56px) * -1);
-  top: var(--rail-top, 14px);
-  height: var(--tube, 10px);
+  top: calc(var(--rail-top, 14px) - var(--rail-tube-top, 13px));
+  height: var(--rail-h, 60px);
   display: flex;
-  align-items: center;
   z-index: 0;
+  pointer-events: none;
 }
-.rail__tube {
-  position: relative;
-  flex: 1;
-  height: var(--tube, 10px);
-  border-radius: 999px;
-  overflow: hidden;
-  background: linear-gradient(180deg,
-    #8e9299 0%, #eef0f3 18%, var(--chrome-hi) 27%, #d9dce1 38%,
-    var(--chrome-mid) 52%, #999da5 68%, var(--chrome-lo) 86%, #9ca0a8 100%);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .12);
+.rail__end, .rail__mid {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
-.rail__glint {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 180px;
-  margin-left: -90px;
-  background: radial-gradient(ellipse 50% 60% at 50% 35%, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0) 70%);
-  mix-blend-mode: screen;
-}
-.rail__mount {
-  position: relative;
-  z-index: 1;
-  flex: none;
-  width: calc(var(--tube, 10px) * 2.6);
-  height: calc(var(--tube, 10px) * 2.6);
-  margin-inline: calc(var(--tube, 10px) * -0.5);
-  border-radius: 50%;
-  background: radial-gradient(circle at 36% 32%, var(--chrome-hi) 0%, #dfe1e5 22%, #a3a7ae 58%, var(--chrome-lo) 100%);
-  box-shadow: 0 1px 2px rgba(20, 24, 40, .25), 4px 10px 12px var(--shade);
-}
-.rail__mount::after {
-  /* the cup that holds the tube end */
-  content: "";
-  position: absolute;
-  inset: 30%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 60% 60%, #f4f5f7, #9ea2a9 70%);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
-}
-.rail__shadow {
-  /* the tube stands off the wall, so its shadow falls a little lower */
-  position: absolute;
-  left: 4%;
-  right: 4%;
-  top: calc(var(--tube, 10px) * 1.7);
-  height: calc(var(--tube, 10px) * .8);
-  border-radius: 50%;
-  background: var(--shade);
-  filter: blur(6px);
-}
+.rail__end--left { flex: none; width: var(--rail-lw, 59px); background-image: url("rail/left.webp"); }
+.rail__mid { flex: 1; background-image: url("rail/mid.webp"); }
+.rail__end--right { flex: none; width: var(--rail-rw, 60px); background-image: url("rail/right.webp"); }
 
 /* ---------- garments ---------- */
 .rack__row {

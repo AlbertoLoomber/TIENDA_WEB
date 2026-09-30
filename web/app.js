@@ -2,10 +2,9 @@
  *
  * Every garment is a stack of cut-outs (side 80° → … → front 0°) that share one
  * canvas with the hanger hook at the same point. A "turn" renders a progress p
- * (0 = side, 1 = front) over that stack: garments with real in-between angles
- * step through them (each new view starts squeezed to the previous one's width
- * and opens up underneath it, so there is no see-through double image);
- * garments with only side + front get a 3D swing instead.
+ * (0 = side, 1 = front): with side + front only, the side view swings away and
+ * the front swings in from the hook (3D). In-between angles can be stepped
+ * through instead (USE_IN_BETWEENS), once they match the front photo.
  * The rack slot widens with the turn and pushes its neighbours aside.
  */
 (() => {
@@ -14,12 +13,16 @@
   const CANVAS_RATIO = 1000 / 1300;   // width / height of every cut-out
   const HOOK_Y = 0.029;               // inner top of the hook curl, as a fraction of the canvas height
   const PACK_SIDE = 0.78;             // how tightly side views pack on the rail
-  const PACK_FRONT = 0.9;             // same for the garment that is turned
+  const PACK_FRONT = 0.8;             // same for the turned garment; it overlaps its neighbours a little
+                                      // instead of shoving the whole rack along the rail
+  const USE_IN_BETWEENS = false;      // the current 60/45/25 shots don't match the front photo yet
   const RAIL_OVER = 56;               // rail length past the outer garments, px
   const HOVER_DELAY = 90;             // ms the cursor must rest before a garment turns
   const LEAVE_DELAY = 260;            // ms after leaving the rack before it settles back
   const IDLE_MS = 6500;               // quiet time before the rack stirs on its own
   const LIFT = 14;                    // px a garment rises to come off the hook
+  // Rail photo pieces, in px of the source photo (see tools/procesar_rail.py).
+  const RAIL = { height: 235, tubeTop: 53, tubeHeight: 47, left: 232, right: 234 };
   const MARQUEE = ["New designs daily", "Subscribe to our newsletter"];
 
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,7 +33,6 @@
   const rack = $("rack");
   const rackInner = $("rack-inner");
   const rail = $("rail");
-  const glint = $("glint");
   const row = $("rack-row");
   const caption = $("caption");
   const detail = $("detail");
@@ -62,7 +64,12 @@
 
   /* ---------- the turn ---------- */
 
-  function makeTurn(container, frames) {
+  function turnFrames(frames) {
+    return USE_IN_BETWEENS ? frames : [frames[0], frames.at(-1)];
+  }
+
+  function makeTurn(container, allFrames) {
+    const frames = turnFrames(allFrames);
     const box = document.createElement("div");
     box.className = "turn";
     const imgs = frames.map((f, k) => {
@@ -164,7 +171,8 @@
       garmentH = clamp(Math.min(availH, 560, availW / perHeight), 180, 560);
     }
     garmentW = garmentH * CANVAS_RATIO;
-    const tube = clamp(Math.round(garmentH * 0.021), 7, 12);
+    const tube = clamp(Math.round(garmentH * 0.022), 8, 13);
+    const k = tube / RAIL.tubeHeight;                 // photo px → screen px
     const over = narrow ? 18 : RAIL_OVER;
 
     const s = rackInner.style;
@@ -173,14 +181,16 @@
     s.setProperty("--tube", `${tube}px`);
     s.setProperty("--rail-top", `${garmentH * HOOK_Y}px`);
     s.setProperty("--rail-over", `${over}px`);
+    s.setProperty("--rail-h", `${RAIL.height * k}px`);
+    s.setProperty("--rail-tube-top", `${RAIL.tubeTop * k}px`);
+    s.setProperty("--rail-lw", `${RAIL.left * k}px`);
+    s.setProperty("--rail-rw", `${RAIL.right * k}px`);
     s.setProperty("--rack-w", `${perHeight * garmentH}px`);
     rackInner.style.paddingInline = narrow ? `${over + 16}px` : "";
 
     const roomW = stage.clientWidth - (narrow ? 32 : 32 + 2 * 130);
     const d = Math.min(stage.clientHeight - 160, 760, roomW / CANVAS_RATIO);
     detail.style.setProperty("--d-h", `${Math.max(220, d)}px`);
-    // Until the cursor moves it, the highlight sits where a ceiling light would put it.
-    if (!glintMoved) gsap.set(glint, { x: glint.parentElement.clientWidth * 0.32 });
     items.forEach(render);
   }
 
@@ -208,12 +218,15 @@
       return;
     }
     const update = () => render(item);
-    const d = item.frames.length > 2 ? 1 : 0.8;
-    gsap.to(item.turn, { p: to, duration: to ? d : 0.6, ease: "power2.inOut", onUpdate: update });
-    // The slot widens with the garment (not ahead of it) and settles with a small push.
-    gsap.to(item, to
-      ? { keyframes: [{ wp: 1.05, duration: d * 0.85, ease: "power2.inOut" }, { wp: 1, duration: 0.4, ease: "power2.out" }], onUpdate: update }
-      : { wp: 0, duration: 0.6, ease: "power2.inOut", onUpdate: update });
+    gsap.to(item.turn, { p: to, duration: to ? 0.8 : 0.6, ease: "power2.inOut", onUpdate: update });
+    // A quick push with a little bounce: the neighbours make room in one go
+    // instead of drifting along the rail.
+    gsap.to(item, {
+      wp: to,
+      duration: to ? 1.1 : 0.7,
+      ease: to ? "elastic.out(1, 0.6)" : "power3.out",
+      onUpdate: update,
+    });
   }
 
   function ripple(i, strength) {
@@ -282,10 +295,10 @@
     if (reduceMotion) return Promise.resolve();
     gsap.set(swings, { y: -garmentH * 0.2, opacity: 0 });
     gsap.set(tail, { opacity: 0 });
-    gsap.set(rail, { scaleX: 0, transformOrigin: "50% 50%" });
+    gsap.set(rail, { clipPath: "inset(0% 50% 0% 50%)" });
     return new Promise((resolve) => {
       const tl = gsap.timeline({ onComplete: resolve });
-      tl.to(rail, { scaleX: 1, duration: 0.8, ease: "power3.inOut" });
+      tl.to(rail, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "power3.inOut", clearProps: "clipPath" });
       items.forEach((it, j) => {
         tl.to(it.swing, {
           keyframes: [
@@ -441,22 +454,6 @@
     }
   }
 
-  /* ---------- rail glint ---------- */
-
-  let glintX = null;
-  let glintMoved = false;
-
-  function setupGlint() {
-    if (!finePointer) return;
-    glintX = gsap.quickTo(glint, "x", { duration: reduceMotion ? 0 : 0.9, ease: "power3" });
-    addEventListener("pointermove", (e) => {
-      if (e.pointerType !== "mouse") return;
-      const r = glint.parentElement.getBoundingClientRect();
-      glintX(clamp(e.clientX - r.left, 0, r.width));
-      glintMoved = true;
-    }, { passive: true });
-  }
-
   /* ---------- build ---------- */
 
   function buildBand() {
@@ -578,7 +575,6 @@
     const data = await fetch("prendas.json").then((r) => r.json());
     buildRack(data);
     wire();
-    setupGlint();
     layout();
     setCaption(null);
     await firstFramesReady();
