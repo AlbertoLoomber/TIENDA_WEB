@@ -10,28 +10,31 @@
   "items": [
     {
       "id": "01-camo-overshirt",
+      "nombre": "Camo Overshirt",
+      "categoria": "Overshirt",
       "immutable_description": "Camisa oversize camuflaje abstracto marrón y taupe; cuello, botones, manga larga; conservar distribución del patrón.",
       "front": "assets/raw/01-camo-overshirt-front.png",
       "side": "assets/raw/01-camo-overshirt-side.png",
       "candidate_60": "assets/candidatas_60/01-camo-overshirt-60-CANDIDATA.png",
       "approved_angles": [
         0,
+        25,
+        45,
         60,
         80
       ],
       "review_angles": [],
-      "missing_angles": [
-        45,
-        25
-      ],
+      "missing_angles": [],
       "revision_60": {
         "estado": "aprobada",
-        "motivo": "Silueta, cuello, bolsa y camuflaje coherentes con frente y perfil."
+        "motivo": "Reemplazada por la serie de 5 ángulos individuales (60/45/25 coherentes entre sí)."
       },
       "approved_60": "assets/aprobadas/01-camo-overshirt-60.png"
     },
     {
       "id": "02-black-tee-minimal",
+      "nombre": "Nomad Minimal Tee",
+      "categoria": "T-Shirt",
       "immutable_description": "Playera negra heavyweight oversize, pequeño wordmark blanco NOMAD en el pecho.",
       "front": "assets/raw/02-black-tee-minimal-front.png",
       "side": "assets/raw/02-black-tee-minimal-side.png",
@@ -54,6 +57,8 @@
     },
     {
       "id": "03-white-tee-dollar",
+      "nombre": "More Than Money Tee",
+      "categoria": "T-Shirt",
       "immutable_description": "Playera blanca oversize, billete verde y frase More Than Money debajo; conservar ambos elementos.",
       "front": "assets/raw/03-white-tee-dollar-front.png",
       "side": "assets/raw/03-white-tee-dollar-side.png",
@@ -76,6 +81,8 @@
     },
     {
       "id": "04-black-tee-script",
+      "nombre": "Good People Tee",
+      "categoria": "T-Shirt",
       "immutable_description": "Playera negra oversize, letras crema Good People Better Days en cuatro líneas.",
       "front": "assets/raw/04-black-tee-script-front.png",
       "side": "assets/raw/04-black-tee-script-side.png",
@@ -98,6 +105,8 @@
     },
     {
       "id": "05-green-crewneck",
+      "nombre": "Create Good Habits Crewneck",
+      "categoria": "Crewneck",
       "immutable_description": "Sudadera verde forestal de cuello redondo, manga larga, puños y cintura acanalados; CREATE GOOD HABITS y globo pequeño; sin capucha, sin cierre, sin óvalo.",
       "front": "assets/raw/05-green-crewneck-front.png",
       "side": "assets/raw/05-green-crewneck-side.png",

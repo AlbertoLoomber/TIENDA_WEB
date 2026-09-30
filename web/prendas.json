@@ -1,0 +1,127 @@
+{
+  "canvas": [
+    1000,
+    1300
+  ],
+  "items": [
+    {
+      "id": "01-camo-overshirt",
+      "name": "Camo Overshirt",
+      "category": "Overshirt",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/01-camo-overshirt/80.webp",
+          "left": 0.313,
+          "right": 0.665
+        },
+        {
+          "angle": 60,
+          "src": "prendas/01-camo-overshirt/60.webp",
+          "left": 0.172,
+          "right": 0.858
+        },
+        {
+          "angle": 45,
+          "src": "prendas/01-camo-overshirt/45.webp",
+          "left": 0.116,
+          "right": 0.899
+        },
+        {
+          "angle": 25,
+          "src": "prendas/01-camo-overshirt/25.webp",
+          "left": 0.109,
+          "right": 0.902
+        },
+        {
+          "angle": 0,
+          "src": "prendas/01-camo-overshirt/0.webp",
+          "left": 0.096,
+          "right": 0.894
+        }
+      ]
+    },
+    {
+      "id": "02-black-tee-minimal",
+      "name": "Nomad Minimal Tee",
+      "category": "T-Shirt",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/02-black-tee-minimal/80.webp",
+          "left": 0.339,
+          "right": 0.661
+        },
+        {
+          "angle": 60,
+          "src": "prendas/02-black-tee-minimal/60.webp",
+          "left": 0.321,
+          "right": 0.744
+        },
+        {
+          "angle": 0,
+          "src": "prendas/02-black-tee-minimal/0.webp",
+          "left": 0.144,
+          "right": 0.848
+        }
+      ]
+    },
+    {
+      "id": "03-white-tee-dollar",
+      "name": "More Than Money Tee",
+      "category": "T-Shirt",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/03-white-tee-dollar/80.webp",
+          "left": 0.348,
+          "right": 0.67
+        },
+        {
+          "angle": 0,
+          "src": "prendas/03-white-tee-dollar/0.webp",
+          "left": 0.161,
+          "right": 0.843
+        }
+      ]
+    },
+    {
+      "id": "04-black-tee-script",
+      "name": "Good People Tee",
+      "category": "T-Shirt",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/04-black-tee-script/80.webp",
+          "left": 0.342,
+          "right": 0.679
+        },
+        {
+          "angle": 0,
+          "src": "prendas/04-black-tee-script/0.webp",
+          "left": 0.146,
+          "right": 0.851
+        }
+      ]
+    },
+    {
+      "id": "05-green-crewneck",
+      "name": "Create Good Habits Crewneck",
+      "category": "Crewneck",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/05-green-crewneck/80.webp",
+          "left": 0.372,
+          "right": 0.703
+        },
+        {
+          "angle": 0,
+          "src": "prendas/05-green-crewneck/0.webp",
+          "left": 0.136,
+          "right": 0.872
+        }
+      ]
+    }
+  ]
+}
