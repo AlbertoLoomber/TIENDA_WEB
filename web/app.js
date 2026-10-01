@@ -28,13 +28,13 @@
   // Lookbook: one look per garment. Until the model photos exist, each look
   // shows the garment hanging on a short rod over its own colour.
   const LOOKS = {
-    "01-camo-overshirt": { tone: "#d6cdbd", photo: null },
+    "01-camo-overshirt": { tone: "#d6cdbd", photo: "fotos/look-01-camo.webp" },
     "02-black-tee-minimal": { tone: "#cdd0d4", photo: null },
-    "03-white-tee-dollar": { tone: "#3e4874", ink: "#eceae3", photo: null },
+    "03-white-tee-dollar": { tone: "#3e4874", ink: "#eceae3", photo: "fotos/look-03-money.webp" },
     "04-black-tee-script": { tone: "#c4b5a3", photo: null },
-    "05-green-crewneck": { tone: "#dcd5c4", photo: null },
+    "05-green-crewneck": { tone: "#dcd5c4", photo: "fotos/look-05-habits.webp" },
   };
-  const STUDIO_PHOTO = null;   // e.g. "fotos/studio.jpg" once it exists
+  const STUDIO_PHOTO = "fotos/studio.webp";
 
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
@@ -468,7 +468,7 @@
       const frame = document.createElement("div");
       frame.className = "look__frame";
       frame.style.setProperty("--tone", look.tone);
-      if (look.ink) frame.style.setProperty("--look-ink", look.ink);
+      if (look.ink && !look.photo) frame.style.setProperty("--look-ink", look.ink);
 
       if (look.photo) {
         const img = document.createElement("img");
@@ -569,7 +569,7 @@
           gsap.fromTo(g, { rotation: i % 2 ? 2.5 : -2.5 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.25)" })),
       });
     }
-    gsap.from(".studio__row img", {
+    if (document.querySelector(".studio__row img")) gsap.from(".studio__row img", {
       y: -24, opacity: 0, duration: 0.7, ease: "back.out(1.6)", stagger: 0.08,
       scrollTrigger: { trigger: "#about-photo", start: "top 80%", once: true },
     });
