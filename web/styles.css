@@ -197,6 +197,12 @@ body {
   pointer-events: none;
 }
 
+.slot__lean {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 2.9%;   /* the hook, where the garment hangs from the rail */
+  pointer-events: none;
+}
 .slot__swing {
   position: absolute;
   top: 0;
@@ -547,6 +553,73 @@ body {
   opacity: .8;
 }
 .look__meta { display: grid; gap: 4px; }
+
+/* progress: a short piece of rail with a hanger that travels along it */
+.lookbook__progress {
+  max-width: 1200px;
+  margin: clamp(24px, 3vw, 36px) auto 0;
+  padding-inline: 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.lookbook__rod {
+  position: relative;
+  flex: none;
+  width: clamp(140px, 16vw, 220px);
+  height: 5px;
+  background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat;
+}
+.lookbook__hanger {
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 28px;
+  height: 18px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  will-change: transform;
+}
+.lookbook__count {
+  margin: 0;
+  font: 500 10px/1 var(--font-ui);
+  letter-spacing: .2em;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.lookbook__now { display: inline-block; color: var(--ink); }
+
+/* without the pin (phones, reduced motion) the row simply scrolls sideways */
+.lookbook:not(.is-pinned) .lookbook__viewport {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.lookbook:not(.is-pinned) .lookbook__viewport::-webkit-scrollbar { display: none; }
+.lookbook:not(.is-pinned) .look { scroll-snap-align: start; }
+
+/* desktop, pinned: the whole section fits one screen below the header */
+.lookbook.is-pinned {
+  box-sizing: border-box;
+  min-height: calc(100svh - var(--top-h));
+  padding-block: clamp(28px, 4vh, 48px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lookbook.is-pinned .lookbook__viewport { margin-top: clamp(20px, 3.5vh, 40px); }
+.lookbook.is-pinned .section-head,
+.lookbook.is-pinned .lookbook__progress {
+  /* a column flex parent would shrink these to their content; keep the page grid */
+  width: 100%;
+  box-sizing: border-box;
+}
+.lookbook.is-pinned .look {
+  width: clamp(220px, calc((100svh - var(--top-h) - 330px) * 0.8), 380px);
+}
 .look__name {
   margin: 0;
   font: italic 400 17px/1.2 var(--font-ui);

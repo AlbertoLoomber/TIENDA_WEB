@@ -327,6 +327,44 @@
     });
   }
 
+  /* ---------- the rack feels the page move ---------- */
+
+  // Scrolling fast nudges the rail: the garments tilt a little, each one a beat
+  // after the previous, and settle back with a soft bounce when the page stops.
+  // Gentle scrolling barely moves them; the tilt never passes MAX_LEAN.
+  const LEAN_THRESHOLD = 180;   // px/s of scroll that is ignored
+  const LEAN_PER_PX = 1 / 320;  // degrees per px/s above the threshold
+  const MAX_LEAN = 4.5;         // degrees
+  const LEAN_WEIGHT = [1, 0.85, 1.1, 0.9, 1.05];  // garments don't all weigh the same
+
+  function setupLean() {
+    if (reduceMotion || !hasScrollTrigger) return;
+    let settleTimer = 0;
+    const settleAll = () => items.forEach((it, i) => gsap.to(it.lean, {
+      rotation: 0, duration: 1.7, delay: i * 0.04, ease: "elastic.out(1, 0.3)", overwrite: true,
+    }));
+    ScrollTrigger.create({
+      trigger: ".hero",
+      start: "top top",
+      end: "bottom top",
+      onUpdate(self) {
+        if (detailIndex >= 0 || busy) return;
+        const v = self.getVelocity();
+        const over = Math.max(0, Math.abs(v) - LEAN_THRESHOLD);
+        if (!over) return;
+        const angle = Math.sign(v) * Math.min(MAX_LEAN, over * LEAN_PER_PX);
+        items.forEach((it, i) => gsap.to(it.lean, {
+          rotation: angle * (LEAN_WEIGHT[i % LEAN_WEIGHT.length]),
+          duration: 0.5 + i * 0.07,
+          ease: "power3.out",
+          overwrite: true,
+        }));
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(settleAll, 140);
+      },
+    });
+  }
+
   /* ---------- detail view ---------- */
 
   // Rect of an element in the rack as it will be once the rack is back at scale 1.
@@ -364,6 +402,7 @@
     activate(i, { instant: true });
     const item = items[i];
     gsap.killTweensOf(item.swing);
+    items.forEach((it) => { gsap.killTweensOf(it.lean); gsap.set(it.lean, { rotation: 0 }); });
 
     // Lift the garment off the hook, then carry it to the centre.
     gsap.to(item.swing, {
@@ -566,12 +605,17 @@
 
       const contact = document.createElement("span");
       contact.className = "slot__contact";
+      // lean: tilt from page scrolling · swing: hover sways, drops and breezes.
+      // Separate layers so the two never fight; their angles simply add up.
+      const lean = document.createElement("div");
+      lean.className = "slot__lean";
       const swing = document.createElement("div");
       swing.className = "slot__swing";
-      slot.append(contact, swing);
+      lean.appendChild(swing);
+      slot.append(contact, lean);
       row.appendChild(slot);
 
-      const item = { ...d, slot, swing, turn: makeTurn(swing, d.frames), wp: 0 };
+      const item = { ...d, slot, lean, swing, turn: makeTurn(swing, d.frames), wp: 0 };
 
       slot.addEventListener("pointerenter", (e) => {
         if (e.pointerType !== "mouse" || detailIndex >= 0) return;
@@ -669,6 +713,7 @@
     buildStudio();
     setupNewsletter();
     window.NOMAD?.sections?.setup();
+    setupLean();
     wire();
     layout();
     if (hasScrollTrigger) ScrollTrigger.refresh();

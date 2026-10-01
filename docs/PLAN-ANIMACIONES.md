@@ -1,5 +1,7 @@
 # Plan de implementación: animaciones al bajar
 
+> **Estado:** etapa 1 completa (T1–T5). Siguiente: fase 2 (sección 6).
+
 Etapa 1: la base premium (Fase 1) y el lookbook fijo con cortina.
 Concepto rector: **todo cuelga, todo tiene peso**. Cada animación es una extensión
 física del perchero (péndulo, tela, cortina de probador), nunca un efecto aislado.
