@@ -651,20 +651,33 @@ body {
   color: var(--ink);
 }
 .facts {
+  position: relative;
   list-style: none;
   margin: 8px 0 0;
   padding: 0;
   width: 100%;
   max-width: 420px;
-  border-top: 1px solid rgba(36, 44, 82, .15);
 }
 .facts li {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 16px;
   padding-block: 12px;
-  border-bottom: 1px solid rgba(36, 44, 82, .15);
 }
+/* hairlines drawn as elements so they can draw themselves in (--draw: 0 → 1) */
+.facts::before, .facts li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(36, 44, 82, .15);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--draw, 1));
+}
+.facts::before { top: 0; }
+.facts li::after { bottom: 0; }
 .facts__k {
   font: 500 9.5px/1.6 var(--font-ui);
   letter-spacing: .2em;
@@ -724,24 +737,74 @@ body {
 }
 
 /* ---------- newsletter: a hang tag on a short rod ---------- */
+.closing { position: relative; z-index: 2; }
 .newsletter {
+  /* the curtain: same wall, rounded at the bottom, lifting off the footer */
+  position: relative;
+  z-index: 2;
   padding: clamp(40px, 6vw, 80px) 24px clamp(80px, 11vw, 150px);
   display: grid;
   justify-items: center;
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  background-position: 50% var(--dots-y, 0);
+  border-radius: 0 0 22px 22px;
+  box-shadow: 0 28px 50px -26px rgba(28, 30, 44, .32);
+}
+
+/* the tag hangs from a short rod by a cotton string */
+.tag-hang {
+  position: relative;
+  width: min(520px, 100%);
+  padding-top: 64px;
+  display: grid;
+}
+.tag-hang__rod {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 132px;
+  height: 7px;
+  margin-left: -66px;
+  background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat;
+  z-index: 1;
+}
+.tag-swing {
+  position: relative;
+  display: grid;
+  transform-origin: 50% -60px;   /* swings from the rod */
+}
+.tag-hang__string {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: -60px;
+  width: 1.5px;
+  height: 89px;                  /* rod → centre of the tag's hole */
+  margin-left: -.75px;
+  border-radius: 1px;
+  background: #9b907c;
+  pointer-events: none;
 }
 .tag {
   position: relative;
-  width: min(520px, 100%);
+  width: 100%;
   box-sizing: border-box;
   padding: 58px clamp(24px, 5vw, 48px) 36px;
   display: grid;
-  gap: 12px;
-  justify-items: center;
   text-align: center;
   background: #f3f1ea;
   clip-path: polygon(16% 0, 84% 0, 100% 9%, 100% 100%, 0 100%, 0 9%);
   filter: drop-shadow(14px 22px 24px rgba(20, 22, 32, .14));
 }
+.tag__face {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  align-content: center;
+}
+.tag__title:focus { outline: none; }
 .tag__hole {
   position: absolute;
   top: 22px;
@@ -786,6 +849,9 @@ body {
 
 /* ---------- footer ---------- */
 .foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
   background: var(--band);
   color: var(--band-ink);
   padding: clamp(48px, 6vw, 80px) 24px 24px;

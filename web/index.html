@@ -86,15 +86,15 @@
     <section class="about" id="about" aria-labelledby="about-title">
       <div class="about__text">
         <p class="eyebrow">About</p>
-        <h2 class="about__logo" id="about-title" data-reveal>Nomad</h2>
+        <h2 class="about__logo" id="about-title">Nomad</h2>
         <p class="about__body">Nomad makes a small rack of everyday pieces: heavy cotton, oversized cuts and prints we would wear ourselves. New designs land on the rail often, and each one starts here.</p>
-        <ul class="facts" data-reveal>
+        <ul class="facts">
           <li><span class="facts__k">Fabric</span><span class="facts__v">Heavyweight cotton</span></li>
           <li><span class="facts__k">Fit</span><span class="facts__v">Oversized</span></li>
           <li><span class="facts__k">Drops</span><span class="facts__v">New designs daily</span></li>
         </ul>
       </div>
-      <figure class="about__photo" id="about-photo" data-reveal>
+      <figure class="about__photo" id="about-photo">
         <div class="studio" id="studio" aria-hidden="true">
           <div class="studio__rail"><span class="rail__end rail__end--left"></span><span class="rail__mid"></span><span class="rail__end rail__end--right"></span></div>
           <div class="studio__row" id="studio-row"></div>
@@ -103,21 +103,39 @@
       </figure>
     </section>
 
+  </main>
+
+  <!-- The newsletter rides over the footer; as it scrolls away the footer is
+       uncovered underneath, like lifting a curtain. -->
+  <div class="closing">
     <section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
-      <div class="tag" data-reveal>
-        <span class="tag__hole" aria-hidden="true"></span>
-        <p class="eyebrow">Newsletter</p>
-        <h2 class="tag__title" id="newsletter-title">Subscribe to our newsletter</h2>
-        <p class="tag__body">New designs land on the rail first. Get a short note when they do.</p>
-        <form class="tag__form" id="newsletter-form" novalidate>
-          <label class="sr-only" for="newsletter-email">Email address</label>
-          <input class="tag__input" id="newsletter-email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required>
-          <button class="pill pill--solid" type="submit">Subscribe</button>
-        </form>
-        <p class="tag__status" id="newsletter-status" aria-live="polite"></p>
+      <div class="tag-hang" id="tag-hang">
+        <span class="tag-hang__rod" aria-hidden="true"></span>
+        <div class="tag-swing" id="tag-swing">
+        <span class="tag-hang__string" aria-hidden="true"></span>
+        <div class="tag" id="tag">
+          <span class="tag__hole" aria-hidden="true"></span>
+          <div class="tag__face" id="tag-front">
+            <p class="eyebrow">Newsletter</p>
+            <h2 class="tag__title" id="newsletter-title">Subscribe to our newsletter</h2>
+            <p class="tag__body">New designs land on the rail first. Get a short note when they do.</p>
+            <form class="tag__form" id="newsletter-form" novalidate>
+              <label class="sr-only" for="newsletter-email">Email address</label>
+              <input class="tag__input" id="newsletter-email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required>
+              <button class="pill pill--solid" type="submit">Subscribe</button>
+            </form>
+            <p class="tag__status" id="newsletter-status" aria-live="polite"></p>
+          </div>
+          <div class="tag__face tag__face--back" id="tag-back" hidden>
+            <p class="eyebrow">Newsletter</p>
+            <h3 class="tag__title" id="tag-thanks" tabindex="-1">Thanks, you're on the list.</h3>
+            <p class="tag__body">This is a design preview, so signups aren't connected yet and no email was sent.</p>
+            <button class="pill" type="button" id="tag-again">Use another email</button>
+          </div>
+        </div>
+        </div>
       </div>
     </section>
-  </main>
 
   <footer class="foot" id="contact">
     <div class="foot__inner">
@@ -142,6 +160,7 @@
     </div>
     <p class="foot__base"><span>© 2026 Nomad</span><span>Prototype · design only</span></p>
   </footer>
+  </div>
 </div>
 <!-- PAGE:END -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>

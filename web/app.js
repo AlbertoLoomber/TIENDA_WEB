@@ -572,6 +572,29 @@
     const form = $("newsletter-form");
     const input = $("newsletter-email");
     const status = $("newsletter-status");
+    const tag = $("tag");
+    const front = $("tag-front");
+    const back = $("tag-back");
+
+    // Turn the hang tag over to show its other side, like flipping a real tag.
+    const flipTo = (show, hide, focusEl) => {
+      const swap = () => {
+        tag.style.minHeight = `${tag.offsetHeight}px`;   // same tag, same size on both sides
+        hide.hidden = true;
+        show.hidden = false;
+        focusEl.focus({ preventScroll: true });
+      };
+      if (reduceMotion) return swap();
+      gsap.to(tag, {
+        rotationY: 90, transformPerspective: 900, duration: 0.3, ease: "power2.in",
+        onComplete: () => {
+          swap();
+          gsap.fromTo(tag, { rotationY: -90 }, { rotationY: 0, transformPerspective: 900, duration: 0.75, ease: "back.out(1.4)" });
+          gsap.fromTo("#tag-swing", { rotation: 2.5 }, { rotation: 0, duration: 1.8, ease: "elastic.out(1, 0.3)" });
+        },
+      });
+    };
+
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       if (!input.value.trim() || !input.checkValidity()) {
@@ -579,9 +602,11 @@
         input.focus();
         return;
       }
-      status.textContent = "Thanks. Signups aren't connected yet in this preview.";
+      status.textContent = "";
       form.reset();
+      flipTo(back, front, $("tag-thanks"));
     });
+    $("tag-again").addEventListener("click", () => flipTo(front, back, input));
   }
 
   /* ---------- build ---------- */

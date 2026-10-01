@@ -5,8 +5,10 @@
  *   titles    → rise line by line from behind a mask
  *   lookbook  → pinned on desktop: photos travel sideways, each revealed like a
  *               fitting-room curtain; a small hanger on a rod tracks the way
- *   about     → photo and facts settle in after the copy
- *   newsletter→ the hang tag arrives, then its title
+ *   about     → "Nomad" writes itself; the studio photo opens from the centre;
+ *               the fact lines draw in
+ *   newsletter→ the hang tag swings in on its string, then its title
+ *   footer    → uncovered from underneath as the newsletter lifts away
  * With "reduce motion" nothing moves: content is simply there.
  */
 (() => {
@@ -24,8 +26,13 @@
     addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    alignDots(more);
-    addEventListener("resize", () => alignDots(more));
+    const sheets = [more, document.querySelector(".newsletter")].filter(Boolean);
+    const align = () => sheets.forEach((el) => alignDots(el, page));
+    align();
+    addEventListener("resize", align);
+    addEventListener("load", align);
+    // Pinned sections add space above the newsletter; realign after each re-measure.
+    if (hasScrollTrigger) ScrollTrigger.addEventListener("refresh", align);
 
     if (!hasScrollTrigger || reduceMotion) {
       // No motion: the lookbook still gets its swipeable row and counter.
@@ -37,17 +44,20 @@
     heroExit(motion);
     lookbook(motion, { animate: true });
     reveals(motion);
+    about(motion);
+    hangTag(motion);
+    footer();
     titles(motion);
     // Photos load lazily; once they're in, re-measure so pins and triggers are exact.
     addEventListener("load", () => ScrollTrigger.refresh());
   }
 
-  /* The sheet that slides over the hero carries its own copy of the dot grid;
-     shift it so its dots line up exactly with the wall behind. */
-  function alignDots(el) {
-    if (!el) return;
+  /* Sheets that slide over other content carry their own copy of the dot grid;
+     shift each one so its dots line up exactly with the wall behind. */
+  function alignDots(el, page) {
     const step = 22;
-    el.style.setProperty("--dots-y", `${-(el.offsetTop % step)}px`);
+    const y = el.getBoundingClientRect().top - page.getBoundingClientRect().top;
+    el.style.setProperty("--dots-y", `${-(Math.round(y) % step)}px`);
   }
 
   /* ---------- hero: the rack recedes, the next section slides over it ---------- */
@@ -101,6 +111,61 @@
     }
   }
 
+  /* ---------- about: the name writes itself, the studio opens ---------- */
+
+  function about(motion) {
+    const logo = document.querySelector(".about__logo");
+    if (logo) {
+      // Revealed left to right along its own slant, like a pen stroke.
+      // The inset runs past the box so the script's swashes are never cut.
+      gsap.fromTo(logo,
+        { clipPath: "inset(-40% 100% -40% -8%)" },
+        { clipPath: "inset(-40% -8% -40% -8%)", duration: 1.8, ease: "power2.inOut",
+          scrollTrigger: { trigger: logo, start: "top 82%", once: true } });
+    }
+
+    const fig = document.getElementById("about-photo");
+    const media = fig?.querySelector(":scope > img, .studio");
+    if (media) {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 80%", once: true } });
+      tl.fromTo(media, { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: motion.slow, ease: "expo.inOut" })
+        .fromTo(media, { scale: 1.1 }, { scale: 1, duration: motion.slow + 0.6, ease: motion.easeOut }, 0)
+        .from(fig.querySelector("figcaption"), { opacity: 0, y: 6, duration: motion.fast, ease: motion.easeOut }, motion.slow - 0.4);
+    }
+
+    const facts = document.querySelector(".facts");
+    if (facts) {
+      const rows = [...facts.children];
+      const tl = gsap.timeline({ scrollTrigger: { trigger: facts, start: "top 86%", once: true } });
+      tl.fromTo([facts, ...rows], { "--draw": 0 }, { "--draw": 1, duration: 1.1, ease: motion.easeInOut, stagger: 0.12 })
+        .from(rows.flatMap((r) => [...r.children]), { opacity: 0, y: 8, duration: motion.fast, ease: motion.easeOut, stagger: 0.05 }, 0.25);
+    }
+  }
+
+  /* ---------- newsletter: the tag swings in on its string ---------- */
+
+  function hangTag(motion) {
+    const swing = document.getElementById("tag-swing");
+    if (!swing) return;
+    gsap.timeline({ scrollTrigger: { trigger: "#tag-hang", start: "top 80%", once: true } })
+      .from(".tag-hang__rod", { opacity: 0, scaleX: 0.4, duration: motion.fast, ease: motion.easeOut })
+      .fromTo(swing, { rotation: -11, opacity: 0 }, { rotation: 0, duration: 2.4, ease: "elastic.out(1, 0.32)" }, 0.1)
+      .to(swing, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0.1);
+  }
+
+  /* ---------- footer: uncovered from underneath ---------- */
+
+  function footer() {
+    const foot = document.querySelector(".foot");
+    const inner = foot?.querySelector(".foot__inner");
+    if (!inner) return;
+    // While the newsletter lifts away, the footer's content rises gently into place.
+    gsap.fromTo(inner, { yPercent: -18, opacity: 0.3 }, {
+      yPercent: 0, opacity: 1, ease: "none",
+      scrollTrigger: { trigger: ".newsletter", start: "bottom bottom", end: () => `+=${foot.offsetHeight}`, scrub: true },
+    });
+  }
+
   /* ---------- titles rise line by line ---------- */
 
   function titles(motion) {
@@ -109,9 +174,9 @@
     const groups = [
       // [selector, distance (% of line height), duration, delay]
       [".section-title", 110, motion.base, 0],
-      [".tag__title", 110, motion.base, 0.15],
+      ["#tag-front .tag__title", 110, motion.base, 0.35],
       [".about__body", 70, motion.fast + 0.2, 0.1],
-      [".tag__body", 70, motion.fast + 0.2, 0.25],
+      ["#tag-front .tag__body", 70, motion.fast + 0.2, 0.45],
     ];
 
     // Split only once the real fonts are in, so lines break where they will stay.
