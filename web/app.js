@@ -731,7 +731,7 @@
     const data = await fetch("prendas.json").then((r) => r.json());
     site = data.site || {};
     buildRack(data);
-    Object.assign(window.NOMAD, { items, site });
+    Object.assign(window.NOMAD, { items, site, rail: RAIL });
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
     buildLookbook();
     buildStudio();

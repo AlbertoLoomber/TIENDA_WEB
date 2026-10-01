@@ -954,7 +954,7 @@ body {
 /* =========================================================
    Collection: every piece on its own short rod
    ========================================================= */
-.shop { padding-block: clamp(72px, 10vw, 140px) clamp(24px, 4vw, 48px); }
+.shop { padding-block: clamp(64px, 8vw, 110px) clamp(24px, 4vw, 56px); }
 .shop__filters {
   max-width: 1200px;
   margin: clamp(24px, 3vw, 36px) auto 0;
@@ -983,89 +983,115 @@ body {
 .filter[aria-checked="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .filter:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-.shop__grid {
-  list-style: none;
-  max-width: 1200px;
-  margin: clamp(24px, 3vw, 40px) auto 0;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 28px);
+/* one rail, every piece face-on */
+.shelf {
+  /* fits on one rail on wide screens; slides sideways when it doesn't */
+  margin-top: clamp(28px, 3.5vw, 44px);
+  padding-block: 4px 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
-.card { display: grid; gap: 12px; }
-.card[hidden] { display: none !important; }
-.card__frame {
+.shelf::-webkit-scrollbar { display: none; }
+.shelf__inner {
+  --pad: 64px;
   position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
+  /* width set by shop.js: the full row of pieces, so the rail never changes length */
+  padding-inline: var(--pad);
+  /* starts where the page's text column starts (1200px grid, 24px gutter) */
+  margin-left: max(0px, calc((100% - 1200px) / 2));
+}
+.shelf__rail {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: calc(var(--rail-top, 8px) - var(--rail-tube-top, 12px));
+  height: var(--rail-h, 50px);
+  display: flex;
+  pointer-events: none;
+}
+.shelf__rail .rail__end, .shelf__rail .rail__mid { height: 100%; }
+.shelf__row {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+.piece {
+  flex: none;
+  display: grid;
+  grid-template-rows: var(--p-h, 280px) auto;
+  gap: 10px;
+}
+.piece[hidden] { display: none !important; }
+.piece__hang {
+  position: relative;
   padding: 0;
   border: 0;
-  border-radius: 3px;
-  overflow: hidden;
+  background: none;
   cursor: pointer;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .4), rgba(0, 0, 0, .035)), #dedbd3;
+  height: 100%;
 }
-.card__frame:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.card__rod {
+.piece__hang:focus-visible { outline: none; }
+.piece__hang:focus-visible + .piece__meta .piece__name span { background-size: 100% 1px; }
+.piece__garment {
   position: absolute;
-  left: -2%;
-  right: -2%;
-  top: calc(6% + 2.9% * 0.86 * 1.04);
-  height: 2.1%;
-  background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat;
-}
-.card__garment {
-  position: absolute;
-  left: 7%;
-  top: 6%;
-  width: 86%;
+  top: 0;
+  left: 50%;
+  width: var(--p-w, 215px);
+  height: var(--p-h, 280px);
   max-width: none;
+  margin-left: calc(var(--p-w, 215px) / -2);
   transform-origin: 50% 2.9%;
-  filter: drop-shadow(10px 18px 18px rgba(20, 22, 32, .16));
-  transition: transform .6s var(--ease-out);
+  filter: drop-shadow(8px 14px 14px rgba(20, 22, 32, .15));
+  pointer-events: none;
 }
-.card__badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font: 500 9px/1 var(--font-ui);
+.piece__meta {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  text-align: center;
+  margin-inline: -12px;          /* the label may use half the gap on each side */
+}
+.piece__name {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: italic 400 15px/1.25 var(--font-ui);
+  color: var(--ink);
+}
+.piece__name span:first-child {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size .45s var(--ease-out);
+}
+.piece:hover .piece__name span:first-child { background-size: 100% 1px; }
+.piece__badge {
+  font: 500 8px/1 var(--font-ui);
+  font-style: normal;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--paper);
   background: var(--ink);
   border-radius: 999px;
-  padding: 6px 9px 5px;
+  padding: 4px 6px 3px;
 }
-.card__view {
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  font: 500 10px/1 var(--font-ui);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--paper);
-  background: var(--ink);
-  border-radius: 999px;
-  padding: 9px 18px 8px;
-  opacity: 0;
-  transform: translate(-50%, 8px);
-  transition: opacity .35s var(--ease-out), transform .45s var(--ease-out);
-}
-.card__frame:hover .card__view, .card__frame:focus-visible .card__view { opacity: 1; transform: translate(-50%, 0); }
-.card__meta { display: grid; gap: 4px; }
-.card__name { margin: 0; font: italic 400 18px/1.2 var(--font-ui); color: var(--ink); }
-.card__line {
+.piece__line {
   margin: 0;
+  white-space: nowrap;
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font: 500 10px/1.4 var(--font-ui);
+  gap: 10px;
+  font: 500 9.5px/1.4 var(--font-ui);
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
-.card__price { letter-spacing: .08em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.piece__price { color: var(--ink); letter-spacing: .08em; font-variant-numeric: tabular-nums; }
 
 /* =========================================================
    Product sheet
@@ -1262,7 +1288,6 @@ body {
 .guide__note { margin: 0; font: 400 11px/1.5 var(--font-ui); color: var(--ink-soft); text-align: center; }
 
 @media (max-width: 900px) {
-  .shop__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   /* stacked: plain block flow, so the stage's height (from its aspect ratio) is respected */
   .sheet__panel { display: block; }
   .sheet__gallery { position: relative; min-height: 0; padding-top: 56px; }
@@ -1270,8 +1295,13 @@ body {
   .sheet__info { padding-top: 8px; max-width: none; }
 }
 @media (max-width: 640px) {
-  .shop__grid { gap: 24px 12px; }
-  .card__name { font-size: 15px; }
-  .card__line { flex-direction: column; gap: 2px; letter-spacing: .12em; }
+  /* phones: the rail scrolls sideways */
+  .shelf { scroll-snap-type: x proximity; scroll-padding-inline: 40px; }
+  .shelf__inner { --pad: 40px; }
+  .shelf__row { justify-content: flex-start; }
+  .piece { scroll-snap-align: start; }   /* first piece rests at the start, rail end in view */
+  .shop__filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .shop__filters::-webkit-scrollbar { display: none; }
+  .filter { flex: none; }
   .sheet__panel { inset: 0; border-radius: 0; }
 }

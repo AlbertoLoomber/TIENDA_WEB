@@ -81,7 +81,15 @@
         <h2 class="section-title" id="shop-title">Everything on the rail.</h2>
       </header>
       <div class="shop__filters" id="shop-filters" role="radiogroup" aria-label="Filter by type"></div>
-      <ul class="shop__grid" id="shop-grid"></ul>
+      <!-- One rail, every piece hanging face-on. Scrolls sideways on phones. -->
+      <div class="shelf" id="shelf" data-lenis-prevent-horizontal>
+        <div class="shelf__inner" id="shelf-inner">
+          <div class="shelf__rail" aria-hidden="true">
+            <span class="rail__end rail__end--left"></span><span class="rail__mid"></span><span class="rail__end rail__end--right"></span>
+          </div>
+          <ul class="shelf__row" id="shop-grid"></ul>
+        </div>
+      </div>
     </section>
 
     <section class="lookbook" id="lookbook" aria-labelledby="lookbook-title">
@@ -233,7 +241,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 <script src="scroll.js"></script>
 <script src="sections.js"></script>
