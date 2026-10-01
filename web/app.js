@@ -25,16 +25,9 @@
   const RAIL = { height: 235, tubeTop: 53, tubeHeight: 47, left: 232, right: 234 };
   const MARQUEE = ["New designs daily", "Subscribe to our newsletter"];
 
-  // Lookbook: one look per garment. Until the model photos exist, each look
-  // shows the garment hanging on a short rod over its own colour.
-  const LOOKS = {
-    "01-camo-overshirt": { tone: "#d6cdbd", photo: "fotos/look-01-camo.webp" },
-    "02-black-tee-minimal": { tone: "#cdd0d4", photo: null },
-    "03-white-tee-dollar": { tone: "#3e4874", ink: "#eceae3", photo: "fotos/look-03-money.webp" },
-    "04-black-tee-script": { tone: "#c4b5a3", photo: null },
-    "05-green-crewneck": { tone: "#dcd5c4", photo: "fotos/look-05-habits.webp" },
-  };
-  const STUDIO_PHOTO = "fotos/studio.webp";
+  // Prices, lookbook colours/photos and the studio photo come from prendas.json
+  // (edited in catalogo.json, synced by tools/catalogo_web.py).
+  let site = {};
 
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
@@ -387,6 +380,7 @@
     $("detail-cat").textContent = item.category;
     $("detail-count").textContent = `${String(items.indexOf(item) + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
     $("detail-name").textContent = item.name;
+    $("detail-price").textContent = window.NOMAD?.price?.(item.price) || "";
   }
 
   const detailChrome = () => [$("prev"), $("next"), info, handle];
@@ -502,7 +496,8 @@
   function buildLookbook() {
     const track = $("lookbook-track");
     items.forEach((item, i) => {
-      const look = LOOKS[item.id] || { tone: "#d6cdbd" };
+      // Until a model photo exists, the look shows the garment on a short rod over its own colour.
+      const look = { tone: "#d6cdbd", ...(item.look || {}) };
       const li = document.createElement("li");
       li.className = "look";
       const frame = document.createElement("div");
@@ -545,9 +540,9 @@
 
   function buildStudio() {
     const fig = $("about-photo");
-    if (STUDIO_PHOTO) {
+    if (site.studioPhoto) {
       const img = document.createElement("img");
-      img.src = STUDIO_PHOTO;
+      img.src = site.studioPhoto;
       img.alt = "The Nomad studio";
       img.loading = "lazy";
       $("studio").replaceWith(img);
@@ -681,6 +676,7 @@
     $("next").addEventListener("click", () => step(1));
     handle.addEventListener("click", () => setDrawer(drawer.hidden));
     detailSee.addEventListener("click", () => setDrawer(drawer.hidden));
+    $("detail-more").addEventListener("click", () => window.NOMAD.shop?.open(items[detailIndex]));
     drawer.querySelectorAll(".sizes button").forEach((b, _, all) => {
       b.addEventListener("click", () => all.forEach((o) => o.setAttribute("aria-checked", String(o === b))));
     });
@@ -733,7 +729,10 @@
   async function init() {
     buildBand();
     const data = await fetch("prendas.json").then((r) => r.json());
+    site = data.site || {};
     buildRack(data);
+    Object.assign(window.NOMAD, { items, site });
+    window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
     buildLookbook();
     buildStudio();
     setupNewsletter();

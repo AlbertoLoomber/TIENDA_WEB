@@ -41,6 +41,7 @@
     gsap.ticker.lagSmoothing(0);
   }
 
+  let locks = 0;
   const headerHeight = () => document.querySelector(".top")?.offsetHeight || 0;
 
   const scroll = {
@@ -66,13 +67,17 @@
       if (immediate && hasScrollTrigger) ScrollTrigger.update();
     },
 
-    /** Freeze page scrolling (detail view open). */
+    /** Freeze page scrolling while an overlay is open. Overlays can stack
+        (the product sheet over the rack's detail view), so locks are counted. */
     lock() {
+      locks += 1;
       lenis?.stop();
       document.documentElement.classList.add("is-locked");
     },
 
     unlock() {
+      locks = Math.max(0, locks - 1);
+      if (locks) return;
       document.documentElement.classList.remove("is-locked");
       lenis?.start();
     },

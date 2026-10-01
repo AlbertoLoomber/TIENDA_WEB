@@ -29,7 +29,28 @@
         "estado": "aprobada",
         "motivo": "Reemplazada por la serie de 5 ángulos individuales (60/45/25 coherentes entre sí)."
       },
-      "approved_60": "assets/aprobadas/01-camo-overshirt-60.png"
+      "approved_60": "assets/aprobadas/01-camo-overshirt-60.png",
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "precio": 1290,
+        "nuevo": false,
+        "descripcion": "An oversized overshirt in a muted brown and taupe camouflage. Button front, chest pocket and long sleeves, cut to wear open over a tee.",
+        "detalles": [
+          "Heavyweight cotton twill",
+          "Oversized fit",
+          "Chest pocket"
+        ],
+        "look": {
+          "tono": "#d6cdbd",
+          "foto": "fotos/look-01-camo.webp"
+        }
+      }
     },
     {
       "id": "02-black-tee-minimal",
@@ -53,7 +74,28 @@
         "estado": "aprobada",
         "motivo": "Coherente. El wordmark NOMAD sale un poco más grande y con serif; aceptable a este tamaño."
       },
-      "approved_60": "assets/aprobadas/02-black-tee-minimal-60.png"
+      "approved_60": "assets/aprobadas/02-black-tee-minimal-60.png",
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "precio": 690,
+        "nuevo": true,
+        "descripcion": "A heavyweight black tee with a small NOMAD wordmark on the chest. Boxy body, dropped shoulders.",
+        "detalles": [
+          "Heavyweight cotton",
+          "Oversized fit",
+          "Printed wordmark"
+        ],
+        "look": {
+          "tono": "#cdd0d4",
+          "foto": null
+        }
+      }
     },
     {
       "id": "03-white-tee-dollar",
@@ -77,6 +119,28 @@
       "revision_60": {
         "estado": "rechazada",
         "motivo": "Cambió el billete de 1 dólar por uno de 100 (retrato distinto) y es mucho más grande que en el frente."
+      },
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "precio": 690,
+        "nuevo": false,
+        "descripcion": "A heavyweight white tee with a one-dollar bill printed across the chest and More Than Money in script below.",
+        "detalles": [
+          "Heavyweight cotton",
+          "Oversized fit",
+          "Screen printed"
+        ],
+        "look": {
+          "tono": "#3e4874",
+          "tinta": "#eceae3",
+          "foto": "fotos/look-03-money.webp"
+        }
       }
     },
     {
@@ -101,6 +165,27 @@
       "revision_60": {
         "estado": "rechazada",
         "motivo": "La tipografía cambió de serif a script con remates y aparece una estrella que no existe en el frente."
+      },
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "precio": 690,
+        "nuevo": true,
+        "descripcion": "A heavyweight black tee with Good People Better Days set in a tall cream serif down the front.",
+        "detalles": [
+          "Heavyweight cotton",
+          "Oversized fit",
+          "Screen printed"
+        ],
+        "look": {
+          "tono": "#c4b5a3",
+          "foto": null
+        }
       }
     },
     {
@@ -125,7 +210,67 @@
       "revision_60": {
         "estado": "rechazada",
         "motivo": "Diseño distinto: CREATE en arco universitario y GOOD dentro de un óvalo (el catálogo pide sin óvalo)."
+      },
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "precio": 990,
+        "nuevo": false,
+        "descripcion": "A forest green crewneck sweatshirt with a cream Create Good Habits print and a small globe. Ribbed cuffs and hem.",
+        "detalles": [
+          "Brushed cotton fleece",
+          "Relaxed fit",
+          "Screen printed"
+        ],
+        "look": {
+          "tono": "#dcd5c4",
+          "foto": "fotos/look-05-habits.webp"
+        }
       }
     }
-  ]
+  ],
+  "sitio": {
+    "_nota": "Precios, textos, medidas y contactos son PROVISIONALES: confirmar antes de publicar.",
+    "moneda": "MXN",
+    "foto_estudio": "fotos/studio.webp",
+    "guia_tallas": {
+      "unidad": "cm",
+      "columnas": [
+        "Chest",
+        "Length",
+        "Sleeve"
+      ],
+      "filas": {
+        "S": [
+          112,
+          72,
+          23
+        ],
+        "M": [
+          118,
+          74,
+          24
+        ],
+        "L": [
+          124,
+          76,
+          25
+        ],
+        "XL": [
+          130,
+          78,
+          26
+        ]
+      }
+    },
+    "contacto": {
+      "instagram": "@nomad",
+      "email": "hello@nomad.example"
+    }
+  }
 }

@@ -39,7 +39,27 @@
           "left": 0.096,
           "right": 0.894
         }
-      ]
+      ],
+      "price": 1290,
+      "isNew": false,
+      "description": "An oversized overshirt in a muted brown and taupe camouflage. Button front, chest pocket and long sleeves, cut to wear open over a tee.",
+      "details": [
+        "Heavyweight cotton twill",
+        "Oversized fit",
+        "Chest pocket"
+      ],
+      "care": "Machine wash cold, inside out. Hang to dry.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "look": {
+        "tone": "#d6cdbd",
+        "ink": null,
+        "photo": "fotos/look-01-camo.webp"
+      }
     },
     {
       "id": "02-black-tee-minimal",
@@ -64,7 +84,27 @@
           "left": 0.144,
           "right": 0.848
         }
-      ]
+      ],
+      "price": 690,
+      "isNew": true,
+      "description": "A heavyweight black tee with a small NOMAD wordmark on the chest. Boxy body, dropped shoulders.",
+      "details": [
+        "Heavyweight cotton",
+        "Oversized fit",
+        "Printed wordmark"
+      ],
+      "care": "Machine wash cold, inside out. Hang to dry.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "look": {
+        "tone": "#cdd0d4",
+        "ink": null,
+        "photo": null
+      }
     },
     {
       "id": "03-white-tee-dollar",
@@ -83,7 +123,27 @@
           "left": 0.161,
           "right": 0.843
         }
-      ]
+      ],
+      "price": 690,
+      "isNew": false,
+      "description": "A heavyweight white tee with a one-dollar bill printed across the chest and More Than Money in script below.",
+      "details": [
+        "Heavyweight cotton",
+        "Oversized fit",
+        "Screen printed"
+      ],
+      "care": "Machine wash cold, inside out. Hang to dry.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "look": {
+        "tone": "#3e4874",
+        "ink": "#eceae3",
+        "photo": "fotos/look-03-money.webp"
+      }
     },
     {
       "id": "04-black-tee-script",
@@ -102,7 +162,27 @@
           "left": 0.146,
           "right": 0.851
         }
-      ]
+      ],
+      "price": 690,
+      "isNew": true,
+      "description": "A heavyweight black tee with Good People Better Days set in a tall cream serif down the front.",
+      "details": [
+        "Heavyweight cotton",
+        "Oversized fit",
+        "Screen printed"
+      ],
+      "care": "Machine wash cold, inside out. Hang to dry.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "look": {
+        "tone": "#c4b5a3",
+        "ink": null,
+        "photo": null
+      }
     },
     {
       "id": "05-green-crewneck",
@@ -121,7 +201,65 @@
           "left": 0.136,
           "right": 0.872
         }
-      ]
+      ],
+      "price": 990,
+      "isNew": false,
+      "description": "A forest green crewneck sweatshirt with a cream Create Good Habits print and a small globe. Ribbed cuffs and hem.",
+      "details": [
+        "Brushed cotton fleece",
+        "Relaxed fit",
+        "Screen printed"
+      ],
+      "care": "Machine wash cold, inside out. Hang to dry.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "look": {
+        "tone": "#dcd5c4",
+        "ink": null,
+        "photo": "fotos/look-05-habits.webp"
+      }
     }
-  ]
+  ],
+  "site": {
+    "currency": "MXN",
+    "studioPhoto": "fotos/studio.webp",
+    "sizeGuide": {
+      "unit": "cm",
+      "columns": [
+        "Chest",
+        "Length",
+        "Sleeve"
+      ],
+      "rows": {
+        "S": [
+          112,
+          72,
+          23
+        ],
+        "M": [
+          118,
+          74,
+          24
+        ],
+        "L": [
+          124,
+          76,
+          25
+        ],
+        "XL": [
+          130,
+          78,
+          26
+        ]
+      }
+    },
+    "contact": {
+      "instagram": "@nomad",
+      "email": "hello@nomad.example"
+    }
+  }
 }

@@ -126,6 +126,19 @@
       });
     });
 
+    // Collection: cards rise in, then each garment drops onto its rod and settles.
+    const cards = gsap.utils.toArray(".shop .card");
+    if (cards.length) {
+      const hung = cards.map((c) => c.querySelector(".card__garment"));
+      gsap.timeline({ scrollTrigger: { trigger: "#shop-grid", start: "top 82%", once: true } })
+        .from(cards, { y: 30, opacity: 0, duration: motion.base, ease: motion.easeOut, stagger: motion.stagger })
+        .from(hung, {
+          y: -40, opacity: 0, duration: 0.7, ease: "back.out(1.5)", stagger: motion.stagger,
+          onComplete: () => hung.forEach((g, i) =>
+            gsap.fromTo(g, { rotation: i % 2 ? 2.4 : -2.4 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.25)" })),
+        }, 0.25);
+    }
+
     // Lookbook: garments drop onto their rods one after another, then settle.
     const garments = gsap.utils.toArray(".look__garment");
     if (garments.length) {
