@@ -170,3 +170,63 @@ Generales:
 
 Súbelas a `assets/raw/` en este repo (o pásamelas por aquí). Yo me encargo de:
 quitar fondos, alinear todas al mismo lienzo con el gancho en el mismo punto, optimizar (WebP/AVIF) y montarlas en el prototipo.
+
+---
+
+## 11. Lookbook (fotos con modelo)
+
+Para la sección Lookbook: **5 fotos verticales 4:5** (ej. 1600×2000), una por prenda.
+Sube la **foto de frente de la prenda** como referencia para que el estampado no cambie.
+Todas comparten el mismo bloque de estilo, así parecen de la misma sesión.
+
+Bloque de estilo del lookbook (pégalo al final de cada prompt):
+
+```
+Editorial streetwear lookbook photo, full body, model standing relaxed, plain seamless light warm-gray studio wall (#E7E6E1) with a matte concrete floor, soft diffused daylight from the left, gentle natural shadow on the wall, muted colors, subtle 35mm film grain, calm and minimal, the garment is the hero and fills a large part of the frame, sharp focus on the garment print. Vertical 4:5. No text, no logos other than the garment print, no watermark. Fictional model, not a real person.
+```
+
+| # | Archivo | Prompt (antes del bloque de estilo) |
+|---|---|---|
+| 01 | `look-01-camo.jpg` | `Using the attached garment as exact reference, a young man wearing this oversized camouflage overshirt open over a plain white t-shirt, loose stone-colored trousers, white sneakers, hands in pockets.` |
+| 02 | `look-02-nomad.jpg` | `Using the attached garment as exact reference, a young woman wearing this oversized black t-shirt with the small white NOMAD wordmark, tucked loosely into wide light-gray trousers, black loafers, looking slightly away from the camera.` |
+| 03 | `look-03-money.jpg` | `Using the attached garment as exact reference, a young man wearing this oversized white t-shirt with the green dollar bill print and "More Than Money" lettering, black baggy jeans, black sneakers, sitting on a simple wooden stool.` |
+| 04 | `look-04-good-people.jpg` | `Using the attached garment as exact reference, a young woman wearing this oversized black t-shirt with cream "Good People Better Days" lettering, olive cargo pants, silver chain necklace, walking toward the camera mid-step.` |
+| 05 | `look-05-habits.jpg` | `Using the attached garment as exact reference, a young man wearing this forest green crewneck sweatshirt with "CREATE GOOD HABITS" print, cream wide trousers, brown suede shoes, holding a coffee cup.` |
+
+> Revisa que el estampado salga igual que en la foto de frente. Si cambia, pide de nuevo "keep the print exactly as in the reference".
+
+---
+
+## 12. Estudio / Nosotros
+
+Para la sección Nosotros: **1 foto horizontal 3:2** (ej. 2400×1600).
+
+```
+Editorial interior photo of a small minimalist streetwear studio: a brushed-chrome clothing rod mounted on a light warm-gray wall (#E7E6E1) with a few oversized t-shirts and a camouflage overshirt on natural wooden hangers, a simple wooden worktable with folded t-shirts, a stack of screen-printing frames leaning on the wall, a small plant, soft daylight from a large window on the left, calm and tidy, muted colors, subtle 35mm film grain, no people, no text, no logos. Horizontal 3:2.
+```
+
+Opcional, una segunda foto vertical 4:5 de detalle para la misma sección:
+
+```
+Close-up editorial photo of hands folding an oversized black t-shirt on a wooden worktable in a minimalist studio, light warm-gray wall in the background, soft daylight from the left, muted colors, subtle 35mm film grain, no face visible, no text. Vertical 4:5.
+```
+
+---
+
+## 13. Detalle de tela y estampado (para más adelante)
+
+Para una futura sección sobre la prenda: **3 fotos cuadradas 1:1**, con la foto de frente como referencia.
+
+```
+Using the attached garment as exact reference, macro close-up of [the print / the ribbed collar / the hem stitching] on this garment, heavyweight cotton texture clearly visible, soft studio light from the left, plain light warm-gray background, muted colors, sharp focus. Square 1:1. No text other than the existing print.
+```
+
+---
+
+## 14. Entrega de las fotos nuevas
+
+- [ ] `look-01-camo.jpg` … `look-05-habits.jpg` (4:5)
+- [ ] `studio.jpg` (3:2) y, si quieres, `studio-detail.jpg` (4:5)
+- [ ] Opcional: `detail-print.jpg`, `detail-collar.jpg`, `detail-hem.jpg` (1:1)
+
+No hace falta quitarles el fondo: van como fotos completas. Mándamelas por aquí o súbelas a `assets/raw/`.
