@@ -25,7 +25,20 @@
   const RAIL = { height: 235, tubeTop: 53, tubeHeight: 47, left: 232, right: 234 };
   const MARQUEE = ["New designs daily", "Subscribe to our newsletter"];
 
+  // Lookbook: one look per garment. Until the model photos exist, each look
+  // shows the garment hanging on a short rod over its own colour.
+  const LOOKS = {
+    "01-camo-overshirt": { tone: "#d6cdbd", photo: null },
+    "02-black-tee-minimal": { tone: "#cdd0d4", photo: null },
+    "03-white-tee-dollar": { tone: "#3e4874", ink: "#eceae3", photo: null },
+    "04-black-tee-script": { tone: "#c4b5a3", photo: null },
+    "05-green-crewneck": { tone: "#dcd5c4", photo: null },
+  };
+  const STUDIO_PHOTO = null;   // e.g. "fotos/studio.jpg" once it exists
+
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
+  if (hasScrollTrigger) gsap.registerPlugin(ScrollTrigger);
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const $ = (id) => document.getElementById(id);
 
@@ -342,6 +355,9 @@
   function openDetail(i) {
     if (busy || !items.length || detailIndex >= 0) return;
     busy = true;
+    // The detail view lives over the rack, so bring the rack back into view first.
+    if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: "instant" });
+    document.documentElement.classList.add("is-locked");
     clearTimeout(hoverTimer);
     clearTimeout(leaveTimer);
     activate(i, { instant: true });
@@ -398,6 +414,7 @@
         sway(item, 4);
         detail.hidden = true;
         closeBtn.hidden = true;
+        document.documentElement.classList.remove("is-locked");
         gsap.set(figure, { clearProps: "transform,opacity" });
         detailIndex = -1;
         busy = false;
@@ -438,6 +455,135 @@
     } else {
       gsap.to(drawer, { yPercent: 100, duration: dur(0.3), ease: "power2.in", onComplete: () => { drawer.hidden = true; } });
     }
+  }
+
+  /* ---------- below the rack ---------- */
+
+  function buildLookbook() {
+    const track = $("lookbook-track");
+    items.forEach((item, i) => {
+      const look = LOOKS[item.id] || { tone: "#d6cdbd" };
+      const li = document.createElement("li");
+      li.className = "look";
+      const frame = document.createElement("div");
+      frame.className = "look__frame";
+      frame.style.setProperty("--tone", look.tone);
+      if (look.ink) frame.style.setProperty("--look-ink", look.ink);
+
+      if (look.photo) {
+        const img = document.createElement("img");
+        img.className = "look__photo";
+        img.src = look.photo;
+        img.alt = `Look ${i + 1}: ${item.name}`;
+        img.loading = "lazy";
+        frame.appendChild(img);
+      } else {
+        const rod = document.createElement("span");
+        rod.className = "look__rod";
+        const img = document.createElement("img");
+        img.className = "look__garment";
+        img.src = item.frames.at(-1).src;
+        img.alt = `${item.name}, front view`;
+        img.loading = "lazy";
+        frame.append(rod, img);
+      }
+      const no = document.createElement("span");
+      no.className = "look__no";
+      no.textContent = `Look ${String(i + 1).padStart(2, "0")}`;
+      frame.appendChild(no);
+
+      const meta = document.createElement("div");
+      meta.className = "look__meta";
+      meta.innerHTML = `<p class="eyebrow"></p><p class="look__name"></p>`;
+      meta.firstChild.textContent = item.category;
+      meta.lastChild.textContent = item.name;
+
+      li.append(frame, meta);
+      track.appendChild(li);
+    });
+  }
+
+  function buildStudio() {
+    const fig = $("about-photo");
+    if (STUDIO_PHOTO) {
+      const img = document.createElement("img");
+      img.src = STUDIO_PHOTO;
+      img.alt = "The Nomad studio";
+      img.loading = "lazy";
+      $("studio").replaceWith(img);
+      return;
+    }
+    // Placeholder: a few pieces from the collection on the studio rail.
+    const pick = [["02-black-tee-minimal", 0], ["01-camo-overshirt", -1], ["03-white-tee-dollar", 0], ["05-green-crewneck", 0]];
+    const row = $("studio-row");
+    pick.forEach(([id, f]) => {
+      const item = items.find((it) => it.id === id);
+      if (!item) return;
+      const img = document.createElement("img");
+      img.src = item.frames.at(f).src;
+      img.alt = "";
+      img.loading = "lazy";
+      row.appendChild(img);
+    });
+    fig.querySelector("figcaption").textContent = "The studio rail · photo coming soon";
+  }
+
+  function setupNewsletter() {
+    const form = $("newsletter-form");
+    const input = $("newsletter-email");
+    const status = $("newsletter-status");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!input.value.trim() || !input.checkValidity()) {
+        status.textContent = "Enter an email address like name@email.com.";
+        input.focus();
+        return;
+      }
+      status.textContent = "Thanks. Signups aren't connected yet in this preview.";
+      form.reset();
+    });
+  }
+
+  function setupScroll() {
+    const onScroll = () => page.classList.toggle("is-scrolled", window.scrollY > 8);
+    addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    if (!hasScrollTrigger || reduceMotion) return;
+
+    // Sections ease in as they reach the screen.
+    gsap.utils.toArray("[data-reveal]").forEach((el) => {
+      gsap.from(el, {
+        y: 28, opacity: 0, duration: 0.9, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 85%", once: true },
+      });
+    });
+
+    // Looks drop onto their rods one after another.
+    const garments = gsap.utils.toArray(".look__garment");
+    if (garments.length) {
+      gsap.from(garments, {
+        y: -40, opacity: 0, duration: 0.7, ease: "back.out(1.6)", stagger: 0.08,
+        scrollTrigger: { trigger: "#lookbook-track", start: "top 80%", once: true },
+        onComplete: () => garments.forEach((g, i) =>
+          gsap.fromTo(g, { rotation: i % 2 ? 2.5 : -2.5 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.25)" })),
+      });
+    }
+    gsap.from(".studio__row img", {
+      y: -24, opacity: 0, duration: 0.7, ease: "back.out(1.6)", stagger: 0.08,
+      scrollTrigger: { trigger: "#about-photo", start: "top 80%", once: true },
+    });
+
+    // On wide screens the lookbook slides sideways as you scroll past it.
+    gsap.matchMedia().add("(min-width: 641px)", () => {
+      const track = $("lookbook-track");
+      const viewport = track.parentElement;
+      gsap.to(track, {
+        x: () => Math.min(0, viewport.clientWidth - track.scrollWidth),
+        ease: "none",
+        scrollTrigger: { trigger: "#lookbook", start: "top bottom", end: "bottom top", scrub: 0.6, invalidateOnRefresh: true },
+      });
+    });
   }
 
   /* ---------- build ---------- */
@@ -543,7 +689,7 @@
     // Every so often, when nobody is touching it, the rack stirs.
     if (!reduceMotion) {
       setInterval(() => {
-        if (detailIndex >= 0 || busy || document.hidden) return;
+        if (detailIndex >= 0 || busy || document.hidden || window.scrollY > innerHeight * 0.5) return;
         if (performance.now() - lastInput < IDLE_MS) return;
         lastInput = performance.now();
         breeze();
@@ -560,8 +706,13 @@
     buildBand();
     const data = await fetch("prendas.json").then((r) => r.json());
     buildRack(data);
+    buildLookbook();
+    buildStudio();
+    setupNewsletter();
+    setupScroll();
     wire();
     layout();
+    if (hasScrollTrigger) ScrollTrigger.refresh();
     setCaption(null);
     await firstFramesReady();
     await intro();
