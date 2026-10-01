@@ -17,8 +17,12 @@
 }
 
 [hidden] { display: none !important; }
-html { scroll-behavior: smooth; }
 html.is-locked { overflow: hidden; }
+/* Lenis (smooth wheel scrolling) — its stylesheet, inlined */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
 body {
   margin: 0;
   background: var(--paper);
@@ -41,7 +45,7 @@ body {
   background-color: var(--paper);
   background-image: radial-gradient(var(--dot) 1px, transparent 1.3px);
   background-size: 22px 22px;
-  background-position: center;
+  background-position: 50% 0;
 }
 
 /* ---------- header ---------- */
@@ -382,6 +386,8 @@ body {
 
 /* ---------- marquee ---------- */
 .band {
+  position: relative;
+  z-index: 1;
   overflow: hidden;
   background: var(--band);
   color: var(--band-ink);
@@ -433,11 +439,25 @@ body {
   .rack, .caption, #see, .band { transition: none; }
 }
 
+/* Line masks for titles that rise line by line: a little room below each line
+   so letters with descenders (y, g, p) are never clipped. */
+.split-line-mask { padding-bottom: .16em; margin-bottom: -.16em; }
+
 /* =========================================================
    Below the rack: lookbook, about, newsletter, footer.
    Same wall, same navy, same small caps and pills.
    ========================================================= */
-.more { position: relative; }
+.more {
+  /* the sheet that slides over the rack: same wall, its dots aligned with the page's */
+  position: relative;
+  z-index: 2;
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  background-position: 50% var(--dots-y, 0);
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -22px 44px -18px rgba(28, 30, 44, .16);
+}
 .more > section { scroll-margin-top: var(--top-h); }
 
 .eyebrow {
@@ -757,6 +777,4 @@ body {
   .lookbook__viewport::-webkit-scrollbar { display: none; }
   .look { width: 72vw; scroll-snap-align: center; }
 }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
+

@@ -65,7 +65,7 @@
 
   <main class="more">
     <section class="lookbook" id="lookbook" aria-labelledby="lookbook-title">
-      <header class="section-head" data-reveal>
+      <header class="section-head">
         <p class="eyebrow">Lookbook · Vol. 01</p>
         <h2 class="section-title" id="lookbook-title">Five pieces, worn every day.</h2>
       </header>
@@ -75,11 +75,11 @@
     </section>
 
     <section class="about" id="about" aria-labelledby="about-title">
-      <div class="about__text" data-reveal>
+      <div class="about__text">
         <p class="eyebrow">About</p>
-        <h2 class="about__logo" id="about-title">Nomad</h2>
+        <h2 class="about__logo" id="about-title" data-reveal>Nomad</h2>
         <p class="about__body">Nomad makes a small rack of everyday pieces: heavy cotton, oversized cuts and prints we would wear ourselves. New designs land on the rail often, and each one starts here.</p>
-        <ul class="facts">
+        <ul class="facts" data-reveal>
           <li><span class="facts__k">Fabric</span><span class="facts__v">Heavyweight cotton</span></li>
           <li><span class="facts__k">Fit</span><span class="facts__v">Oversized</span></li>
           <li><span class="facts__k">Drops</span><span class="facts__v">New designs daily</span></li>
@@ -135,8 +135,12 @@
   </footer>
 </div>
 <!-- PAGE:END -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="scroll.js"></script>
+<script src="sections.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

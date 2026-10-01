@@ -38,7 +38,8 @@
 
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const hasScrollTrigger = typeof ScrollTrigger !== "undefined";
-  if (hasScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+  // Page scroll (smooth wheel, lock while the detail is open) lives in scroll.js.
+  const pageScroll = window.NOMAD?.scroll;
   const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
   const $ = (id) => document.getElementById(id);
 
@@ -356,8 +357,8 @@
     if (busy || !items.length || detailIndex >= 0) return;
     busy = true;
     // The detail view lives over the rack, so bring the rack back into view first.
-    if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: "instant" });
-    document.documentElement.classList.add("is-locked");
+    if (window.scrollY > 0) pageScroll.to(0, { immediate: true });
+    pageScroll.lock();
     clearTimeout(hoverTimer);
     clearTimeout(leaveTimer);
     activate(i, { instant: true });
@@ -414,7 +415,7 @@
         sway(item, 4);
         detail.hidden = true;
         closeBtn.hidden = true;
-        document.documentElement.classList.remove("is-locked");
+        pageScroll.unlock();
         gsap.set(figure, { clearProps: "transform,opacity" });
         detailIndex = -1;
         busy = false;
@@ -544,48 +545,6 @@
     });
   }
 
-  function setupScroll() {
-    const onScroll = () => page.classList.toggle("is-scrolled", window.scrollY > 8);
-    addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-
-    if (!hasScrollTrigger || reduceMotion) return;
-
-    // Sections ease in as they reach the screen.
-    gsap.utils.toArray("[data-reveal]").forEach((el) => {
-      gsap.from(el, {
-        y: 28, opacity: 0, duration: 0.9, ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 85%", once: true },
-      });
-    });
-
-    // Looks drop onto their rods one after another.
-    const garments = gsap.utils.toArray(".look__garment");
-    if (garments.length) {
-      gsap.from(garments, {
-        y: -40, opacity: 0, duration: 0.7, ease: "back.out(1.6)", stagger: 0.08,
-        scrollTrigger: { trigger: "#lookbook-track", start: "top 80%", once: true },
-        onComplete: () => garments.forEach((g, i) =>
-          gsap.fromTo(g, { rotation: i % 2 ? 2.5 : -2.5 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.25)" })),
-      });
-    }
-    if (document.querySelector(".studio__row img")) gsap.from(".studio__row img", {
-      y: -24, opacity: 0, duration: 0.7, ease: "back.out(1.6)", stagger: 0.08,
-      scrollTrigger: { trigger: "#about-photo", start: "top 80%", once: true },
-    });
-
-    // On wide screens the lookbook slides sideways as you scroll past it.
-    gsap.matchMedia().add("(min-width: 641px)", () => {
-      const track = $("lookbook-track");
-      const viewport = track.parentElement;
-      gsap.to(track, {
-        x: () => Math.min(0, viewport.clientWidth - track.scrollWidth),
-        ease: "none",
-        scrollTrigger: { trigger: "#lookbook", start: "top bottom", end: "bottom top", scrub: 0.6, invalidateOnRefresh: true },
-      });
-    });
-  }
-
   /* ---------- build ---------- */
 
   function buildBand() {
@@ -709,7 +668,7 @@
     buildLookbook();
     buildStudio();
     setupNewsletter();
-    setupScroll();
+    window.NOMAD?.sections?.setup();
     wire();
     layout();
     if (hasScrollTrigger) ScrollTrigger.refresh();
