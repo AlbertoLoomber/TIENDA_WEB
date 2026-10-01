@@ -43,6 +43,7 @@
     // Created top to bottom, so each trigger measures the page after the pins above it.
     heroExit(motion);
     lookbook(motion, { animate: true });
+    marquee();
     reveals(motion);
     about(motion);
     hangTag(motion);
@@ -72,6 +73,38 @@
     })
       .to(stage, { yPercent: 16, scale: 0.94, duration: 1 }, 0)
       .to(stage, { opacity: 0.4, duration: 0.6 }, 0.4);
+  }
+
+  /* ---------- marquee: its pace follows the scroll ---------- */
+
+  // The band runs at its own calm pace; scrolling down hurries it along,
+  // scrolling up turns it around, and it eases back to calm when you stop.
+  function marquee() {
+    const track = document.getElementById("band-track");
+    if (!track) return;
+    track.classList.add("is-driven");
+    const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
+    let direction = 1;
+    let calmTimer = 0;
+    const calm = () => gsap.to(loop, { timeScale: direction, duration: 1.2, ease: "power2.out", overwrite: true });
+
+    ScrollTrigger.create({
+      start: 0,
+      end: "max",
+      onUpdate(self) {
+        const v = self.getVelocity();
+        if (Math.abs(v) < 20) return;
+        direction = v > 0 ? 1 : -1;
+        const boost = 1 + Math.min(Math.abs(v) / 450, 5);   // at most 6× its calm pace
+        gsap.to(loop, { timeScale: direction * boost, duration: 0.3, ease: "power2.out", overwrite: true });
+        clearTimeout(calmTimer);
+        calmTimer = setTimeout(calm, 160);
+      },
+    });
+
+    const band = track.parentElement;
+    band.addEventListener("mouseenter", () => gsap.to(loop, { timeScale: 0, duration: 0.6, overwrite: true }));
+    band.addEventListener("mouseleave", calm);
   }
 
   /* ---------- quiet entrances ---------- */

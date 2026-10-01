@@ -1,6 +1,6 @@
 # Plan de implementación: animaciones al bajar
 
-> **Estado:** etapa 1 completa (T1–T5) y fase 2 completa (nombre que se escribe, foto del estudio, líneas de datos, etiqueta columpiándose y girando, pie de página como cortina). Pendiente: fase 3.
+> **Estado:** etapa 1 completa (T1–T5) y fase 2 completa (nombre que se escribe, foto del estudio, líneas de datos, etiqueta columpiándose y girando, pie de página como cortina). Fase 3 hecha (barra de texto según el scroll, botones que se rellenan, subrayados que se dibujan); la línea de progreso en el encabezado se descartó. Pendiente: transiciones de la Colección.
 
 Etapa 1: la base premium (Fase 1) y el lookbook fijo con cortina.
 Concepto rector: **todo cuelga, todo tiene peso**. Cada animación es una extensión
