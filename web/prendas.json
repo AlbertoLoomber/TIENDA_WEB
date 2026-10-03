@@ -303,20 +303,20 @@
         {
           "angle": 80,
           "src": "prendas/06-cream-tee-nomad/80.webp",
-          "left": 0.327,
-          "right": 0.642
+          "left": 0.308,
+          "right": 0.658
         },
         {
           "angle": 45,
           "src": "prendas/06-cream-tee-nomad/45.webp",
-          "left": 0.21,
-          "right": 0.759
+          "left": 0.178,
+          "right": 0.789
         },
         {
           "angle": 0,
           "src": "prendas/06-cream-tee-nomad/0.webp",
-          "left": 0.13,
-          "right": 0.839
+          "left": 0.089,
+          "right": 0.877
         }
       ],
       "categoryPlural": "Playeras",
