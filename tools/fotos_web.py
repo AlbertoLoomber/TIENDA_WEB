@@ -42,6 +42,7 @@ SAMPLES = {
     "cerca-03-estampado": ("03-white-tee-dollar", 500, 600, 400),
     "cerca-04-estampado": ("04-black-tee-script", 500, 560, 420),
     "cerca-05-estampado": ("05-green-crewneck", 500, 640, 440),
+    "cerca-06-bordado": ("06-cream-tee-nomad", 616, 405, 200),
     "cerca-03-cuello": ("03-white-tee-dollar", 548, 296, 190),
     "cerca-tela": ("03-white-tee-dollar", 540, 980, 200),
 }

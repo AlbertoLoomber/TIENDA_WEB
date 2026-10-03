@@ -1,5 +1,5 @@
 {
-  "project": "NOMAD 5 prendas",
+  "project": "NOMAD 6 prendas",
   "angles": [
     80,
     60,
@@ -304,6 +304,53 @@
       },
       "categoria_plural": "Sudaderas",
       "slug": "create-good-habits-crewneck"
+    },
+    {
+      "id": "06-cream-tee-nomad",
+      "nombre": "Nomad Embroidered Tee",
+      "categoria": "Playera",
+      "immutable_description": "Playera crema heavyweight oversize, «Nomad» bordado en script azul marino en el pecho izquierdo.",
+      "front": "assets/raw/06-cream-tee-nomad-front.png",
+      "side": "assets/raw/06-cream-tee-nomad-side.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. No planches sobre el bordado.",
+        "precio": 750,
+        "nuevo": true,
+        "descripcion": "Playera crema de algodón pesado con «Nomad» bordado en azul marino en el pecho. Cuerpo amplio y hombro caído.",
+        "detalles": [
+          "Algodón pesado",
+          "Corte oversized",
+          "Bordado"
+        ],
+        "look": {
+          "tono": "#d9d3c4",
+          "foto": null
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio"
+        ],
+        "cerca": "cerca-06-bordado.webp"
+      },
+      "categoria_plural": "Playeras",
+      "slug": "nomad-embroidered-tee",
+      "escala": 0.78
     }
   ],
   "sitio": {

@@ -10,7 +10,8 @@ Salida:
   web/prendas/<id>/<angulo>.webp   (lienzo común con el gancho alineado)
   web/prendas.json                 (datos que consume la página)
 
-Uso:  python tools/procesar_assets.py
+Uso:  python tools/procesar_assets.py          (todas)
+      python tools/procesar_assets.py ID …     (solo esas; las demás no se tocan)
 Requiere: pip install "rembg[cpu]" pillow numpy
 """
 from pathlib import Path
@@ -105,10 +106,20 @@ def extent(canvas):
 
 
 def main():
+    import sys
+    # Uso: python tools/procesar_assets.py [ID …]  (solo esas prendas; las demás se quedan como están)
+    only = set(sys.argv[1:])
     catalog = json.loads((ROOT / "catalogo.json").read_text(encoding="utf8"))
     session = new_session("isnet-general-use")
+    previous = {}
+    if only and OUT_JSON.exists():
+        previous = {it["id"]: it for it in json.loads(OUT_JSON.read_text(encoding="utf8"))["items"]}
     items = []
     for item in catalog["items"]:
+        if only and item["id"] not in only:
+            if item["id"] in previous:
+                items.append(previous[item["id"]])
+            continue
         item_id = item["id"]
         sources = [(a, source_for(item_id, a)) for a in ANGLES]
         sources = [(a, p) for a, p in sources if p]
@@ -116,10 +127,14 @@ def main():
 
         out_dir = OUT_IMG / item_id
         out_dir.mkdir(parents=True, exist_ok=True)
+        # Todas las vistas se escalan a la misma altura (gancho → dobladillo).
+        # Una prenda más corta o cuadrada lleva "escala" en catalogo.json para
+        # quedar en proporción con las demás en vez de estirarse a esa altura.
+        height = GARMENT_H * item.get("escala", 1)
+
         def placed(arr):
-            # Todas las vistas se escalan a la misma altura (gancho → dobladillo).
             _, t, b = hook_anchor(arr[:, :, 3])
-            return place(arr, GARMENT_H / (b - t))
+            return place(arr, height / (b - t))
 
         front = placed(cutouts[0])
         frames = []

@@ -1315,6 +1315,7 @@ body {
 .shelf__inner {
   --pad: 64px;
   position: relative;
+  box-sizing: border-box;   /* shop.js sets the width with the padding included */
   /* width set by shop.js: the full row of pieces, so the rail never changes length */
   padding-inline: var(--pad);
   /* starts where the page's text column starts (1200px grid, 24px gutter) */

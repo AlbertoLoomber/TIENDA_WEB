@@ -289,6 +289,54 @@
         "sample": true
       },
       "spin": null
+    },
+    {
+      "id": "06-cream-tee-nomad",
+      "name": "Nomad Embroidered Tee",
+      "category": "Playera",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/06-cream-tee-nomad/80.webp",
+          "left": 0.39,
+          "right": 0.603
+        },
+        {
+          "angle": 0,
+          "src": "prendas/06-cream-tee-nomad/0.webp",
+          "left": 0.117,
+          "right": 0.886
+        }
+      ],
+      "categoryPlural": "Playeras",
+      "price": 750,
+      "isNew": true,
+      "description": "Playera crema de algodón pesado con «Nomad» bordado en azul marino en el pecho. Cuerpo amplio y hombro caído.",
+      "details": [
+        "Algodón pesado",
+        "Corte oversized",
+        "Bordado"
+      ],
+      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. No planches sobre el bordado.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "soldOut": [],
+      "slug": "nomad-embroidered-tee",
+      "look": {
+        "tone": "#d9d3c4",
+        "ink": null,
+        "photo": null,
+        "model": null
+      },
+      "closeup": {
+        "src": "fotos/muestra/cerca-06-bordado.webp",
+        "sample": true
+      },
+      "spin": null
     }
   ],
   "site": {
