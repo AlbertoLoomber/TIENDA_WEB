@@ -33,7 +33,10 @@ def main():
             "details": shop.get("detalles", []),
             "care": shop.get("cuidados", ""),
             "sizes": shop.get("tallas", []),
-            "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto")},
+            "soldOut": shop.get("agotadas", []),
+            "slug": src.get("slug", item["id"]),
+            "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"),
+                     "model": look.get("modelo")},
         })
 
     web["site"] = {
@@ -46,6 +49,7 @@ def main():
             "rows": site.get("guia_tallas", {}).get("filas", {}),
         },
         "contact": site.get("contacto", {}),
+        "recommender": site.get("recomendador"),
         "shipping": {
             "prep": site.get("envio", {}).get("preparacion"),
             "delivery": site.get("envio", {}).get("entrega"),
@@ -57,6 +61,21 @@ def main():
             "firstFree": site.get("cambios", {}).get("primer_cambio_gratis", False),
         },
     }
+    # Validaciones: mejor detenerse con un mensaje claro que publicar datos rotos.
+    slugs = [it["slug"] for it in web["items"]]
+    assert len(slugs) == len(set(slugs)), "hay dos slug iguales"
+    for it in web["items"]:
+        assert all(c.isalnum() or c == "-" for c in it["slug"]), f"slug inválido: {it['slug']}"
+        assert set(it["soldOut"]) <= set(it["sizes"]), f"{it['id']}: agotadas fuera de tallas"
+    rec = web["site"].get("recommender")
+    if rec:
+        limits = [m for m, _ in rec["peso"]]
+        assert limits == sorted(limits), "recomendador: pesos desordenados"
+        assert all(t in rec["orden"] for _, t in rec["peso"]), "recomendador: talla desconocida"
+    pend = len(site.get("_provisional", [])) + sum(1 for it in catalog["items"] if it.get("tienda", {}).get("_provisional"))
+    if pend:
+        print(f"aviso: {pend} grupos de datos siguen marcados como provisionales")
+
     web_path.write_text(json.dumps(web, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
     print("escrito", web_path.relative_to(ROOT))
 

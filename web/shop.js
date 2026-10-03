@@ -68,6 +68,7 @@
         <div class="piece__meta">
           <p class="piece__name"><span></span></p>
           <p class="piece__line"><span class="piece__price"></span></p>
+          <div class="piece__quick" role="group"></div>
         </div>`;
       const btn = li.querySelector(".piece__hang");
       const img = li.querySelector(".piece__garment");
@@ -83,6 +84,29 @@
         badge.textContent = "Nuevo";
         li.querySelector(".piece__line").appendChild(badge);
       }
+
+      // Quick add (mouse and keyboard): the sizes appear under the price.
+      const quick = li.querySelector(".piece__quick");
+      quick.setAttribute("aria-label", `Agregar rápido ${item.name}`);
+      (item.sizes || []).forEach((size) => {
+        const q = document.createElement("button");
+        q.type = "button";
+        q.className = "piece__size";
+        q.textContent = size;
+        if ((item.soldOut || []).includes(size)) {
+          q.disabled = true;
+          q.setAttribute("aria-label", `Talla ${size} agotada`);
+        } else {
+          q.setAttribute("aria-label", `Agregar ${item.name}, talla ${size}`);
+          q.addEventListener("click", (e) => {
+            e.stopPropagation();
+            N.bag?.add(item, size, { from: img });
+            q.classList.add("is-added");
+            setTimeout(() => q.classList.remove("is-added"), 900);
+          });
+        }
+        quick.appendChild(q);
+      });
 
       // A nudge on hover: the garment swings on its hook.
       btn.addEventListener("pointerenter", (e) => {
@@ -238,10 +262,11 @@
 
   const sheet = () => $("sheet");
 
-  function open(item, { card = null } = {}) {
+  function open(item, { card = null, route = "push" } = {}) {
     if (busy || !item) return;
     busy = true;
     current = item;
+    setRoute(item, route);
     originCard = card;
     returnFocus = document.activeElement;
     fill(item);
@@ -282,10 +307,12 @@
     }
   }
 
-  function close() {
+  function close({ fromHistory = false } = {}) {
     if (busy || sheet().hidden) return;
     busy = true;
     closeGuide(true);
+    closeFit(true);
+    N.shop.closeShare?.();
     N.shop.hideSticky?.();
     const el = sheet();
     const card = originCard;
@@ -296,6 +323,7 @@
       if (card) card.querySelector(".piece__garment").style.visibility = "";
       $("page").inert = false;
       N.scroll?.unlock();
+      clearRoute(fromHistory);
       busy = false;
       (card?.querySelector(".piece__hang") || returnFocus)?.focus?.({ preventScroll: true });
     };
@@ -339,12 +367,20 @@
     }));
 
     const sizes = $("sheet-sizes");
+    const soldOut = item.soldOut || [];
     sizes.replaceChildren(...(item.sizes || []).map((s) => {
       const b = document.createElement("button");
       b.type = "button";
       b.setAttribute("role", "radio");
       b.setAttribute("aria-checked", "false");
       b.textContent = s;
+      if (soldOut.includes(s)) {
+        // Sold out: shown struck through, can't be chosen.
+        b.setAttribute("aria-disabled", "true");
+        b.setAttribute("aria-label", `${s}, agotada`);
+        b.classList.add("is-soldout");
+        return b;
+      }
       b.addEventListener("click", () => {
         sizes.querySelectorAll("button").forEach((o) => o.setAttribute("aria-checked", String(o === b)));
         $("sheet-status").textContent = "";
@@ -352,6 +388,12 @@
       });
       return b;
     }));
+
+    // Who is wearing it, for the worn photo (provisional data).
+    const model = item.look?.photo && item.look?.model;
+    $("sheet-model").textContent = model
+      ? `${model.articulo} modelo mide ${Number(model.estatura).toFixed(2)} m y usa talla ${model.talla}.` : "";
+    paintSuggestion();
 
     // Views: front and side on the rod, plus the lookbook photo when there is one.
     const views = [
@@ -495,13 +537,195 @@
     gsap.to("#guide-swing", { opacity: 0, y: -12, duration: 0.25, ease: "power2.in", onComplete: () => { hide(); gsap.set("#guide-swing", { clearProps: "y" }); } });
   }
 
+  /* ---------- a link of its own for every garment ---------- */
+
+  // Opening a garment puts #/prenda/<slug> in the address bar, so it can be
+  // shared and opened directly; the browser's back button closes it again.
+  const ROUTE = /^#\/prenda\/([\w-]+)$/;
+  let pushed = false;            // we added a history entry for the open sheet
+  let baseTitle = document.title;
+  const linkFor = (item) => `${location.href.split("#")[0]}#/prenda/${item.slug}`;
+
+  function setRoute(item, mode) {
+    document.title = `${item.name} · Nomad`;
+    if (mode === "none" || !item.slug) return;
+    const hash = `#/prenda/${item.slug}`;
+    try {
+      if (mode === "push" && location.hash !== hash) { history.pushState({ prenda: item.slug }, "", hash); pushed = true; }
+      else if (mode === "replace") history.replaceState({ prenda: item.slug }, "", hash);
+    } catch (e) { /* sandboxed frames may refuse: the sheet works without it */ }
+  }
+
+  function clearRoute(fromHistory) {
+    document.title = baseTitle;
+    if (fromHistory) { pushed = false; return; }
+    try {
+      if (pushed) history.back();
+      else if (ROUTE.test(location.hash)) history.replaceState(null, "", location.href.split("#")[0]);
+    } catch (e) { /* see above */ }
+    pushed = false;
+  }
+
+  function followRoute({ initial = false } = {}) {
+    const m = location.hash.match(ROUTE);
+    const item = m && items.find((it) => it.slug === m[1]);
+    if (item && sheet().hidden) open(item, { route: "none" });
+    else if (!item && !sheet().hidden && !initial) close({ fromHistory: true });
+    else if (m && !item) {
+      try { history.replaceState(null, "", location.href.split("#")[0]); } catch (e) { /* fine */ }
+    }
+  }
+
+  /* ---------- share ---------- */
+
+  function setupShare() {
+    const btn = $("sheet-share");
+    const menu = $("share-menu");
+    const toggle = (on) => { menu.hidden = !on; btn.setAttribute("aria-expanded", String(on)); };
+    btn.addEventListener("click", async () => {
+      const url = linkFor(current);
+      const text = `Mira esta prenda de Nomad: ${current.name}`;
+      if (navigator.share) {
+        try { await navigator.share({ title: `${current.name} · Nomad`, text, url }); return; } catch (e) { if (e.name === "AbortError") return; }
+      }
+      $("share-wa").href = `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`;
+      toggle(menu.hidden);
+      if (!menu.hidden) $("share-copy").focus();
+    });
+    $("share-copy").addEventListener("click", async () => {
+      const url = linkFor(current);
+      try { await navigator.clipboard.writeText(url); N.toast?.("Enlace copiado"); }
+      catch (e) { N.toast?.(url); }
+      toggle(false);
+      btn.focus();
+    });
+    $("share-wa").addEventListener("click", () => toggle(false));
+    document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".share")) toggle(false); });
+    N.shop.closeShare = () => { if (menu.hidden) return false; toggle(false); btn.focus(); return true; };
+  }
+
+  /* ---------- "¿Qué talla soy?" ---------- */
+
+  const FIT_KEY = "nomad.medidas";
+  let fitChoice = "normal";
+
+  // Weight sets the base size; height and the preferred fit move it one step.
+  function recommend({ height, weight, fit }, r = N.site?.recommender) {
+    if (!r) return null;
+    const order = r.orden;
+    let i = order.indexOf((r.peso.find(([max]) => weight < max) || r.peso.at(-1))[1]);
+    if (height >= r.estatura_alta) i++;
+    if (height <= r.estatura_baja) i--;
+    i += r.ajuste[fit] || 0;
+    i = Math.max(0, Math.min(order.length - 1, i));
+    return { size: order[i], roomier: order[Math.min(order.length - 1, i + 1)] };
+  }
+  N.recommend = recommend;   // exposed for the tests
+
+  function readMeasures() {
+    try { return JSON.parse(localStorage.getItem(FIT_KEY) || "null"); } catch (e) { return null; }
+  }
+
+  // With saved measures every sheet shows its suggestion next to "Talla".
+  function paintSuggestion() {
+    const m = readMeasures();
+    const rec = m && current && recommend(m);
+    $("sheet-suggest").textContent = rec ? `Tu talla sugerida: ${rec.size}` : "";
+  }
+
+  function computeFit({ quiet = false } = {}) {
+    const r = N.site?.recommender;
+    const h = Number($("fit-height").value);
+    const w = Number($("fit-weight").value);
+    const [hMin, hMax] = r?.limites?.estatura || [140, 210];
+    const [wMin, wMax] = r?.limites?.peso || [40, 150];
+    const err = $("fit-error");
+    $("fit-result").hidden = true;
+    $("fit-use").hidden = true;
+    if (!h || !w) { err.textContent = ""; return; }
+    if (h < hMin || h > hMax) { if (!quiet) err.textContent = "Escribe tu estatura en centímetros, por ejemplo 175."; return; }
+    if (w < wMin || w > wMax) { if (!quiet) err.textContent = "Escribe tu peso en kilos, por ejemplo 70."; return; }
+    err.textContent = "";
+    const rec = recommend({ height: h, weight: w, fit: fitChoice });
+    if (!rec) return;
+    try { localStorage.setItem(FIT_KEY, JSON.stringify({ height: h, weight: w, fit: fitChoice })); } catch (e) { /* fine */ }
+    const soldOut = current?.soldOut || [];
+    let size = rec.size;
+    if (soldOut.includes(size)) {
+      $("fit-answer").textContent = `La ${size} está agotada.`;
+      size = current.sizes.find((s) => !soldOut.includes(s) && current.sizes.indexOf(s) > current.sizes.indexOf(rec.size)) || null;
+      $("fit-alt").textContent = size ? `La ${size} te quedará un poco más holgada.` : "Prueba con otra prenda o vuelve pronto.";
+    } else {
+      $("fit-answer").textContent = `Te recomendamos la ${size}.`;
+      $("fit-alt").textContent = rec.roomier !== size ? `Si te gusta más holgada, prueba la ${rec.roomier}.` : "";
+    }
+    $("fit-result").hidden = false;
+    if (size) {
+      $("fit-use").hidden = false;
+      $("fit-use").textContent = `Usar talla ${size}`;
+      $("fit-use").dataset.size = size;
+    }
+    paintSuggestion();
+  }
+
+  function openFit() {
+    const fit = $("fit");
+    if (!fit.hidden) return;
+    closeGuide(true);
+    const m = readMeasures();
+    if (m) {
+      $("fit-height").value = m.height; $("fit-weight").value = m.weight;
+      fitChoice = m.fit || "normal";
+    }
+    fit.querySelectorAll("[data-fit]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.fit === fitChoice)));
+    computeFit({ quiet: true });
+    fit.hidden = false;
+    $("sheet-fit-open").setAttribute("aria-expanded", "true");
+    if (!reduceMotion) gsap.fromTo("#fit-swing", { rotation: -10, opacity: 0 }, { rotation: 0, opacity: 1, duration: 2, ease: "elastic.out(1, 0.32)" });
+    $("fit-height").focus({ preventScroll: true });
+  }
+
+  function closeFit(silent = false) {
+    const fit = $("fit");
+    if (fit.hidden) return;
+    $("sheet-fit-open").setAttribute("aria-expanded", "false");
+    const hide = () => { fit.hidden = true; if (!silent) $("sheet-fit-open").focus({ preventScroll: true }); };
+    if (reduceMotion || silent) return hide();
+    gsap.to("#fit-swing", { opacity: 0, y: -12, duration: 0.25, ease: "power2.in", onComplete: () => { hide(); gsap.set("#fit-swing", { clearProps: "y" }); } });
+  }
+
+  function setupFit() {
+    $("sheet-fit-open").addEventListener("click", openFit);
+    $("fit-close").addEventListener("click", () => closeFit());
+    $("fit-form").addEventListener("submit", (e) => { e.preventDefault(); computeFit(); });
+    ["fit-height", "fit-weight"].forEach((id) => {
+      $(id).addEventListener("input", () => computeFit({ quiet: true }));
+      $(id).addEventListener("change", () => computeFit());
+    });
+    $("fit").querySelectorAll("[data-fit]").forEach((b, _, all) => b.addEventListener("click", () => {
+      fitChoice = b.dataset.fit;
+      all.forEach((o) => o.setAttribute("aria-checked", String(o === b)));
+      computeFit();
+    }));
+    $("fit-use").addEventListener("click", () => {
+      const btn = [...$("sheet-sizes").children].find((o) => o.textContent === $("fit-use").dataset.size);
+      btn?.click();
+      closeFit(true);
+      btn?.focus({ preventScroll: true });
+    });
+  }
+
   /* ---------- wiring ---------- */
 
   function wireSheet() {
     sheet().querySelectorAll("[data-sheet-close]").forEach((b) => b.addEventListener("click", close));
     $("sheet-add").addEventListener("click", addToBag);
-    $("sheet-guide-open").addEventListener("click", openGuide);
+    $("sheet-guide-open").addEventListener("click", () => { closeFit(true); openGuide(); });
     setupSticky();
+    setupShare();
+    setupFit();
+    addEventListener("popstate", () => followRoute());
+    addEventListener("hashchange", () => followRoute());
     $("guide-close").addEventListener("click", () => closeGuide());
 
     // Escape closes the guide first, then the sheet; Tab stays inside the sheet.
@@ -509,7 +733,9 @@
       if (sheet().hidden) return;
       if (e.key === "Escape") {
         e.stopPropagation();
-        if (!$("guide").hidden) closeGuide();
+        if (N.shop.closeShare?.()) return;
+        if (!$("fit").hidden) closeFit();
+        else if (!$("guide").hidden) closeGuide();
         else close();
       } else if (e.key === "Tab") {
         const focusables = [...$("sheet-panel").querySelectorAll("button, input, summary, [tabindex]:not([tabindex='-1'])")]
@@ -523,5 +749,10 @@
     }, true);
   }
 
-  N.shop = Object.assign(N.shop || {}, { setup, open: (item, opts) => open(item, opts), close: () => close() });
+  N.shop = Object.assign(N.shop || {}, {
+    setup,
+    open: (item, opts) => open(item, opts),
+    close: () => close(),
+    followRoute: (opts) => followRoute(opts),
+  });
 })();

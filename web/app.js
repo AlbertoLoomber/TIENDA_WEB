@@ -411,6 +411,19 @@
     $("detail-count").textContent = `${String(items.indexOf(item) + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
     $("detail-name").textContent = item.name;
     $("detail-price").textContent = window.NOMAD?.price?.(item.price) || "";
+    // Sizes in the drawer: sold-out ones are struck through and can't be picked.
+    drawer.querySelectorAll(".sizes button").forEach((b) => {
+      const out = (item.soldOut || []).includes(b.textContent);
+      b.classList.toggle("is-soldout", out);
+      if (out) {
+        b.setAttribute("aria-disabled", "true");
+        b.setAttribute("aria-label", `${b.textContent}, agotada`);
+        b.setAttribute("aria-checked", "false");
+      } else {
+        b.removeAttribute("aria-disabled");
+        b.removeAttribute("aria-label");
+      }
+    });
   }
 
   // While the detail view is open the page can't scroll, so everything below the
@@ -724,6 +737,7 @@
     $("detail-more").addEventListener("click", () => window.NOMAD.shop?.open(items[detailIndex]));
     drawer.querySelectorAll(".sizes button").forEach((b, _, all) => {
       b.addEventListener("click", () => {
+        if (b.getAttribute("aria-disabled") === "true") return;
         all.forEach((o) => o.setAttribute("aria-checked", String(o === b)));
         $("drawer-status").textContent = "";
       });
@@ -800,6 +814,7 @@
     wire();
     layout();
     window.NOMAD.swipeHint?.(rack, "perchero");
+    window.NOMAD.shop?.followRoute?.({ initial: true });   // a shared link opens its garment
     if (hasScrollTrigger) ScrollTrigger.refresh();
     setCaption(null);
     await firstFramesReady();

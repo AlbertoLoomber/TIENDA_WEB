@@ -58,9 +58,18 @@
       "look": {
         "tone": "#d6cdbd",
         "ink": null,
-        "photo": "fotos/look-01-camo.webp"
+        "photo": "fotos/look-01-camo.webp",
+        "model": {
+          "articulo": "El",
+          "estatura": 1.82,
+          "talla": "L"
+        }
       },
-      "categoryPlural": "Sobrecamisas"
+      "categoryPlural": "Sobrecamisas",
+      "soldOut": [
+        "XL"
+      ],
+      "slug": "camo-overshirt"
     },
     {
       "id": "02-black-tee-minimal",
@@ -104,9 +113,16 @@
       "look": {
         "tone": "#cdd0d4",
         "ink": null,
-        "photo": null
+        "photo": null,
+        "model": {
+          "articulo": "La",
+          "estatura": 1.7,
+          "talla": "M"
+        }
       },
-      "categoryPlural": "Playeras"
+      "categoryPlural": "Playeras",
+      "soldOut": [],
+      "slug": "nomad-minimal-tee"
     },
     {
       "id": "03-white-tee-dollar",
@@ -144,9 +160,16 @@
       "look": {
         "tone": "#3e4874",
         "ink": "#eceae3",
-        "photo": "fotos/look-03-money.webp"
+        "photo": "fotos/look-03-money.webp",
+        "model": {
+          "articulo": "El",
+          "estatura": 1.78,
+          "talla": "L"
+        }
       },
-      "categoryPlural": "Playeras"
+      "categoryPlural": "Playeras",
+      "soldOut": [],
+      "slug": "more-than-money-tee"
     },
     {
       "id": "04-black-tee-script",
@@ -184,9 +207,16 @@
       "look": {
         "tone": "#c4b5a3",
         "ink": null,
-        "photo": null
+        "photo": null,
+        "model": {
+          "articulo": "La",
+          "estatura": 1.68,
+          "talla": "M"
+        }
       },
-      "categoryPlural": "Playeras"
+      "categoryPlural": "Playeras",
+      "soldOut": [],
+      "slug": "good-people-tee"
     },
     {
       "id": "05-green-crewneck",
@@ -224,9 +254,16 @@
       "look": {
         "tone": "#dcd5c4",
         "ink": null,
-        "photo": "fotos/look-05-habits.webp"
+        "photo": "fotos/look-05-habits.webp",
+        "model": {
+          "articulo": "El",
+          "estatura": 1.85,
+          "talla": "XL"
+        }
       },
-      "categoryPlural": "Sudaderas"
+      "categoryPlural": "Sudaderas",
+      "soldOut": [],
+      "slug": "create-good-habits-crewneck"
     }
   ],
   "site": {
@@ -272,6 +309,49 @@
       "instagram": "@nomad",
       "whatsapp": "52XXXXXXXXXX",
       "correo": "hola@nomad.example"
+    },
+    "recommender": {
+      "orden": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "peso": [
+        [
+          60,
+          "S"
+        ],
+        [
+          73,
+          "M"
+        ],
+        [
+          86,
+          "L"
+        ],
+        [
+          999,
+          "XL"
+        ]
+      ],
+      "estatura_alta": 185,
+      "estatura_baja": 160,
+      "ajuste": {
+        "justa": -1,
+        "normal": 0,
+        "holgada": 1
+      },
+      "limites": {
+        "estatura": [
+          140,
+          210
+        ],
+        "peso": [
+          40,
+          150
+        ]
+      }
     },
     "shipping": {
       "prep": "1 a 2 días hábiles",

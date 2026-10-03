@@ -48,10 +48,24 @@
         ],
         "look": {
           "tono": "#d6cdbd",
-          "foto": "fotos/look-01-camo.webp"
-        }
+          "foto": "fotos/look-01-camo.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.82,
+            "talla": "L"
+          }
+        },
+        "agotadas": [
+          "XL"
+        ],
+        "_provisional": [
+          "precio",
+          "agotadas",
+          "look.modelo"
+        ]
       },
-      "categoria_plural": "Sobrecamisas"
+      "categoria_plural": "Sobrecamisas",
+      "slug": "camo-overshirt"
     },
     {
       "id": "02-black-tee-minimal",
@@ -94,10 +108,22 @@
         ],
         "look": {
           "tono": "#cdd0d4",
-          "foto": null
-        }
+          "foto": null,
+          "modelo": {
+            "articulo": "La",
+            "estatura": 1.7,
+            "talla": "M"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "agotadas",
+          "look.modelo"
+        ]
       },
-      "categoria_plural": "Playeras"
+      "categoria_plural": "Playeras",
+      "slug": "nomad-minimal-tee"
     },
     {
       "id": "03-white-tee-dollar",
@@ -141,10 +167,22 @@
         "look": {
           "tono": "#3e4874",
           "tinta": "#eceae3",
-          "foto": "fotos/look-03-money.webp"
-        }
+          "foto": "fotos/look-03-money.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.78,
+            "talla": "L"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "agotadas",
+          "look.modelo"
+        ]
       },
-      "categoria_plural": "Playeras"
+      "categoria_plural": "Playeras",
+      "slug": "more-than-money-tee"
     },
     {
       "id": "04-black-tee-script",
@@ -187,10 +225,22 @@
         ],
         "look": {
           "tono": "#c4b5a3",
-          "foto": null
-        }
+          "foto": null,
+          "modelo": {
+            "articulo": "La",
+            "estatura": 1.68,
+            "talla": "M"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "agotadas",
+          "look.modelo"
+        ]
       },
-      "categoria_plural": "Playeras"
+      "categoria_plural": "Playeras",
+      "slug": "good-people-tee"
     },
     {
       "id": "05-green-crewneck",
@@ -233,10 +283,22 @@
         ],
         "look": {
           "tono": "#dcd5c4",
-          "foto": "fotos/look-05-habits.webp"
-        }
+          "foto": "fotos/look-05-habits.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.85,
+            "talla": "XL"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "agotadas",
+          "look.modelo"
+        ]
       },
-      "categoria_plural": "Sudaderas"
+      "categoria_plural": "Sudaderas",
+      "slug": "create-good-habits-crewneck"
     }
   ],
   "sitio": {
@@ -288,7 +350,8 @@
       "barra",
       "cambios",
       "contacto",
-      "envio"
+      "envio",
+      "recomendador"
     ],
     "envio": {
       "preparacion": "1 a 2 días hábiles",
@@ -299,6 +362,49 @@
     "cambios": {
       "dias": 30,
       "primer_cambio_gratis": true
+    },
+    "recomendador": {
+      "orden": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "peso": [
+        [
+          60,
+          "S"
+        ],
+        [
+          73,
+          "M"
+        ],
+        [
+          86,
+          "L"
+        ],
+        [
+          999,
+          "XL"
+        ]
+      ],
+      "estatura_alta": 185,
+      "estatura_baja": 160,
+      "ajuste": {
+        "justa": -1,
+        "normal": 0,
+        "holgada": 1
+      },
+      "limites": {
+        "estatura": [
+          140,
+          210
+        ],
+        "peso": [
+          40,
+          150
+        ]
+      }
     }
   }
 }

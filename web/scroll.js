@@ -139,6 +139,8 @@
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
     const hash = link.getAttribute("href");
+    // Only plain section ids; "#/prenda/…" links belong to the sheet's router.
+    if (!/^#[\w-]*$/.test(hash)) return;
     const target = hash === "#" ? null : document.querySelector(hash);
     if (!target) return;
     e.preventDefault();

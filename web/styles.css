@@ -1330,7 +1330,7 @@ body {
   position: absolute;
   top: 0;
   right: clamp(16px, 6vw, 90px);
-  z-index: 4;
+  z-index: 7;          /* over the price row and its share menu */
   width: min(360px, calc(100% - 32px));
 }
 .guide__swing { position: relative; padding-top: 70px; transform-origin: 50% 0; }
@@ -1610,3 +1610,121 @@ body {
 @media (max-width: 900px) {
   .toasts { top: calc(12px + env(safe-area-inset-top, 0px)); bottom: auto; }
 }
+
+/* =========================================================
+   Sizes sold out, quick add, share, "¿Qué talla soy?"
+   ========================================================= */
+.sizes button.is-soldout, .piece__size:disabled {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+/* quick add on the rail: space kept, shown on hover or keyboard focus */
+.piece__quick { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .piece__quick {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    height: 30px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .25s var(--ease-out), transform .25s var(--ease-out);
+  }
+  .piece:hover .piece__quick, .piece:focus-within .piece__quick { opacity: 1; transform: none; }
+}
+.piece__size {
+  min-width: 34px;
+  height: 30px;
+  padding: 0 8px;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .06em;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid rgba(36, 44, 82, .35);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out);
+}
+.piece__size:hover:not(:disabled) { border-color: var(--ink); }
+.piece__size.is-added { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.piece__size:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.sheet__price-row { position: relative; z-index: 6; display: flex; align-items: center; justify-content: space-between; gap: 16px; }   /* its menu opens over the text below */
+.share { position: relative; }
+.share__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  cursor: pointer;
+}
+.share__btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.share__btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.share__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 5;
+  display: grid;
+  min-width: 200px;
+  padding: 6px;
+  border-radius: 12px;
+  background: var(--paper);
+  border: 1px solid rgba(36, 44, 82, .15);
+  box-shadow: 0 18px 40px -18px rgba(20, 22, 40, .4);
+}
+.share__menu button, .share__menu a {
+  text-align: left;
+  font: 400 14px/1.2 var(--font-ui);
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.share__menu button:hover, .share__menu a:hover { background: rgba(36, 44, 82, .07); }
+.share__menu button:focus-visible, .share__menu a:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+
+.sheet__size-links { display: inline-flex; gap: 16px; }
+.sheet__suggest { margin: -2px 0 0; font: 400 13px/1.3 var(--font-ui); color: var(--ink-soft); }
+.sheet__suggest:empty { display: none; }
+.sheet__size-head { flex-wrap: wrap; gap: 6px 16px; }
+.sheet__size-links .sheet__guide-link { white-space: nowrap; }
+.sheet__model { margin: 4px 0 0; text-align: center; font: 400 13px/1.4 var(--font-ui); color: var(--ink-soft); }
+.sheet__model:empty { display: none; }
+
+/* "¿Qué talla soy?" uses the size guide's hang tag */
+.fit__tag { gap: 12px; }
+.fit__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+.fit__field { display: grid; gap: 6px; font: 500 var(--fs-label)/1.2 var(--font-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.fit__field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font: 400 15px/1 var(--font-ui);
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid rgba(36, 44, 82, .35);
+  border-radius: 10px;
+}
+.fit__field input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.fit__fits { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; justify-items: center; width: 100%; }
+.fit__fits legend { padding: 0; margin: 0 auto 8px; font: 400 13px/1.3 var(--font-ui); color: var(--ink); text-align: center; }
+.fit__choices button { min-width: 0; padding-inline: 14px; }
+.fit__error { margin: 0; min-height: 1.2em; font: 400 13px/1.3 var(--font-ui); color: var(--ink); text-align: center; }
+.fit__error:empty { display: none; }
+.fit__result { display: grid; gap: 4px; text-align: center; }
+.fit__answer { margin: 0; font: italic 400 22px/1.2 var(--font-ui); color: var(--ink); }
+.fit__alt { margin: 0; font: 400 14px/1.4 var(--font-ui); color: var(--ink-soft); }
+.fit__actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }

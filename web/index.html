@@ -214,17 +214,31 @@
         <span class="sheet__rod" aria-hidden="true"></span>
       </div>
       <div class="sheet__views" id="sheet-views" role="tablist" aria-label="Vistas"></div>
+      <p class="sheet__model" id="sheet-model"></p>
     </div>
     <div class="sheet__info">
       <p class="eyebrow" id="sheet-cat"></p>
       <h2 class="sheet__name" id="sheet-name"></h2>
-      <p class="sheet__price" id="sheet-price"></p>
+      <div class="sheet__price-row">
+        <p class="sheet__price" id="sheet-price"></p>
+        <div class="share">
+          <button class="share__btn" type="button" id="sheet-share" aria-haspopup="true" aria-expanded="false" aria-controls="share-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7a1 1 0 0 0-1-1h-1"/></svg>Compartir</button>
+          <div class="share__menu" id="share-menu" hidden>
+            <button type="button" id="share-copy">Copiar enlace</button>
+            <a id="share-wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          </div>
+        </div>
+      </div>
       <p class="sheet__desc" id="sheet-desc"></p>
       <div class="sheet__size-head">
         <p class="eyebrow">Talla</p>
-        <button class="sheet__guide-link" type="button" id="sheet-guide-open" aria-expanded="false" aria-controls="guide">Guía de tallas</button>
+        <span class="sheet__size-links">
+          <button class="sheet__guide-link" type="button" id="sheet-fit-open" aria-expanded="false" aria-controls="fit">¿Qué talla soy?</button>
+          <button class="sheet__guide-link" type="button" id="sheet-guide-open" aria-expanded="false" aria-controls="guide">Guía de tallas</button>
+        </span>
       </div>
       <div class="sizes sheet__sizes" id="sheet-sizes" role="radiogroup" aria-label="Talla"></div>
+      <p class="sheet__suggest" id="sheet-suggest"></p>
       <button class="pill pill--solid sheet__add" type="button" id="sheet-add">Agregar a la bolsa</button>
       <p class="sheet__status" id="sheet-status" aria-live="polite"></p>
       <details class="sheet__more" open>
@@ -240,6 +254,38 @@
     <div class="sheet__sticky" id="sheet-sticky" hidden>
       <p class="sheet__sticky-text"><span class="sheet__sticky-name" id="sticky-name"></span><span class="sheet__sticky-meta" id="sticky-meta"></span></p>
       <button class="pill pill--solid" type="button" id="sticky-add">Agregar</button>
+    </div>
+    <!-- "¿Qué talla soy?": a hang tag like the size guide, with a suggestion from height, weight and fit -->
+    <div class="guide fit" id="fit" role="dialog" aria-labelledby="fit-title" hidden>
+      <div class="guide__swing" id="fit-swing">
+        <span class="guide__string" aria-hidden="true"></span>
+        <form class="guide__tag fit__tag" id="fit-form" novalidate>
+          <span class="tag__hole" aria-hidden="true"></span>
+          <p class="eyebrow" id="fit-title">¿Qué talla soy?</p>
+          <div class="fit__fields">
+            <label class="fit__field"><span>Estatura (cm)</span><input id="fit-height" name="height" type="number" inputmode="numeric" min="140" max="210" placeholder="175" aria-describedby="fit-error"></label>
+            <label class="fit__field"><span>Peso (kg)</span><input id="fit-weight" name="weight" type="number" inputmode="numeric" min="40" max="150" placeholder="70" aria-describedby="fit-error"></label>
+          </div>
+          <fieldset class="fit__fits">
+            <legend>¿Cómo te gusta que te quede?</legend>
+            <div class="sizes fit__choices" role="radiogroup" aria-label="Ajuste">
+              <button type="button" role="radio" aria-checked="false" data-fit="justa">Justa</button>
+              <button type="button" role="radio" aria-checked="true" data-fit="normal">Normal</button>
+              <button type="button" role="radio" aria-checked="false" data-fit="holgada">Holgada</button>
+            </div>
+          </fieldset>
+          <p class="fit__error" id="fit-error" aria-live="polite"></p>
+          <div class="fit__result" id="fit-result" aria-live="polite" hidden>
+            <p class="fit__answer" id="fit-answer"></p>
+            <p class="fit__alt" id="fit-alt"></p>
+          </div>
+          <p class="guide__note">Es una sugerencia según nuestra guía de tallas.</p>
+          <div class="fit__actions">
+            <button class="pill pill--solid" type="button" id="fit-use" hidden>Usar talla</button>
+            <button class="pill" type="button" id="fit-close">Cerrar</button>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="guide" id="guide" hidden>
       <div class="guide__swing" id="guide-swing">
