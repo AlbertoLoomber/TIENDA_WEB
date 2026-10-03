@@ -162,7 +162,7 @@
     }
 
     const fig = document.getElementById("about-photo");
-    const media = fig?.querySelector(":scope > img, .studio");
+    const media = fig?.querySelector(":scope > img, .studio, .about__media");
     if (media) {
       const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: "top 80%", once: true } });
       tl.fromTo(media, { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: motion.slow, ease: "expo.inOut" })

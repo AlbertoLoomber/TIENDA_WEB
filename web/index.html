@@ -162,6 +162,33 @@
       </figure>
     </section>
 
+    <!-- Cómo se hace: four steps under a short rod; the hanger walks along it (scenes.js) -->
+    <section class="process" id="proceso" aria-labelledby="process-title" hidden>
+      <header class="section-head">
+        <p class="eyebrow" id="process-eyebrow">Cómo se hace</p>
+        <h2 class="section-title" id="process-title">Del boceto al perchero.</h2>
+      </header>
+      <div class="process__rod" aria-hidden="true">
+        <span class="process__tube"></span>
+        <svg class="process__hanger" id="process-hanger" viewBox="0 0 40 26"><path d="M20 9 V6.5 a3 3 0 1 1 3 -3"/><path d="M20 9 L4 20 Q2 21.6 4.2 22 H35.8 Q38 21.6 36 20 Z"/></svg>
+      </div>
+      <div class="process__viewport" id="process-viewport" data-lenis-prevent-horizontal>
+        <ol class="process__list" id="process-list"></ol>
+      </div>
+      <p class="scene__note" id="process-note" hidden>Fotos de muestra: las del taller llegan pronto.</p>
+    </section>
+
+    <!-- Así se usa: the clothes out in the street, each photo opens its garment -->
+    <section class="street" id="calle" aria-labelledby="street-title" hidden>
+      <header class="section-head street__head">
+        <p class="eyebrow" id="street-eyebrow">Así se usa</p>
+        <h2 class="section-title" id="street-title">En la calle.</h2>
+        <p class="street__sample" id="street-sample" hidden>Fotos de muestra</p>
+      </header>
+      <ul class="street__grid" id="street-grid" data-lenis-prevent-horizontal></ul>
+      <p class="street__cta"><a class="pill" href="#" data-contact="instagram" id="street-button">Etiquétanos en Instagram</a></p>
+    </section>
+
     <section class="faq" id="preguntas" aria-labelledby="faq-title">
       <div class="faq__head">
         <p class="eyebrow">Ayuda</p>
@@ -250,6 +277,7 @@
         <div class="foot__col">
           <p class="foot__k">Marca</p>
           <a href="#about">Nosotros</a>
+          <a href="#proceso">Cómo se hace</a>
           <a href="#newsletter">Newsletter</a>
         </div>
         <div class="foot__col">
@@ -427,6 +455,8 @@
 <script src="info.js"></script>
 <script src="closeup.js"></script>
 <script src="drop.js"></script>
+<script src="media.js"></script>
+<script src="scenes.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -995,6 +995,175 @@ body {
   filter: drop-shadow(8px 14px 14px rgba(20, 22, 32, .16));
 }
 
+/* ---------- clips over their photos (lookbook, studio, process) ---------- */
+.look__media > img, .look__media > video,
+.about__media > img, .about__media > video,
+.process__frame > img, .process__frame > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* ---------- cómo se hace: four steps under a short rod ---------- */
+.process { padding-block: clamp(64px, 9vw, 120px) clamp(24px, 4vw, 56px); }
+.process__rod {
+  position: relative;
+  max-width: 1152px;
+  height: 5px;
+  margin: clamp(32px, 5vw, 56px) auto 0;
+  margin-inline: max(24px, calc((100% - 1152px) / 2));
+}
+.process__tube {
+  position: absolute;
+  inset: 0;
+  background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat;
+}
+.process__hanger {
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 28px;
+  height: 18px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  will-change: transform;
+}
+.process__viewport { margin-top: 26px; }
+.process__viewport:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.process__list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 24px;
+  max-width: 1200px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+}
+.process__step { display: grid; gap: 8px; align-content: start; }
+.process__frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 8px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #dddad2;
+}
+.process__frame.is-empty { background: repeating-linear-gradient(135deg, #dddad2 0 8px, #d5d2c9 8px 16px); }
+.process__num {
+  margin: 0;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .16em;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.process__title { margin: 0; font: italic 400 22px/1.15 var(--font-ui); color: var(--ink); }
+.process__text { margin: 0; max-width: 28ch; font: 400 14px/1.5 var(--font-ui); color: var(--ink-soft); text-wrap: pretty; }
+.scene__note {
+  max-width: 1200px;
+  margin: 28px auto 0;
+  padding-inline: 24px;
+  font: 400 12px/1.4 var(--font-ui);
+  color: var(--ink-soft);
+}
+@media (max-width: 900px) {
+  .process__list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+}
+@media (max-width: 640px) {
+  .process__viewport { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .process__viewport::-webkit-scrollbar { display: none; }
+  .process__list { display: flex; width: max-content; max-width: none; gap: 16px; }
+  .process__step { width: 72vw; scroll-snap-align: center; }
+}
+
+/* ---------- así se usa: the clothes out in the street ---------- */
+.street { padding-block: clamp(64px, 9vw, 120px) clamp(32px, 5vw, 72px); }
+.street__head { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+.street__head .eyebrow, .street__head .section-title { grid-column: 1; }
+.street__sample {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0 0 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(36, 44, 82, .25);
+  border-radius: 999px;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.street__grid {
+  list-style: none;
+  max-width: 1200px;
+  box-sizing: border-box;
+  margin: clamp(32px, 5vw, 56px) auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+}
+.street__card { display: grid; gap: 10px; color: var(--ink); text-decoration: none; }
+.street__frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #dddad2;
+}
+.street__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s var(--ease-out);
+}
+.street__caption { font: 400 14px/1.4 var(--font-ui); color: var(--ink-soft); }
+.street__name { font-style: italic; color: var(--ink); }
+.street__card:focus-visible { outline: none; }
+.street__card:focus-visible .street__frame { outline: 2px solid var(--ink); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  /* the caption shows on hover; on touch it is always there */
+  .street__caption {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .3s var(--ease-out), transform .3s var(--ease-out);
+  }
+  .street__card:hover .street__caption, .street__card:focus-visible .street__caption { opacity: 1; transform: none; }
+  .street__card:hover .street__frame img { transform: scale(1.03); }
+}
+.street__cta { margin: clamp(28px, 4vw, 44px) 0 0; text-align: center; }
+.street__cta .pill { text-decoration: none; }
+@media (max-width: 900px) {
+  .street__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .street__head { grid-template-columns: minmax(0, 1fr); }
+  .street__sample { grid-column: 1; grid-row: auto; justify-self: start; }
+  .street__grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    gap: 14px;
+  }
+  .street__grid::-webkit-scrollbar { display: none; }
+  .street__item { flex: none; width: 68vw; scroll-snap-align: center; }
+}
+
 /* ---------- newsletter: a hang tag on a short rod ---------- */
 .closing { position: relative; z-index: 2; }
 .newsletter {

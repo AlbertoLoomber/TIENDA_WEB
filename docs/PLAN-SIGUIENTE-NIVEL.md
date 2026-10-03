@@ -1,6 +1,6 @@
 # Plan de implementación: Nomad al siguiente nivel
 
-> **Estado:** **fases 1, 2 y 3 completas** (sesiones 1 a 7; De cerca y la prenda tapada usan muestras hasta que lleguen las fotos 17 y 23). Fase 4: la sesión 8 (giro real) quedó lista para recibir el video 16.1; sigue la sesión 9. Sin pagos:
+> **Estado:** **las 9 sesiones están hechas.** Todo lo que depende de fotos o videos ya funciona con muestras marcadas como tales y se reemplaza solo al dejar los archivos de `PROMPTS.md` §24 y correr las herramientas (ver la sección "Fotos y videos"). Falta: generar esos archivos, el giro real (video 16.1) y tu aprobación del video comparativo. Sin pagos:
 > la bolsa y el botón de pago son de diseño; la parte funcional (cobro, inventario, correos)
 > se hace después.
 
@@ -111,6 +111,15 @@ Mientras hago las sesiones 1 a 5 (que no necesitan archivos nuevos), puedes gene
 **16.1 giro de la 03 → 17 macros → 18 looks 02 y 04 → 23 prenda tapada → 19 clips → 20 estudio → 21 proceso → 22 calle.**
 
 Los prompts, nombres de archivo y la lista de revisión están en `PROMPTS.md` (secciones 15 a 24).
+
+**Cómo entran a la página** (cada herramienta deja todo listo y `tools/catalogo_web.py` los conecta):
+
+| Archivos | Dónde los dejas | Herramienta |
+|---|---|---|
+| `giro-NN-izquierda.mp4` | `assets/raw/video/` | `tools/cuadros_video.py VIDEO` y luego `comparar_giro.js` para decidir |
+| `cerca-…`, `drop-02`, `proceso-…`, `calle-…` | `assets/raw/fotos-nuevas/` | `tools/fotos_web.py` |
+| `clip-look-NN.mp4`, `video-estudio.mp4`, `clip-estampado.mp4` | `assets/raw/video/` | `tools/comprimir_video.py` |
+| `look-02-…`, `look-04-…` | `web/fotos/` y `tienda.look.foto` en `catalogo.json` | — |
 
 ---
 

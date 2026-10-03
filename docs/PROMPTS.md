@@ -545,3 +545,5 @@ Mándamelos por aquí o súbelos a `assets/raw/` (los videos en `assets/raw/vide
 - **Fotos** `cerca-…`, `drop-02`, `proceso-…` y `calle-…`: déjalas en `assets/raw/fotos-nuevas/` con el nombre de la tabla y corre
   `python tools/fotos_web.py && python tools/catalogo_web.py`. Se recortan al tamaño de la página, van a `web/fotos/` y reemplazan solas a la muestra.
 - `drop-02.png` necesita el fondo quitado para colgar del tubo. Si llega con fondo, se lo quito yo al integrarla.
+- **Videos** `clip-look-NN`, `video-estudio` y `clip-estampado`: en `assets/raw/video/`, luego `python tools/comprimir_video.py && python tools/catalogo_web.py`.
+- **Giro** `giro-NN-izquierda.mp4`: en `assets/raw/video/`, luego `python tools/cuadros_video.py assets/raw/video/giro-03-izquierda.mp4 && python tools/catalogo_web.py`.

@@ -709,13 +709,24 @@
       frame.style.setProperty("--tone", look.tone);
       if (look.ink && !look.photo) frame.style.setProperty("--look-ink", look.ink);
 
-      if (look.photo) {
+      const photo = look.photo || look.clip?.poster;
+      const video = photo && window.NOMAD.media?.clip(look.clip, "look__clip");
+      if (photo) {
         const img = document.createElement("img");
         img.className = "look__photo";
-        img.src = look.photo;
+        img.src = photo;
         img.alt = `Look ${i + 1}: ${item.name} puesta`;
         img.loading = "lazy";
-        frame.appendChild(img);
+        if (video) {
+          // The clip plays over its own poster; the photo stays underneath (and for screen readers).
+          const media = document.createElement("div");
+          media.className = "look__photo look__media";
+          img.className = "";
+          media.append(img, video);
+          frame.appendChild(media);
+        } else {
+          frame.appendChild(img);
+        }
       } else {
         const rod = document.createElement("span");
         rod.className = "look__rod";
@@ -749,7 +760,15 @@
       img.src = site.studioPhoto;
       img.alt = "El estudio de Nomad";
       img.loading = "lazy";
-      $("studio").replaceWith(img);
+      const video = window.NOMAD.media?.clip(site.studioVideo, "about__clip");
+      if (video) {
+        const media = document.createElement("div");
+        media.className = "about__media";
+        media.append(img, video);
+        $("studio").replaceWith(media);
+      } else {
+        $("studio").replaceWith(img);
+      }
       return;
     }
     // Placeholder: a few pieces from the collection on the studio rail.
@@ -961,9 +980,11 @@
     window.NOMAD.closeup?.setup();
     buildLookbook();
     buildStudio();
+    window.NOMAD.scenes?.setup();
     setupNewsletter();
     window.NOMAD.drop?.setup();
     window.NOMAD?.sections?.setup();
+    window.NOMAD.scenes?.motion();
     setupLean();
     setupBrush();
     setupSwipeLean();

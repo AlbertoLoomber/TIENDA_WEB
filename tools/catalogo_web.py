@@ -24,6 +24,18 @@ def photo(name):
     return None
 
 
+def video(name, poster=None):
+    """Un clip en loop (tools/comprimir_video.py) si existen sus dos formatos."""
+    if not name:
+        return None
+    base = ROOT / "web" / "video" / name
+    if not (base.with_suffix(".webm").exists() and base.with_suffix(".mp4").exists()):
+        return None
+    own = base.with_suffix(".webp")
+    return {"webm": f"video/{name}.webm", "mp4": f"video/{name}.mp4",
+            "poster": f"video/{name}.webp" if own.exists() else poster}
+
+
 def spin(item_id, giro):
     """Cuadros del giro real (tools/cuadros_video.py), solo si están todos en disco."""
     if not giro or not giro.get("cuadros"):
@@ -49,6 +61,27 @@ def closeup(c):
         points.append({"id": p["id"], "title": p["titulo"], "text": p["texto"], "photo": photo(p.get("foto")),
                        "x": p["x"], "y": p["y"], "side": p["lado"]})
     return {"item": c["prenda"], "eyebrow": c.get("encabezado", ""), "title": c.get("titulo", ""), "points": points}
+
+
+def process(p):
+    if not p:
+        return None
+    steps = [{"title": x["titulo"], "text": x["texto"], "photo": photo(x.get("foto")),
+              "clip": video(x.get("clip"))} for x in p.get("pasos", [])]
+    return {"eyebrow": p.get("encabezado", ""), "title": p.get("titulo", ""), "steps": steps}
+
+
+def street(c, by_id, catalog):
+    if not c:
+        return None
+    shots = []
+    for x in c.get("fotos", []):
+        assert x["prenda"] in by_id, f"calle: no existe la prenda {x['prenda']}"
+        shots.append({"photo": photo(x.get("foto")), "item": x["prenda"]})
+    # Muestra si lo dice el catálogo o si alguna foto todavía es muestra.
+    sample = c.get("muestra", True) or any(s["photo"] and s["photo"]["sample"] for s in shots)
+    return {"eyebrow": c.get("encabezado", ""), "title": c.get("titulo", ""), "sample": sample,
+            "button": c.get("boton", ""), "shots": shots}
 
 
 def drop(d):
@@ -86,7 +119,7 @@ def main():
             "soldOut": shop.get("agotadas", []),
             "slug": src.get("slug", item["id"]),
             "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"),
-                     "model": look.get("modelo")},
+                     "model": look.get("modelo"), "clip": video(look.get("clip"), look.get("foto"))},
             "closeup": photo(shop.get("cerca")),
             "spin": spin(item["id"], shop.get("giro")),
         })
@@ -95,6 +128,7 @@ def main():
         "currency": site.get("moneda", "MXN"),
         "band": site.get("barra", []),
         "studioPhoto": site.get("foto_estudio"),
+        "studioVideo": video(site.get("video_estudio"), site.get("foto_estudio")),
         "sizeGuide": {
             "unit": site.get("guia_tallas", {}).get("unidad", "cm"),
             "columns": site.get("guia_tallas", {}).get("columnas", []),
@@ -120,6 +154,8 @@ def main():
         },
         "closeup": closeup(site.get("cerca")),
         "drop": drop(site.get("drop")),
+        "process": process(site.get("proceso")),
+        "street": street(site.get("calle"), by_id, catalog),
     }
     # Validaciones: mejor detenerse con un mensaje claro que publicar datos rotos.
     slugs = [it["slug"] for it in web["items"]]

@@ -32,7 +32,7 @@ sin hacer la página más pesada ni más lenta. Todo depende de las fotos y vide
 | Cuadros del giro (ficha) | WebP con transparencia | 1300px de alto | 70 KB por cuadro | Al abrir la ficha |
 | Fotos del lookbook | WebP | 1200×1500 | 180 KB | Al acercarse |
 | Clips del lookbook | MP4 H.264 y WebM VP9, sin audio | 720×900, 24 fps, 5 s | 1.5 MB | Al acercarse; solo se reproducen a la vista |
-| Video del estudio | MP4 y WebM | 1280×853 | 2.5 MB | Al acercarse |
+| Video del estudio | MP4 y WebM | 1280×852 | 2.5 MB | Al acercarse |
 | Fotos macro (círculos) | WebP | 300×300 | 60 KB | Al acercarse |
 | Fotos macro (ficha) | WebP | 1200×1200 | 160 KB | Al elegir la vista |
 | Proceso y calle | WebP | 1000×1250 / 1000×1000 | 140 KB | Al acercarse |
@@ -96,6 +96,8 @@ giro real a la derecha) y tú eliges. Si gana el real, se piden los videos de la
 
 ## T4.2 Clips del lookbook
 
+> **Listo para recibir los clips (sesión 9).** `tools/comprimir_video.py` (ffmpeg de `imageio-ffmpeg`) recorta, comprime a MP4 y WebM, revisa el loop (ida y vuelta si salta) y saca la portada → `web/video/`. `web/media.js` los carga al acercarse, los reproduce a la vista y los pausa al salir; con reducir movimiento o ahorro de datos se queda la foto. Prueba `escenas.js` con clips sintéticos.
+
 | | |
 |---|---|
 | **Objetivo** | Que el lookbook tenga vida con un movimiento muy sutil, sin video pesado ni sonido. |
@@ -137,12 +139,14 @@ giro real a la derecha) y tú eliges. Si gana el real, se piden los videos de la
 
 ## T4.3 Video del estudio en Nosotros
 
+> **Listo (sesión 9):** `video-estudio.mp4` en `assets/raw/video/` → `comprimir_video.py` → `catalogo_web.py`. La entrada de Nosotros se aplica igual al video.
+
 | | |
 |---|---|
 | **Objetivo** | Que Nosotros se sienta un lugar real. |
 | **Archivos** | `web/index.html` (figura del estudio), `web/app.js` (`buildStudio`), `web/video/` |
 
-- Mismo tratamiento que T4.2: 1280×853 (3:2), 24 fps, máximo 2.5 MB, sin audio y con la foto
+- Mismo tratamiento que T4.2: 1280×852 (3:2, medidas pares), 24 fps, máximo 2.5 MB, sin audio y con la foto
   actual como portada.
 - La animación de entrada (se abre desde el centro y la escala baja de 1.1 a 1) se aplica al video igual que a la foto.
 - Si el recorrido de cámara no hace loop limpio, se hace de ida y vuelta.
@@ -150,6 +154,8 @@ giro real a la derecha) y tú eliges. Si gana el real, se piden los videos de la
 ---
 
 ## T4.4 Sección "Cómo se hace"
+
+> **Hecho con muestras (sesión 9).** `web/scenes.js`; datos en `sitio.proceso`. Las 4 fotos son muestras armadas con las prendas (boceto a lápiz, malla, estampado y perchero; `tools/fotos_web.py`) hasta que lleguen las de PROMPTS 21. El clip opcional del paso 3 entra solo cuando exista `clip-estampado`.
 
 | | |
 |---|---|
@@ -184,12 +190,14 @@ TABLET: 2 × 2.   CELULAR: fila deslizable, con el mismo gancho siguiendo el des
 - El clip opcional del paso 3 se comporta como los del lookbook.
 
 ### Listo cuando
-- [ ] No fija el scroll; el gancho nunca se adelanta ni se queda atrás de las tarjetas.
-- [ ] Textos (P) marcados en `catalogo.json`.
+- [x] No fija el scroll; el gancho nunca se adelanta ni se queda atrás de las tarjetas.
+- [x] Textos (P) marcados en `catalogo.json`.
 
 ---
 
 ## T4.5 Sección "Así se usa"
+
+> **Hecho con muestras (sesión 9).** Datos en `sitio.calle`; las 6 fotos son recortes del lookbook y prendas sobre su color hasta que lleguen las de PROMPTS 22. La leyenda "Fotos de muestra" se ve mientras `sitio.calle.muestra` sea `true` o quede alguna muestra.
 
 | | |
 |---|---|
@@ -217,8 +225,8 @@ TABLET: 2 × 2.   CELULAR: fila deslizable, con el mismo gancho siguiendo el des
   nombres de usuarios ni reseñas inventadas.
 
 ### Listo cuando
-- [ ] Cada foto abre la ficha correcta.
-- [ ] La leyenda "Fotos de muestra" está presente mientras `sitio.calle.muestra` sea `true`.
+- [x] Cada foto abre la ficha correcta.
+- [x] La leyenda "Fotos de muestra" está presente mientras `sitio.calle.muestra` sea `true`.
 
 ---
 
