@@ -43,6 +43,12 @@ sin hacer la página más pesada ni más lenta. Todo depende de las fotos y vide
 
 ## T4.1 Giro real a partir de video
 
+> **Listo para recibir el video (sesión 8).**
+> - `tools/cuadros_video.py VIDEO` hace todo el proceso de abajo, deja una hoja de revisión en `assets/revision/` y escribe `tienda.giro` en `catalogo.json`; luego `tools/catalogo_web.py`.
+> - La página ya usa los cuadros cuando existen (`item.spin`): los de 700 px en tiempo libre después de la primera pintura, los de 1300 px al abrir la ficha, y el giro actual mientras tanto. `?giro=foto` lo apaga para comparar.
+> - Video comparativo: `tools/pruebas/con-servidor.sh node tools/pruebas/comparar_giro.js` → `tools/pruebas/salida/giro-comparacion.webm`.
+> - Probado de punta a punta con un video sintético (`--prueba`, prueba `giro.js`). El primer y el último cuadro son las fotos actuales, así el perchero en reposo no cambia.
+
 | | |
 |---|---|
 | **Objetivo** | Que el giro de lado a frente pase por ángulos reales y consistentes. |
@@ -83,7 +89,7 @@ giro real a la derecha) y tú eliges. Si gana el real, se piden los videos de la
 
 ### Listo cuando
 - [ ] El giro real no muestra doble imagen, saltos de color ni el gancho moviéndose.
-- [ ] La carga inicial no aumenta (los cuadros llegan después).
+- [x] La carga inicial no aumenta (los cuadros llegan después).
 - [ ] Tu aprobación del video comparativo.
 
 ---

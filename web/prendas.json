@@ -73,7 +73,8 @@
       "closeup": {
         "src": "fotos/muestra/cerca-01-estampado.webp",
         "sample": true
-      }
+      },
+      "spin": null
     },
     {
       "id": "02-black-tee-minimal",
@@ -130,7 +131,8 @@
       "closeup": {
         "src": "fotos/muestra/cerca-02-estampado.webp",
         "sample": true
-      }
+      },
+      "spin": null
     },
     {
       "id": "03-white-tee-dollar",
@@ -181,7 +183,8 @@
       "closeup": {
         "src": "fotos/muestra/cerca-03-estampado.webp",
         "sample": true
-      }
+      },
+      "spin": null
     },
     {
       "id": "04-black-tee-script",
@@ -232,7 +235,8 @@
       "closeup": {
         "src": "fotos/muestra/cerca-04-estampado.webp",
         "sample": true
-      }
+      },
+      "spin": null
     },
     {
       "id": "05-green-crewneck",
@@ -283,7 +287,8 @@
       "closeup": {
         "src": "fotos/muestra/cerca-05-estampado.webp",
         "sample": true
-      }
+      },
+      "spin": null
     }
   ],
   "site": {

@@ -5,6 +5,9 @@
  * (0 = side, 1 = front): with side + front only, the side view swings away and
  * the front swings in from the hook (3D). In-between angles can be stepped
  * through instead (USE_IN_BETWEENS), once they match the front photo.
+ * When a garment has frames from a real turn on video (tools/cuadros_video.py,
+ * item.spin), they're fetched once the page is idle and then replace its
+ * two-photo turn: a short crossfade between neighbouring frames, no 3D.
  * The rack slot widens with the turn and pushes its neighbours aside.
  */
 (() => {
@@ -75,8 +78,67 @@
     return USE_IN_BETWEENS ? frames : [frames[0], frames.at(-1)];
   }
 
-  function makeTurn(container, allFrames) {
-    const frames = turnFrames(allFrames);
+  // ?giro=foto keeps the two-photo turn (to compare it with the real one).
+  const SPIN_OFF = /[?&]giro=foto\b/.test(location.search);
+
+  // The frames a garment turns through: the real turn once its frames are in
+  // ("small" on the rack, "full" in the sheet), otherwise its photos.
+  function framesFor(item, size = "small") {
+    const spin = item.spin;
+    if (SPIN_OFF || !spin?.ready?.[size]) return { frames: item.frames, video: false };
+    return { frames: spin.frames.map((f) => ({ ...f, src: size === "small" ? f.small : f.src })), video: true };
+  }
+
+  // Fetch and decode one size of a garment's real-turn frames (once).
+  function loadSpin(item, size = "small") {
+    const spin = item.spin;
+    if (SPIN_OFF || !spin?.frames?.length) return Promise.resolve(false);
+    spin.loading = spin.loading || {};
+    if (!spin.loading[size]) {
+      const urls = spin.frames.map((f) => (size === "small" ? f.small : f.src));
+      spin.loading[size] = Promise.all(urls.map((u) => { const im = new Image(); im.src = u; return im.decode(); }))
+        .then(() => { spin.ready = { ...spin.ready, [size]: true }; return true; }, () => false);
+    }
+    return spin.loading[size];
+  }
+
+  // On the rack the new turn takes over at rest, keeping where the garment is.
+  function adoptSpin(item) {
+    if (!framesFor(item).video || item.turn.video || item.adopting) return;
+    if (gsap.isTweening(item.turn)) { setTimeout(() => adoptSpin(item), 400); return; }
+    item.adopting = true;
+    // Built hidden and swapped in only once every frame can paint, so the
+    // garment never blinks out on its first turn.
+    const t = makeTurn(item.swing, framesFor(item).frames, { video: true });
+    t.box.style.visibility = "hidden";
+    Promise.all(t.imgs.map((im) => im.decode().catch(() => {}))).then(() => {
+      item.adopting = false;
+      if (gsap.isTweening(item.turn)) { t.box.remove(); setTimeout(() => adoptSpin(item), 400); return; }
+      const old = item.turn;
+      t.p = old.p;
+      renderTurn(t);
+      t.box.style.visibility = "";
+      old.box.remove();
+      item.turn = t;
+    });
+  }
+
+  // After the first paint, in idle time (or as soon as the cursor reaches the rack).
+  function preloadSpins() {
+    const todo = items.filter((it) => it.spin?.frames?.length);
+    if (!todo.length || SPIN_OFF) return;
+    let started = false;
+    const run = () => {
+      if (started) return;
+      started = true;
+      todo.forEach((it) => loadSpin(it, "small").then((ok) => ok && adoptSpin(it)));
+    };
+    (window.requestIdleCallback || ((cb) => setTimeout(cb, 1500)))(run, { timeout: 5000 });
+    rack.addEventListener("pointerenter", run, { once: true });
+  }
+
+  function makeTurn(container, allFrames, { video = false } = {}) {
+    const frames = video ? allFrames : turnFrames(allFrames);
     const box = document.createElement("div");
     box.className = "turn";
     const imgs = frames.map((f, k) => {
@@ -97,13 +159,27 @@
     const stops = [0];
     weights.forEach((w) => stops.push(stops.at(-1) + w / total));
     stops[stops.length - 1] = 1;
-    return { frames, imgs, stops, p: 0 };
+    return { frames, imgs, stops, p: 0, box, video };
   }
 
   function renderTurn(t) {
     const { frames, imgs } = t;
     const n = frames.length;
     const p = clamp(t.p);
+
+    if (t.video) {
+      // Real frames: the current one stays opaque underneath and the next
+      // fades in over it, so the garment is never see-through and no shape is
+      // stretched.
+      const [i, f] = segment(t, p);
+      imgs.forEach((img, k) => {
+        img.style.transform = "";
+        img.style.zIndex = k === i + 1 ? "2" : k === i ? "1" : "0";
+        // (the one underneath steps out at the very end, so no edge of it lingers)
+        img.style.opacity = k === i ? 1 - smooth(clamp((f - 0.8) / 0.2)) : k === i + 1 ? smooth(f) : 0;
+      });
+      return;
+    }
 
     if (n === 2) {
       // The side view swings away while the front swings in from the hook. The
@@ -473,7 +549,8 @@
 
   function fillDetail(item, p = 1) {
     figure.replaceChildren();
-    detailTurn = makeTurn(figure, item.frames);
+    const { frames, video } = framesFor(item);
+    detailTurn = makeTurn(figure, frames, { video });
     detailTurn.p = p;
     renderTurn(detailTurn);
     figure.setAttribute("aria-label", `${item.name}, vista de frente`);
@@ -877,7 +954,7 @@
     site = data.site || {};
     buildBand();
     buildRack(data);
-    Object.assign(window.NOMAD, { items, site, rail: RAIL, turn: { make: makeTurn, render: renderTurn } });
+    Object.assign(window.NOMAD, { items, site, rail: RAIL, turn: { make: makeTurn, render: renderTurn, framesFor, loadSpin } });
     window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
     window.NOMAD.info?.setup();
@@ -900,6 +977,7 @@
     await intro();
     // Open on a turned garment, like a shop assistant holding one up.
     if (active < 0) activate(0);
+    preloadSpins();
   }
 
   init().catch((err) => {

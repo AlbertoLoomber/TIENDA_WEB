@@ -24,6 +24,21 @@ def photo(name):
     return None
 
 
+def spin(item_id, giro):
+    """Cuadros del giro real (tools/cuadros_video.py), solo si están todos en disco."""
+    if not giro or not giro.get("cuadros"):
+        return None
+    base = f"prendas/{item_id}/giro"
+    frames = []
+    for c in giro["cuadros"]:
+        full, small = f"{base}/{c['archivo']}.webp", f"{base}/{c['archivo']}-700.webp"
+        if not ((ROOT / "web" / full).exists() and (ROOT / "web" / small).exists()):
+            print(f"aviso: {item_id}: faltan los cuadros del giro ({c['archivo']}); se usa el giro de dos fotos")
+            return None
+        frames.append({"angle": c["angulo"], "src": full, "small": small, "left": c["left"], "right": c["right"]})
+    return {"frames": frames}
+
+
 def closeup(c):
     if not c:
         return None
@@ -73,6 +88,7 @@ def main():
             "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"),
                      "model": look.get("modelo")},
             "closeup": photo(shop.get("cerca")),
+            "spin": spin(item["id"], shop.get("giro")),
         })
 
     web["site"] = {

@@ -1,6 +1,6 @@
 # Plan de implementación: Nomad al siguiente nivel
 
-> **Estado:** **fases 1, 2 y 3 completas** (sesiones 1 a 7; De cerca y la prenda tapada usan muestras hasta que lleguen las fotos 17 y 23). Sigue la fase 4 (sesión 8: giro real). Sin pagos:
+> **Estado:** **fases 1, 2 y 3 completas** (sesiones 1 a 7; De cerca y la prenda tapada usan muestras hasta que lleguen las fotos 17 y 23). Fase 4: la sesión 8 (giro real) quedó lista para recibir el video 16.1; sigue la sesión 9. Sin pagos:
 > la bolsa y el botón de pago son de diseño; la parte funcional (cobro, inventario, correos)
 > se hace después.
 

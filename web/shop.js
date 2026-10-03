@@ -285,6 +285,7 @@
     if (busy || !item) return;
     busy = true;
     current = item;
+    N.turn?.loadSpin?.(item, "full");   // the real turn's large frames, for dragging
     setRoute(item, route);
     originCard = card;
     returnFocus = document.activeElement;
@@ -521,7 +522,8 @@
       box.className = "sheet__turn";
       stage.appendChild(box);
       st.box = box;
-      st.turn = N.turn.make(box, current.frames);
+      const { frames, video } = N.turn.framesFor?.(current, "full") || { frames: current.frames, video: false };
+      st.turn = N.turn.make(box, frames, { video });
       st.w = stage.clientWidth;
       stage.classList.add("is-turning");
       hideHint();
