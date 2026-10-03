@@ -13,5 +13,6 @@ Prototipo de diseño del perchero interactivo (sin inventario, pagos ni envíos)
 - `assets/marca/`: logo "Nomad" en SVG (azul marino, claro, negro) e ícono del gancho.
 - `tools/validar_assets.py`: revisa nombres, tamaños y ángulos faltantes.
 - `tools/build_artifact.py`: arma `dist/index.html` para publicar la vista previa.
+- `tools/fotos_web.py`: pasa las fotos nuevas de `assets/raw/fotos-nuevas/` a `web/fotos/` y arma muestras (`web/fotos/muestra/`) para las que faltan; `catalogo_web.py` usa la real si existe.
 - `tools/preparar_video.py`: cuadros de inicio y fin para generar el giro de cada prenda con video → `assets/para-video/`.
 - `docs/`: análisis del sitio de referencia, planes (`PLAN-SIGUIENTE-NIVEL.md` es el vigente; su detalle por fase está en `docs/siguiente-nivel/`) y prompts para generar fotos y videos.

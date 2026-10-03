@@ -539,3 +539,9 @@ Archivo: `drop-02.png` (vertical 3:4).
 | Opcional | `lado-derecho-NN.jpg` y `giro-NN-derecha.mp4`, `espalda-NN.jpg`, `cerca-03-dobladillo.jpg`, `cerca-03-etiqueta.jpg`, `video-doblando.mp4`, `clip-estampado.mp4` | 16.2, 16.3, 17, 20, 21 |
 
 Mándamelos por aquí o súbelos a `assets/raw/` (los videos en `assets/raw/video/`). Yo me encargo de quitar fondos, alinear al gancho, comprimir y montarlos en la página.
+
+**Mientras no llegan, la página ya los espera con muestras** (marcadas "Foto de muestra"):
+
+- **Fotos** `cerca-…`, `drop-02`, `proceso-…` y `calle-…`: déjalas en `assets/raw/fotos-nuevas/` con el nombre de la tabla y corre
+  `python tools/fotos_web.py && python tools/catalogo_web.py`. Se recortan al tamaño de la página, van a `web/fotos/` y reemplazan solas a la muestra.
+- `drop-02.png` necesita el fondo quitado para colgar del tubo. Si llega con fondo, se lo quito yo al integrarla.

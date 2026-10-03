@@ -10,6 +10,41 @@ from pathlib import Path
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
+FOTOS = ROOT / "web" / "fotos"
+
+
+def photo(name):
+    """La foto real si existe; si no, su muestra (tools/fotos_web.py), marcada como tal."""
+    if not name:
+        return None
+    if (FOTOS / name).exists():
+        return {"src": f"fotos/{name}", "sample": False}
+    if (FOTOS / "muestra" / name).exists():
+        return {"src": f"fotos/muestra/{name}", "sample": True}
+    return None
+
+
+def closeup(c):
+    if not c:
+        return None
+    points = []
+    for p in c.get("puntos", []):
+        assert 0 <= p["x"] <= 1 and 0 <= p["y"] <= 1, f"cerca: {p['id']} fuera del lienzo"
+        assert p.get("lado") in ("izq", "der"), f"cerca: {p['id']} sin lado"
+        points.append({"id": p["id"], "title": p["titulo"], "text": p["texto"], "photo": photo(p.get("foto")),
+                       "x": p["x"], "y": p["y"], "side": p["lado"]})
+    return {"item": c["prenda"], "eyebrow": c.get("encabezado", ""), "title": c.get("titulo", ""), "points": points}
+
+
+def drop(d):
+    if not d:
+        return None
+    from datetime import datetime
+    datetime.fromisoformat(d["fecha"])   # falla aquí si la fecha está mal escrita
+    after = d.get("despues", {})
+    return {"name": d["nombre"], "date": d["fecha"], "title": d.get("titulo", ""), "text": d.get("texto", ""),
+            "after": {"title": after.get("titulo", ""), "button": after.get("boton", "")},
+            "photo": photo(d.get("foto"))}
 
 
 def main():
@@ -37,6 +72,7 @@ def main():
             "slug": src.get("slug", item["id"]),
             "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"),
                      "model": look.get("modelo")},
+            "closeup": photo(shop.get("cerca")),
         })
 
     web["site"] = {
@@ -66,6 +102,8 @@ def main():
             "days": site.get("cambios", {}).get("dias"),
             "firstFree": site.get("cambios", {}).get("primer_cambio_gratis", False),
         },
+        "closeup": closeup(site.get("cerca")),
+        "drop": drop(site.get("drop")),
     }
     # Validaciones: mejor detenerse con un mensaje claro que publicar datos rotos.
     slugs = [it["slug"] for it in web["items"]]
@@ -73,6 +111,9 @@ def main():
     for it in web["items"]:
         assert all(c.isalnum() or c == "-" for c in it["slug"]), f"slug inválido: {it['slug']}"
         assert set(it["soldOut"]) <= set(it["sizes"]), f"{it['id']}: agotadas fuera de tallas"
+    cu = web["site"].get("closeup")
+    if cu:
+        assert cu["item"] in by_id, f"cerca: no existe la prenda {cu['item']}"
     rec = web["site"].get("recommender")
     if rec:
         limits = [m for m, _ in rec["peso"]]

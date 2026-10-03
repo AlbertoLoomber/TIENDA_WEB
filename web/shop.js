@@ -3,7 +3,7 @@
  * Collection: one rail with every piece hanging face-on. Filters slide the
  * pieces along the rail like a real rack: the ones that don't match lift off,
  * the rest slide over to close the gap and settle with a small swing. Product sheet: the garment flies from its card to the sheet's
- * stage; views (front, side, worn), sizes, a size guide that swings in like a
+ * stage; views (front, side, worn, up close), sizes, a size guide that swings in like a
  * hang tag, and an "Add to bag" that only previews (no store is connected).
  */
 (() => {
@@ -421,6 +421,8 @@
       { key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" },
     ];
     if (item.look?.photo) views.push({ key: "worn", label: "Puesta", alt: "puesta", src: item.look.photo, kind: "photo" });
+    // The print up close (a sample crop until the macro photo arrives).
+    if (item.closeup?.src) views.push({ key: "closeup", label: "De cerca", alt: "detalle del estampado", src: item.closeup.src, kind: "photo", sample: item.closeup.sample });
 
     const stage = $("sheet-stage");
     stage.querySelectorAll(".sheet__img").forEach((n) => n.remove());
@@ -432,6 +434,8 @@
       img.src = v.src;
       img.alt = v.key === "worn" ? `${item.name} puesta` : `${item.name}, ${v.alt}`;
       img.dataset.view = v.key;
+      if (v.sample) img.dataset.sample = "";
+      if (v.key === "closeup") img.loading = "lazy";
       stage.appendChild(img);
 
       const tab = document.createElement("button");
@@ -445,6 +449,7 @@
       tabs.appendChild(tab);
     });
     stage.classList.toggle("is-photo", false);
+    $("sheet-sample").hidden = true;
     stage.setAttribute("aria-label", `${item.name}: vista de frente. Usa las flechas o arrastra para girarla.`);
     paintSticky();
   }
@@ -459,6 +464,7 @@
     prev.classList.remove("is-on");
     next.classList.add("is-on");
     stage.classList.toggle("is-photo", next.classList.contains("sheet__img--photo"));
+    $("sheet-sample").hidden = !("sample" in next.dataset);
     stage.setAttribute("aria-label", `${current?.name || ""}: ${next.alt.replace(`${current?.name}, `, "")}. Usa las flechas o arrastra para girarla.`);
     if (reduceMotion || instant) {
       gsap.set([prev, next], { clearProps: "opacity" });

@@ -69,7 +69,11 @@
       "soldOut": [
         "XL"
       ],
-      "slug": "camo-overshirt"
+      "slug": "camo-overshirt",
+      "closeup": {
+        "src": "fotos/muestra/cerca-01-estampado.webp",
+        "sample": true
+      }
     },
     {
       "id": "02-black-tee-minimal",
@@ -122,7 +126,11 @@
       },
       "categoryPlural": "Playeras",
       "soldOut": [],
-      "slug": "nomad-minimal-tee"
+      "slug": "nomad-minimal-tee",
+      "closeup": {
+        "src": "fotos/muestra/cerca-02-estampado.webp",
+        "sample": true
+      }
     },
     {
       "id": "03-white-tee-dollar",
@@ -169,7 +177,11 @@
       },
       "categoryPlural": "Playeras",
       "soldOut": [],
-      "slug": "more-than-money-tee"
+      "slug": "more-than-money-tee",
+      "closeup": {
+        "src": "fotos/muestra/cerca-03-estampado.webp",
+        "sample": true
+      }
     },
     {
       "id": "04-black-tee-script",
@@ -216,7 +228,11 @@
       },
       "categoryPlural": "Playeras",
       "soldOut": [],
-      "slug": "good-people-tee"
+      "slug": "good-people-tee",
+      "closeup": {
+        "src": "fotos/muestra/cerca-04-estampado.webp",
+        "sample": true
+      }
     },
     {
       "id": "05-green-crewneck",
@@ -263,7 +279,11 @@
       },
       "categoryPlural": "Sudaderas",
       "soldOut": [],
-      "slug": "create-good-habits-crewneck"
+      "slug": "create-good-habits-crewneck",
+      "closeup": {
+        "src": "fotos/muestra/cerca-05-estampado.webp",
+        "sample": true
+      }
     }
   ],
   "site": {
@@ -511,6 +531,60 @@
     "returns": {
       "days": 30,
       "firstFree": true
+    },
+    "closeup": {
+      "item": "03-white-tee-dollar",
+      "eyebrow": "De cerca",
+      "title": "Hecha para durar.",
+      "points": [
+        {
+          "id": "estampado",
+          "title": "Serigrafía",
+          "text": "Tintas base agua, impresas a mano.",
+          "photo": {
+            "src": "fotos/muestra/cerca-03-estampado.webp",
+            "sample": true
+          },
+          "x": 0.42,
+          "y": 0.43,
+          "side": "izq"
+        },
+        {
+          "id": "cuello",
+          "title": "Cuello",
+          "text": "Acanalado que no se deforma con las lavadas.",
+          "photo": {
+            "src": "fotos/muestra/cerca-03-cuello.webp",
+            "sample": true
+          },
+          "x": 0.59,
+          "y": 0.215,
+          "side": "der"
+        },
+        {
+          "id": "tela",
+          "title": "Tela",
+          "text": "100% algodón de 240 g/m².",
+          "photo": {
+            "src": "fotos/muestra/cerca-tela.webp",
+            "sample": true
+          },
+          "x": 0.66,
+          "y": 0.76,
+          "side": "der"
+        }
+      ]
+    },
+    "drop": {
+      "name": "Drop 02",
+      "date": "2026-10-24T20:00:00-06:00",
+      "title": "Avísame cuando salga",
+      "text": "Las prendas nuevas llegan primero al perchero. Te mandamos un aviso corto el día del drop.",
+      "after": {
+        "title": "Ya está en el perchero",
+        "button": "Ver el drop"
+      },
+      "photo": null
     }
   }
 }

@@ -7,7 +7,9 @@
  *               fitting-room curtain; a small hanger on a rod tracks the way
  *   about     → "Nomad" writes itself; the studio photo opens from the centre;
  *               the fact lines draw in
- *   newsletter→ the hang tag swings in on its string, then its title
+ *   de cerca  → closeup.js: the details' lines draw themselves once
+ *   newsletter→ the hang tag swings in on its string, then its title; the
+ *               covered Drop 02 garment follows a beat later
  *   footer    → uncovered from underneath as the newsletter lifts away
  * With "reduce motion" nothing moves: content is simply there.
  */
@@ -186,6 +188,18 @@
       .from(".tag-hang__rod", { opacity: 0, scaleX: 0.4, duration: motion.fast, ease: motion.easeOut })
       .fromTo(swing, { rotation: -11, opacity: 0 }, { rotation: 0, duration: 2.4, ease: "elastic.out(1, 0.32)" }, 0.1)
       .to(swing, { opacity: 1, duration: 0.4, ease: "power1.out" }, 0.1);
+    // The covered garment on the same rod: same character, a beat later, 70% of
+    // the swing and starting on the far side, so the two never swing in step
+    // (or into each other).
+    const drop = document.getElementById("drop-hang");
+    if (drop && !drop.hidden && getComputedStyle(drop).display !== "none") {
+      gsap.fromTo("#drop-swing", { rotation: 7.7, opacity: 0 }, {
+        rotation: 0, duration: 2.4, delay: 0.35, ease: "elastic.out(1, 0.32)",
+        scrollTrigger: { trigger: "#tag-hang", start: "top 80%", once: true },
+      });
+      gsap.to("#drop-swing", { opacity: 1, duration: 0.4, delay: 0.35, ease: "power1.out",
+        scrollTrigger: { trigger: "#tag-hang", start: "top 80%", once: true } });
+    }
   }
 
   /* ---------- footer: uncovered from underneath ---------- */

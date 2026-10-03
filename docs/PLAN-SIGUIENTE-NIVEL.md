@@ -1,6 +1,6 @@
 # Plan de implementación: Nomad al siguiente nivel
 
-> **Estado:** **fase 1 completa** (sesiones 1 y 2). Sigue la fase 2 (sesión 3: bolsa). El sitio pasa a español. Sin pagos:
+> **Estado:** **fases 1, 2 y 3 completas** (sesiones 1 a 7; De cerca y la prenda tapada usan muestras hasta que lleguen las fotos 17 y 23). Sigue la fase 4 (sesión 8: giro real). Sin pagos:
 > la bolsa y el botón de pago son de diseño; la parte funcional (cobro, inventario, correos)
 > se hace después.
 

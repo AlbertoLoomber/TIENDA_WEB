@@ -33,7 +33,7 @@ const LIBS = {
 const navegador = () => chromium.launch();
 
 /** Abre el sitio en un tamaño y junta los errores de consola. */
-async function abrir(browser, t, { reducir = false } = {}) {
+async function abrir(browser, t, { reducir = false, ruta = "", antes = null } = {}) {
   const page = await browser.newPage({
     viewport: { width: t.width, height: t.height },
     isMobile: t.touch, hasTouch: t.touch,
@@ -51,7 +51,8 @@ async function abrir(browser, t, { reducir = false } = {}) {
     const ruta = path.join(NM, local);
     if (fs.existsSync(ruta)) await page.route(`**/${archivo}`, (r) => r.fulfill({ path: ruta, contentType: "text/javascript" }));
   }
-  await page.goto(BASE, { waitUntil: "load" });
+  if (antes) await antes(page);          // p. ej. instalar un reloj falso
+  await page.goto(BASE + ruta, { waitUntil: "load" });
   await page.waitForTimeout(3500);       // entrada del perchero
   return page;
 }

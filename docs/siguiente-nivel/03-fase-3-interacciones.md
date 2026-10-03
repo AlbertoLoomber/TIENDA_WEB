@@ -69,7 +69,7 @@ function setupBrush() {
 - Las posiciones de las prendas se leen una vez por evento, no por prenda (sin recálculos de diseño repetidos).
 
 ### Listo cuando
-- [ ] Prueba automática: barrido a 1.2 px/ms; ninguna prenda pasa de 5° y todas vuelven a 0° antes de 2.2 s.
+- [x] Prueba automática: barrido a 1.2 px/ms; ninguna prenda pasa de 5° y todas vuelven a 0° antes de 2.2 s.
 - [ ] Barrido lento (0.3 px/ms): sin vaivén; el giro por hover funciona como hoy.
 - [ ] No interfiere con el giro, la onda a los vecinos ni la brisa.
 
@@ -127,8 +127,8 @@ para que el scroll vertical de la ficha siga funcionando en celular.
 
 ### Listo cuando
 - [ ] En celular, arrastrar horizontal gira y arrastrar vertical hace scroll, sin trabarse.
-- [ ] Al soltar, siempre termina en una vista exacta (sin ángulos a medias).
-- [ ] Las pestañas y el giro nunca se desincronizan.
+- [x] Al soltar, siempre termina en una vista exacta (sin ángulos a medias).
+- [x] Las pestañas y el giro nunca se desincronizan.
 
 ---
 
@@ -182,6 +182,8 @@ de texto con el precio en 15px (T1.2).
 ---
 
 ## T3.4 Sección "De cerca"
+
+> **Hecho (sesión 7).** `web/closeup.js`; datos en `sitio.cerca`; prueba `tools/pruebas/cerca.js`. Las fotos son muestras recortadas de las prendas (`tools/fotos_web.py`) hasta que lleguen las macros (PROMPTS 17). En celular, la prenda lleva puntos numerados.
 
 | | |
 |---|---|
@@ -257,13 +259,15 @@ CELULAR
   la foto como la vista "Puesta".
 
 ### Listo cuando
-- [ ] La sección no fija el scroll y su entrada ocurre una sola vez.
-- [ ] Las líneas llegan exactas a puntos y círculos en los 5 tamaños, también después de cambiar el tamaño de la ventana.
-- [ ] Pesa menos de 250 KB en total y nada carga antes de acercarse a la sección.
+- [x] La sección no fija el scroll y su entrada ocurre una sola vez.
+- [x] Las líneas llegan exactas a puntos y círculos en los 5 tamaños, también después de cambiar el tamaño de la ventana.
+- [x] Pesa menos de 250 KB en total y nada carga antes de acercarse a la sección.
 
 ---
 
 ## T3.5 Drop 02 con cuenta regresiva
+
+> **Hecho (sesión 7).** `web/drop.js`; datos en `sitio.drop`; prueba `tools/pruebas/drop.js` (con reloj falso para el cambio de minuto y la hora del drop). La prenda tapada es un dibujo SVG hasta que llegue `drop-02.png` (PROMPTS 23); se muestra desde 821 px de ancho.
 
 | | |
 |---|---|
@@ -328,9 +332,9 @@ function restante(ahora = Date.now()) {
 - Campo de correo con etiqueta, validación y mensaje de error en `aria-live` (existe).
 
 ### Listo cuando
-- [ ] Los estados "antes" y "después" se ven bien en los 5 tamaños.
-- [ ] Los dígitos no se mueven de lugar al cambiar.
-- [ ] La prenda tapada y la etiqueta se columpian sin chocar.
+- [x] Los estados "antes" y "después" se ven bien en los 5 tamaños.
+- [x] Los dígitos no se mueven de lugar al cambiar.
+- [x] La prenda tapada y la etiqueta se columpian sin chocar.
 
 ---
 

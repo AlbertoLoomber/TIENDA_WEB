@@ -881,9 +881,11 @@
     window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
     window.NOMAD.info?.setup();
+    window.NOMAD.closeup?.setup();
     buildLookbook();
     buildStudio();
     setupNewsletter();
+    window.NOMAD.drop?.setup();
     window.NOMAD?.sections?.setup();
     setupLean();
     setupBrush();

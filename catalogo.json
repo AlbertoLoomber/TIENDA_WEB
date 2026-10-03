@@ -62,7 +62,8 @@
           "precio",
           "agotadas",
           "look.modelo"
-        ]
+        ],
+        "cerca": "cerca-01-estampado.webp"
       },
       "categoria_plural": "Sobrecamisas",
       "slug": "camo-overshirt"
@@ -120,7 +121,8 @@
           "precio",
           "agotadas",
           "look.modelo"
-        ]
+        ],
+        "cerca": "cerca-02-estampado.webp"
       },
       "categoria_plural": "Playeras",
       "slug": "nomad-minimal-tee"
@@ -179,7 +181,8 @@
           "precio",
           "agotadas",
           "look.modelo"
-        ]
+        ],
+        "cerca": "cerca-03-estampado.webp"
       },
       "categoria_plural": "Playeras",
       "slug": "more-than-money-tee"
@@ -237,7 +240,8 @@
           "precio",
           "agotadas",
           "look.modelo"
-        ]
+        ],
+        "cerca": "cerca-04-estampado.webp"
       },
       "categoria_plural": "Playeras",
       "slug": "good-people-tee"
@@ -295,7 +299,8 @@
           "precio",
           "agotadas",
           "look.modelo"
-        ]
+        ],
+        "cerca": "cerca-05-estampado.webp"
       },
       "categoria_plural": "Sudaderas",
       "slug": "create-good-habits-crewneck"
@@ -350,7 +355,9 @@
     "_provisional": [
       "barra",
       "cambios",
+      "cerca",
       "contacto",
+      "drop",
       "envio",
       "hojas",
       "preguntas",
@@ -554,6 +561,53 @@
           }
         ]
       }
+    },
+    "cerca": {
+      "_nota": "x, y: proporción del lienzo de la prenda (1000×1300). lado: izq o der (dónde va el círculo en escritorio). Las fotos se buscan en web/fotos y, si faltan, en web/fotos/muestra (tools/fotos_web.py).",
+      "prenda": "03-white-tee-dollar",
+      "encabezado": "De cerca",
+      "titulo": "Hecha para durar.",
+      "puntos": [
+        {
+          "id": "estampado",
+          "titulo": "Serigrafía",
+          "texto": "Tintas base agua, impresas a mano.",
+          "foto": "cerca-03-estampado.webp",
+          "x": 0.42,
+          "y": 0.43,
+          "lado": "izq"
+        },
+        {
+          "id": "cuello",
+          "titulo": "Cuello",
+          "texto": "Acanalado que no se deforma con las lavadas.",
+          "foto": "cerca-03-cuello.webp",
+          "x": 0.59,
+          "y": 0.215,
+          "lado": "der"
+        },
+        {
+          "id": "tela",
+          "titulo": "Tela",
+          "texto": "100% algodón de 240 g/m².",
+          "foto": "cerca-tela.webp",
+          "x": 0.66,
+          "y": 0.76,
+          "lado": "der"
+        }
+      ]
+    },
+    "drop": {
+      "_nota": "Fecha con zona horaria del centro de México. Para revisar los estados en la vista previa: ?drop=antes o ?drop=despues.",
+      "nombre": "Drop 02",
+      "fecha": "2026-10-24T20:00:00-06:00",
+      "titulo": "Avísame cuando salga",
+      "texto": "Las prendas nuevas llegan primero al perchero. Te mandamos un aviso corto el día del drop.",
+      "despues": {
+        "titulo": "Ya está en el perchero",
+        "boton": "Ver el drop"
+      },
+      "foto": "drop-02.webp"
     }
   }
 }
