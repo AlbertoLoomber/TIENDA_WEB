@@ -50,6 +50,12 @@ def main():
         },
         "contact": site.get("contacto", {}),
         "recommender": site.get("recomendador"),
+        "faq": [{"q": f["p"], "a": f["r"]} for f in site.get("preguntas", [])],
+        "pages": {
+            key: {"group": h.get("grupo", ""), "title": h["titulo"], "draft": h.get("borrador", False),
+                  "sections": [{"title": x["t"], "text": x["p"]} for x in h.get("secciones", [])]}
+            for key, h in site.get("hojas", {}).items()
+        },
         "shipping": {
             "prep": site.get("envio", {}).get("preparacion"),
             "delivery": site.get("envio", {}).get("entrega"),

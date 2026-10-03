@@ -100,6 +100,7 @@
           <ul class="shelf__row" id="shop-grid"></ul>
         </div>
       </div>
+      <ul class="perks" id="perks" aria-label="Envíos y cambios"></ul>
     </section>
 
     <section class="lookbook" id="lookbook" aria-labelledby="lookbook-title">
@@ -139,6 +140,15 @@
         </div>
         <figcaption>El estudio</figcaption>
       </figure>
+    </section>
+
+    <section class="faq" id="preguntas" aria-labelledby="faq-title">
+      <div class="faq__head">
+        <p class="eyebrow">Ayuda</p>
+        <h2 class="section-title" id="faq-title">Preguntas frecuentes.</h2>
+        <p class="faq__more">¿No encuentras tu respuesta? <a href="#" data-contact="whatsapp" data-wa-text="Hola, tengo una pregunta">Escríbenos por WhatsApp →</a></p>
+      </div>
+      <div class="faq__list" id="faq-list"></div>
     </section>
 
   </main>
@@ -186,18 +196,30 @@
           <a href="#lookbook">Lookbook</a>
         </div>
         <div class="foot__col">
+          <p class="foot__k">Ayuda</p>
+          <a href="#/ayuda/envios">Envíos</a>
+          <a href="#/ayuda/cambios">Cambios y devoluciones</a>
+          <a href="#/ayuda/tallas">Guía de tallas</a>
+          <a href="#preguntas">Preguntas frecuentes</a>
+        </div>
+        <div class="foot__col">
           <p class="foot__k">Marca</p>
           <a href="#about">Nosotros</a>
           <a href="#newsletter">Newsletter</a>
         </div>
         <div class="foot__col">
           <p class="foot__k">Contacto</p>
-          <span>Instagram</span>
-          <span>Correo</span>
+          <a href="#" data-contact="instagram">Instagram</a>
+          <a href="#" data-contact="whatsapp" data-wa-text="Hola">WhatsApp</a>
+          <a href="#" data-contact="correo">Correo</a>
         </div>
       </nav>
     </div>
-    <p class="foot__base"><span>© 2026 Nomad</span><span>Prototipo · solo diseño</span></p>
+    <p class="foot__base">
+      <span>© 2026 Nomad</span>
+      <span class="foot__legal"><a href="#/legal/privacidad">Aviso de privacidad</a><a href="#/legal/terminos">Términos</a></span>
+      <span>Prototipo · solo diseño</span>
+    </p>
   </footer>
   </div>
 </div>
@@ -241,6 +263,8 @@
       <p class="sheet__suggest" id="sheet-suggest"></p>
       <button class="pill pill--solid sheet__add" type="button" id="sheet-add">Agregar a la bolsa</button>
       <p class="sheet__status" id="sheet-status" aria-live="polite"></p>
+      <p class="sheet__perks" id="sheet-perks"></p>
+      <p class="sheet__wa"><a href="#" data-contact="whatsapp" data-wa-text="Hola, tengo una duda sobre mi talla">¿Dudas con tu talla? Escríbenos por WhatsApp</a></p>
       <details class="sheet__more" open>
         <summary>Detalles</summary>
         <ul id="sheet-details"></ul>
@@ -329,6 +353,20 @@
     </footer>
   </aside>
 </div>
+<!-- Help and legal pages: shipping, returns, privacy, terms. Same panel as the sheet. -->
+<div class="info" id="info" role="dialog" aria-modal="true" aria-labelledby="info-title" hidden>
+  <div class="info__scrim" data-info-close></div>
+  <article class="info__panel" id="info-panel" data-lenis-prevent>
+    <header class="info__head">
+      <p class="eyebrow" id="info-group"></p>
+      <button class="info__close" type="button" data-info-close>Cerrar</button>
+    </header>
+    <h2 class="info__title" id="info-title" tabindex="-1"></h2>
+    <p class="info__draft" id="info-draft" hidden>Borrador: no publicar sin revisión legal ni los datos del negocio.</p>
+    <div class="info__body" id="info-body"></div>
+    <p class="info__wa"><a href="#" data-contact="whatsapp" data-wa-text="Hola, tengo una duda">¿Dudas? Escríbenos por WhatsApp</a></p>
+  </article>
+</div>
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 <!-- PAGE:END -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
@@ -339,6 +377,7 @@
 <script src="sections.js"></script>
 <script src="bag.js"></script>
 <script src="shop.js"></script>
+<script src="info.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

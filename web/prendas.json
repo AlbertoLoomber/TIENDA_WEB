@@ -308,7 +308,8 @@
     "contact": {
       "instagram": "@nomad",
       "whatsapp": "52XXXXXXXXXX",
-      "correo": "hola@nomad.example"
+      "correo": "hola@nomad.example",
+      "provisional": true
     },
     "recommender": {
       "orden": [
@@ -350,6 +351,154 @@
         "peso": [
           40,
           150
+        ]
+      }
+    },
+    "faq": [
+      {
+        "q": "¿Cuánto tarda mi envío?",
+        "a": "Preparamos tu pedido en 1 a 2 días hábiles y llega en 3 a 5 días hábiles a la mayor parte del país. Te mandamos la guía de rastreo por correo."
+      },
+      {
+        "q": "¿Envían a todo México?",
+        "a": "Sí, a toda la República. En zonas extendidas puede tardar hasta 2 días más."
+      },
+      {
+        "q": "¿Puedo cambiar de talla?",
+        "a": "Sí. Tienes 30 días desde que recibes tu pedido; la prenda debe estar sin usar y con su etiqueta. El primer cambio de talla no tiene costo."
+      },
+      {
+        "q": "¿Cómo elijo mi talla?",
+        "a": "Nuestras prendas son de corte oversized. Usa «¿Qué talla soy?» en cada prenda o revisa la guía de tallas. Si estás entre dos, la menor te queda normal y la mayor más holgada."
+      },
+      {
+        "q": "¿Cómo cuido mi prenda?",
+        "a": "Lava en frío y al revés, sin blanqueador. Seca colgada y plancha por el revés sin tocar el estampado."
+      },
+      {
+        "q": "¿Cuándo sale el próximo drop?",
+        "a": "El Drop 02 sale el sábado 24 de octubre a las 20:00 h (hora del centro de México). Déjanos tu correo y te avisamos."
+      }
+    ],
+    "pages": {
+      "envios": {
+        "group": "Ayuda",
+        "title": "Envíos",
+        "draft": false,
+        "sections": [
+          {
+            "title": "Tiempos",
+            "text": "Preparamos tu pedido en 1 a 2 días hábiles. La paquetería entrega en 3 a 5 días hábiles; en zonas extendidas, hasta 2 días más."
+          },
+          {
+            "title": "Costos",
+            "text": "Envío estándar: $149 MXN. Gratis en compras desde $1,500."
+          },
+          {
+            "title": "Cobertura",
+            "text": "Enviamos a toda la República Mexicana."
+          },
+          {
+            "title": "Rastreo",
+            "text": "Te mandamos la guía por correo en cuanto sale tu pedido."
+          },
+          {
+            "title": "¿Algo salió mal?",
+            "text": "Escríbenos por WhatsApp o por correo con tu número de pedido y lo resolvemos."
+          }
+        ]
+      },
+      "cambios": {
+        "group": "Ayuda",
+        "title": "Cambios y devoluciones",
+        "draft": false,
+        "sections": [
+          {
+            "title": "Plazo",
+            "text": "30 días naturales desde que recibes tu pedido."
+          },
+          {
+            "title": "Condiciones",
+            "text": "La prenda debe estar sin usar, sin lavar y con su etiqueta."
+          },
+          {
+            "title": "Cambio de talla",
+            "text": "El primero no tiene costo: nosotros te enviamos la nueva talla."
+          },
+          {
+            "title": "Cómo pedirlo",
+            "text": "Escríbenos por WhatsApp o por correo con tu número de pedido y la talla que quieres."
+          },
+          {
+            "title": "Devoluciones",
+            "text": "Se definirán junto con los pagos, cuando la tienda esté en línea."
+          }
+        ]
+      },
+      "privacidad": {
+        "group": "Legal",
+        "title": "Aviso de privacidad",
+        "draft": true,
+        "sections": [
+          {
+            "title": "Responsable",
+            "text": "[RAZÓN SOCIAL], con domicilio en [DOMICILIO], es responsable del uso de tus datos personales."
+          },
+          {
+            "title": "Datos que recabamos",
+            "text": "Nombre, correo, teléfono y dirección de envío. Los datos de pago los procesa directamente [PROVEEDOR DE PAGO]."
+          },
+          {
+            "title": "Para qué los usamos",
+            "text": "Para procesar y enviar tus pedidos y atender dudas, cambios y devoluciones. De forma secundaria, para la newsletter y avisos de drops; puedes negarte escribiendo a [CORREO]."
+          },
+          {
+            "title": "Con quién los compartimos",
+            "text": "Con la paquetería y el proveedor de pagos, solo para cumplir tu pedido."
+          },
+          {
+            "title": "Tus derechos",
+            "text": "Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos (derechos ARCO) y revocar tu consentimiento escribiendo a [CORREO]."
+          },
+          {
+            "title": "Lo que guarda tu navegador",
+            "text": "El sitio guarda tu bolsa y tus medidas del recomendador en tu propio navegador; no se envían a nadie."
+          },
+          {
+            "title": "Cambios a este aviso",
+            "text": "Cualquier cambio se publicará en esta página. Última actualización: [FECHA]."
+          }
+        ]
+      },
+      "terminos": {
+        "group": "Legal",
+        "title": "Términos",
+        "draft": true,
+        "sections": [
+          {
+            "title": "Quiénes somos",
+            "text": "Nomad es una marca de ropa operada por [RAZÓN SOCIAL]."
+          },
+          {
+            "title": "Uso del sitio",
+            "text": "Este sitio es una vista previa de diseño; todavía no procesa compras."
+          },
+          {
+            "title": "Productos y precios",
+            "text": "Los precios se muestran en pesos mexicanos [con IVA incluido]."
+          },
+          {
+            "title": "Envíos, cambios y devoluciones",
+            "text": "Consulta las hojas de Envíos y de Cambios y devoluciones."
+          },
+          {
+            "title": "Propiedad intelectual",
+            "text": "Los diseños, estampados, fotos y textos son de Nomad y no pueden usarse sin permiso."
+          },
+          {
+            "title": "Ley aplicable",
+            "text": "Estos términos se rigen por las leyes de México."
+          }
         ]
       }
     },

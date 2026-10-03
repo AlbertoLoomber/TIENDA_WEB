@@ -806,6 +806,7 @@
     Object.assign(window.NOMAD, { items, site, rail: RAIL });
     window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
+    window.NOMAD.info?.setup();
     buildLookbook();
     buildStudio();
     setupNewsletter();
