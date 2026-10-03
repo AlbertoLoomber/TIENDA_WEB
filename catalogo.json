@@ -11,7 +11,7 @@
     {
       "id": "01-camo-overshirt",
       "nombre": "Camo Overshirt",
-      "categoria": "Overshirt",
+      "categoria": "Sobrecamisa",
       "immutable_description": "Camisa oversize camuflaje abstracto marrón y taupe; cuello, botones, manga larga; conservar distribución del patrón.",
       "front": "assets/raw/01-camo-overshirt-front.png",
       "side": "assets/raw/01-camo-overshirt-side.png",
@@ -37,25 +37,26 @@
           "L",
           "XL"
         ],
-        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
         "precio": 1290,
         "nuevo": false,
-        "descripcion": "An oversized overshirt in a muted brown and taupe camouflage. Button front, chest pocket and long sleeves, cut to wear open over a tee.",
+        "descripcion": "Sobrecamisa amplia con camuflaje en tonos café y arena. Botones al frente, bolsa en el pecho y manga larga; hecha para usarse abierta sobre una playera.",
         "detalles": [
-          "Heavyweight cotton twill",
-          "Oversized fit",
-          "Chest pocket"
+          "Sarga de algodón gruesa",
+          "Corte oversized",
+          "Bolsa en el pecho"
         ],
         "look": {
           "tono": "#d6cdbd",
           "foto": "fotos/look-01-camo.webp"
         }
-      }
+      },
+      "categoria_plural": "Sobrecamisas"
     },
     {
       "id": "02-black-tee-minimal",
       "nombre": "Nomad Minimal Tee",
-      "categoria": "T-Shirt",
+      "categoria": "Playera",
       "immutable_description": "Playera negra heavyweight oversize, pequeño wordmark blanco NOMAD en el pecho.",
       "front": "assets/raw/02-black-tee-minimal-front.png",
       "side": "assets/raw/02-black-tee-minimal-side.png",
@@ -82,25 +83,26 @@
           "L",
           "XL"
         ],
-        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
         "precio": 690,
         "nuevo": true,
-        "descripcion": "A heavyweight black tee with a small NOMAD wordmark on the chest. Boxy body, dropped shoulders.",
+        "descripcion": "Playera negra de algodón pesado con el nombre NOMAD pequeño en el pecho. Cuerpo amplio y hombro caído.",
         "detalles": [
-          "Heavyweight cotton",
-          "Oversized fit",
-          "Printed wordmark"
+          "Algodón pesado",
+          "Corte oversized",
+          "Logo estampado"
         ],
         "look": {
           "tono": "#cdd0d4",
           "foto": null
         }
-      }
+      },
+      "categoria_plural": "Playeras"
     },
     {
       "id": "03-white-tee-dollar",
       "nombre": "More Than Money Tee",
-      "categoria": "T-Shirt",
+      "categoria": "Playera",
       "immutable_description": "Playera blanca oversize, billete verde y frase More Than Money debajo; conservar ambos elementos.",
       "front": "assets/raw/03-white-tee-dollar-front.png",
       "side": "assets/raw/03-white-tee-dollar-side.png",
@@ -127,26 +129,27 @@
           "L",
           "XL"
         ],
-        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
         "precio": 690,
         "nuevo": false,
-        "descripcion": "A heavyweight white tee with a one-dollar bill printed across the chest and More Than Money in script below.",
+        "descripcion": "Playera blanca de algodón pesado con un billete de un dólar estampado en el pecho y \"More Than Money\" en letra script.",
         "detalles": [
-          "Heavyweight cotton",
-          "Oversized fit",
-          "Screen printed"
+          "Algodón pesado",
+          "Corte oversized",
+          "Serigrafía"
         ],
         "look": {
           "tono": "#3e4874",
           "tinta": "#eceae3",
           "foto": "fotos/look-03-money.webp"
         }
-      }
+      },
+      "categoria_plural": "Playeras"
     },
     {
       "id": "04-black-tee-script",
       "nombre": "Good People Tee",
-      "categoria": "T-Shirt",
+      "categoria": "Playera",
       "immutable_description": "Playera negra oversize, letras crema Good People Better Days en cuatro líneas.",
       "front": "assets/raw/04-black-tee-script-front.png",
       "side": "assets/raw/04-black-tee-script-side.png",
@@ -173,25 +176,26 @@
           "L",
           "XL"
         ],
-        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
         "precio": 690,
         "nuevo": true,
-        "descripcion": "A heavyweight black tee with Good People Better Days set in a tall cream serif down the front.",
+        "descripcion": "Playera negra de algodón pesado con \"Good People Better Days\" en letra serif color crema a lo largo del frente.",
         "detalles": [
-          "Heavyweight cotton",
-          "Oversized fit",
-          "Screen printed"
+          "Algodón pesado",
+          "Corte oversized",
+          "Serigrafía"
         ],
         "look": {
           "tono": "#c4b5a3",
           "foto": null
         }
-      }
+      },
+      "categoria_plural": "Playeras"
     },
     {
       "id": "05-green-crewneck",
       "nombre": "Create Good Habits Crewneck",
-      "categoria": "Crewneck",
+      "categoria": "Sudadera",
       "immutable_description": "Sudadera verde forestal de cuello redondo, manga larga, puños y cintura acanalados; CREATE GOOD HABITS y globo pequeño; sin capucha, sin cierre, sin óvalo.",
       "front": "assets/raw/05-green-crewneck-front.png",
       "side": "assets/raw/05-green-crewneck-side.png",
@@ -218,20 +222,21 @@
           "L",
           "XL"
         ],
-        "cuidados": "Machine wash cold, inside out. Hang to dry.",
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
         "precio": 990,
         "nuevo": false,
-        "descripcion": "A forest green crewneck sweatshirt with a cream Create Good Habits print and a small globe. Ribbed cuffs and hem.",
+        "descripcion": "Sudadera verde bosque con el estampado \"Create Good Habits\" en crema y un pequeño globo terráqueo. Puños y resorte acanalados.",
         "detalles": [
-          "Brushed cotton fleece",
-          "Relaxed fit",
-          "Screen printed"
+          "Felpa de algodón perchada",
+          "Corte relajado",
+          "Serigrafía"
         ],
         "look": {
           "tono": "#dcd5c4",
           "foto": "fotos/look-05-habits.webp"
         }
-      }
+      },
+      "categoria_plural": "Sudaderas"
     }
   ],
   "sitio": {
@@ -241,9 +246,9 @@
     "guia_tallas": {
       "unidad": "cm",
       "columnas": [
-        "Chest",
-        "Length",
-        "Sleeve"
+        "Pecho",
+        "Largo",
+        "Manga"
       ],
       "filas": {
         "S": [
@@ -271,6 +276,15 @@
     "contacto": {
       "instagram": "@nomad",
       "email": "hello@nomad.example"
-    }
+    },
+    "barra": [
+      "Drop 01 ya en el perchero",
+      "Envíos a todo México",
+      "Algodón pesado",
+      "Avísame del Drop 02"
+    ],
+    "_provisional": [
+      "barra"
+    ]
   }
 }

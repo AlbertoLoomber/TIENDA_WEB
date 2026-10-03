@@ -13,10 +13,11 @@
   const $ = (id) => document.getElementById(id);
   const pad = (n) => String(n).padStart(2, "0");
 
-  N.price = (amount) => {
+  // "$1,290 MXN"; short form "$1,290" where space is tight (the rail).
+  N.price = (amount, { short = false } = {}) => {
     if (amount == null) return "";
-    const currency = N.site?.currency || "MXN";
-    return `$${Number(amount).toLocaleString("en-US")} ${currency}`;
+    const value = `$${Number(amount).toLocaleString("es-MX", { maximumFractionDigits: 0 })}`;
+    return short ? value : `${value} ${N.site?.currency || "MXN"}`;
   };
 
   let items = [];
@@ -65,21 +66,22 @@
         </button>
         <div class="piece__meta">
           <p class="piece__name"><span></span></p>
-          <p class="piece__line"><span class="piece__cat"></span><span class="piece__price"></span></p>
+          <p class="piece__line"><span class="piece__price"></span></p>
         </div>`;
       const btn = li.querySelector(".piece__hang");
       const img = li.querySelector(".piece__garment");
       img.src = frontSrc(item);
-      btn.setAttribute("aria-label", `${item.name}, ${item.category}, ${N.price(item.price)}. View details`);
+      btn.setAttribute("aria-label", `${item.name}, ${item.category}, ${N.price(item.price)}. Ver detalles`);
       li.querySelector(".piece__name span").textContent = item.name;
+      // Name on top, price below with the "Nuevo" badge beside it. The category is
+      // left to the filters (and the button's label): the rail has no room for it.
+      li.querySelector(".piece__price").textContent = N.price(item.price, { short: true });
       if (item.isNew) {
         const badge = document.createElement("span");
         badge.className = "piece__badge";
-        badge.textContent = "New";
-        li.querySelector(".piece__name").appendChild(badge);
+        badge.textContent = "Nuevo";
+        li.querySelector(".piece__line").appendChild(badge);
       }
-      li.querySelector(".piece__cat").textContent = item.category;
-      li.querySelector(".piece__price").textContent = N.price(item.price);
 
       // A nudge on hover: the garment swings on its hook.
       btn.addEventListener("pointerenter", (e) => {
@@ -157,7 +159,8 @@
   function buildFilters() {
     const wrap = $("shop-filters");
     const cats = [...new Set(items.map((i) => i.category))];
-    const options = [["All", null], ...cats.map((c) => [c, c])];
+    const plural = (c) => items.find((i) => i.category === c)?.categoryPlural || c;
+    const options = [["Todo", null], ...cats.map((c) => [plural(c), c])];
     const buttons = options.map(([label, cat]) => {
       const b = document.createElement("button");
       b.type = "button";
@@ -245,6 +248,8 @@
 
     const el = sheet();
     el.hidden = false;
+    // A true modal: the page behind can't be reached by Tab or by screen readers.
+    $("page").inert = true;
     const stageImg = $("sheet-stage").querySelector(".sheet__img.is-on");
     const chrome = [...el.querySelectorAll(".sheet__info > *, .sheet__views, .sheet__close")];
 
@@ -286,6 +291,7 @@
       gsap.set([".sheet__scrim", "#sheet-panel", "#sheet-stage"], { clearProps: "opacity,backgroundColor,backgroundImage,boxShadow,background" });
       gsap.set(el.querySelectorAll(".sheet__info, .sheet__views, .sheet__close, .sheet__rod"), { clearProps: "opacity" });
       if (card) card.querySelector(".piece__garment").style.visibility = "";
+      $("page").inert = false;
       N.scroll?.unlock();
       busy = false;
       (card?.querySelector(".piece__hang") || returnFocus)?.focus?.({ preventScroll: true });
@@ -345,10 +351,10 @@
 
     // Views: front and side on the rod, plus the lookbook photo when there is one.
     const views = [
-      { key: "front", label: "Front", src: frontSrc(item), kind: "garment" },
-      { key: "side", label: "Side", src: sideSrc(item), kind: "garment" },
+      { key: "front", label: "Frente", alt: "vista de frente", src: frontSrc(item), kind: "garment" },
+      { key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" },
     ];
-    if (item.look?.photo) views.push({ key: "worn", label: "Worn", src: item.look.photo, kind: "photo" });
+    if (item.look?.photo) views.push({ key: "worn", label: "Puesta", alt: "puesta", src: item.look.photo, kind: "photo" });
 
     const stage = $("sheet-stage");
     stage.querySelectorAll(".sheet__img").forEach((n) => n.remove());
@@ -358,7 +364,7 @@
       const img = document.createElement("img");
       img.className = `sheet__img sheet__img--${v.kind}${i === 0 ? " is-on" : ""}`;
       img.src = v.src;
-      img.alt = `${item.name}, ${v.label.toLowerCase()} view`;
+      img.alt = v.key === "worn" ? `${item.name} puesta` : `${item.name}, ${v.alt}`;
       img.dataset.view = v.key;
       stage.appendChild(img);
 
@@ -368,6 +374,7 @@
       tab.setAttribute("role", "tab");
       tab.setAttribute("aria-selected", String(i === 0));
       tab.textContent = v.label;
+      tab.dataset.view = v.key;
       tab.addEventListener("click", () => showView(v.key));
       tabs.appendChild(tab);
     });
@@ -380,7 +387,7 @@
     const prev = stage.querySelector(".sheet__img.is-on");
     if (!next || next === prev) return;
     $("sheet-views").querySelectorAll(".sheet__view").forEach((t) =>
-      t.setAttribute("aria-selected", String(t.textContent.toLowerCase() === key)));
+      t.setAttribute("aria-selected", String(t.dataset.view === key)));
     prev.classList.remove("is-on");
     next.classList.add("is-on");
     stage.classList.toggle("is-photo", next.classList.contains("sheet__img--photo"));
@@ -399,11 +406,11 @@
     const chosen = $("sheet-sizes").querySelector('[aria-checked="true"]');
     const status = $("sheet-status");
     if (!chosen) {
-      status.textContent = "Choose a size first.";
+      status.textContent = "Elige una talla.";
       if (!reduceMotion) gsap.fromTo("#sheet-sizes", { x: -6 }, { x: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
       return;
     }
-    status.textContent = `${current.name}, size ${chosen.textContent}: this is a design preview, so the bag isn't connected yet.`;
+    status.textContent = `${current.name}, talla ${chosen.textContent}: esto es una vista previa del diseño; la bolsa aún no está conectada.`;
   }
 
   /* ---------- size guide: a hang tag that swings in ---------- */
@@ -412,7 +419,7 @@
     const g = N.site?.sizeGuide;
     if (!g) return;
     $("guide-unit").textContent = g.unit || "cm";
-    const head = `<thead><tr><th scope="col">Size</th>${(g.columns || []).map((c) => `<th scope="col">${c}</th>`).join("")}</tr></thead>`;
+    const head = `<thead><tr><th scope="col">Talla</th>${(g.columns || []).map((c) => `<th scope="col">${c}</th>`).join("")}</tr></thead>`;
     const rows = Object.entries(g.rows || {}).map(([size, vals]) =>
       `<tr><th scope="row">${size}</th>${vals.map((v) => `<td>${v}</td>`).join("")}</tr>`).join("");
     $("guide-table").innerHTML = `${head}<tbody>${rows}</tbody>`;

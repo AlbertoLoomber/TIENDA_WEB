@@ -30,6 +30,7 @@ visuales que lo hagan ver como demo. No necesita fotos ni videos nuevos.
 | **Archivos** | `web/index.html`, `web/app.js`, `web/shop.js`, `web/sections.js`, `catalogo.json`, `tools/catalogo_web.py`, `web/og.jpg` |
 
 ### Diseño
+- **Decisión:** el nombre del sitio y los nombres de las prendas quedan en inglés ("More Than Money Tee"); la categoría va en español ("Playera").
 - Los nombres de diseño se quedan en inglés porque son la frase del estampado; la categoría va en español.
 - **Dos formas del nombre** (nuevo campo `diseno` en los datos, ver `06-datos.md`):
   - **Completo**, en la ficha, el detalle y el texto bajo el perchero: "Playera More Than Money".

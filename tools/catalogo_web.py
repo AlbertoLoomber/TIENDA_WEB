@@ -26,6 +26,7 @@ def main():
         item.update({
             "name": src.get("nombre", item["name"]),
             "category": src.get("categoria", item["category"]),
+            "categoryPlural": src.get("categoria_plural", src.get("categoria", item["category"])),
             "price": shop.get("precio"),
             "isNew": shop.get("nuevo", False),
             "description": shop.get("descripcion", ""),
@@ -37,6 +38,7 @@ def main():
 
     web["site"] = {
         "currency": site.get("moneda", "MXN"),
+        "band": site.get("barra", []),
         "studioPhoto": site.get("foto_estudio"),
         "sizeGuide": {
             "unit": site.get("guia_tallas", {}).get("unidad", "cm"),

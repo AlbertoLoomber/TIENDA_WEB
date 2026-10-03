@@ -223,6 +223,9 @@
             type: "lines",
             mask: "lines",
             linesClass: "split-line",
+            // Lines only, so the text reads the same split or not: no aria-label
+            // on the paragraph (not allowed on a <p>) and nothing hidden.
+            aria: "none",
             autoSplit: true,
             onSplit: (self) => gsap.from(self.lines, {
               yPercent: distance,
@@ -328,13 +331,19 @@
       };
       viewport.addEventListener("scroll", onScroll, { passive: true });
       onScroll();
+      // A row you can scroll must also be reachable by keyboard (arrow keys scroll it).
+      Object.entries({ tabindex: "0", role: "region", "aria-label": "Looks, desliza para verlos" })
+        .forEach(([k, v]) => viewport.setAttribute(k, v));
       if (animate) {
         gsap.fromTo(frames, { clipPath: CURTAIN_CLOSED }, {
           clipPath: CURTAIN_OPEN, duration: motion.slow, ease: motion.easeOut, stagger: 0.12,
           scrollTrigger: { trigger: viewport, start: "top 80%", once: true },
         });
       }
-      return () => viewport.removeEventListener("scroll", onScroll);
+      return () => {
+        viewport.removeEventListener("scroll", onScroll);
+        ["tabindex", "role", "aria-label"].forEach((k) => viewport.removeAttribute(k));
+      };
     });
   }
 

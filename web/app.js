@@ -23,7 +23,7 @@
   const LIFT = 14;                    // px a garment rises to come off the hook
   // Rail photo pieces, in px of the source photo (see tools/procesar_rail.py).
   const RAIL = { height: 235, tubeTop: 53, tubeHeight: 47, left: 232, right: 234 };
-  const MARQUEE = ["New designs daily", "Subscribe to our newsletter"];
+  const MARQUEE = ["Drop 01 ya en el perchero", "Algodón pesado"];   // fallback; the real lines come from site.band
 
   // Prices, lookbook colours/photos and the studio photo come from prendas.json
   // (edited in catalogo.json, synced by tools/catalogo_web.py).
@@ -249,7 +249,7 @@
       caption.textContent = `${item.name} — ${item.category}`;
       caption.classList.remove("is-hint");
     } else {
-      caption.textContent = finePointer ? "Hover to turn · Click to view" : "Tap to turn · Tap again to view";
+      caption.textContent = finePointer ? "Pasa el cursor para girar · Clic para ver" : "Toca para girar · Toca otra vez para ver";
       caption.classList.add("is-hint");
     }
   }
@@ -376,7 +376,7 @@
     detailTurn = makeTurn(figure, item.frames);
     detailTurn.p = p;
     renderTurn(detailTurn);
-    figure.setAttribute("aria-label", `${item.name}, front view`);
+    figure.setAttribute("aria-label", `${item.name}, vista de frente`);
     $("detail-cat").textContent = item.category;
     $("detail-count").textContent = `${String(items.indexOf(item) + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
     $("detail-name").textContent = item.name;
@@ -509,7 +509,7 @@
         const img = document.createElement("img");
         img.className = "look__photo";
         img.src = look.photo;
-        img.alt = `Look ${i + 1}: ${item.name}`;
+        img.alt = `Look ${i + 1}: ${item.name} puesta`;
         img.loading = "lazy";
         frame.appendChild(img);
       } else {
@@ -518,7 +518,7 @@
         const img = document.createElement("img");
         img.className = "look__garment";
         img.src = item.frames.at(-1).src;
-        img.alt = `${item.name}, front view`;
+        img.alt = `${item.name}, vista de frente`;
         img.loading = "lazy";
         frame.append(rod, img);
       }
@@ -543,7 +543,7 @@
     if (site.studioPhoto) {
       const img = document.createElement("img");
       img.src = site.studioPhoto;
-      img.alt = "The Nomad studio";
+      img.alt = "El estudio de Nomad";
       img.loading = "lazy";
       $("studio").replaceWith(img);
       return;
@@ -593,7 +593,7 @@
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       if (!input.value.trim() || !input.checkValidity()) {
-        status.textContent = "Enter an email address like name@email.com.";
+        status.textContent = "Escribe un correo válido, por ejemplo nombre@correo.com.";
         input.focus();
         return;
       }
@@ -608,7 +608,8 @@
 
   function buildBand() {
     const track = $("band-track");
-    const run = Array.from({ length: 6 }, () => MARQUEE).flat();
+    const lines = site?.band?.length ? site.band : MARQUEE;
+    const run = Array.from({ length: 6 }, () => lines).flat();
     [...run, ...run].forEach((text) => {
       const span = document.createElement("span");
       span.textContent = text;
@@ -727,9 +728,9 @@
   }
 
   async function init() {
-    buildBand();
     const data = await fetch("prendas.json").then((r) => r.json());
     site = data.site || {};
+    buildBand();
     buildRack(data);
     Object.assign(window.NOMAD, { items, site, rail: RAIL });
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
@@ -749,7 +750,7 @@
   }
 
   init().catch((err) => {
-    caption.textContent = "The collection could not be loaded. Reload the page to try again.";
+    caption.textContent = "No se pudo cargar la colección. Recarga la página para intentarlo de nuevo.";
     console.error(err);
   });
 })();

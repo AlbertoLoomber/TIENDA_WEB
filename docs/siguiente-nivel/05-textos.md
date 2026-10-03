@@ -31,6 +31,10 @@ de tus datos reales.
 
 ## 3. Productos
 
+> **Decisión (2026-10-03):** el nombre del sitio y los nombres de las prendas se quedan **en inglés**
+> ("Camo Overshirt", "More Than Money Tee"…). Solo la categoría, la descripción, los detalles y los
+> cuidados van en español. La tabla de abajo queda como referencia de los `slug` y las categorías.
+
 | # | `slug` | Nombre completo | Diseño (corto) | Categoría / plural |
 |---|---|---|---|---|
 | 01 | `sobrecamisa-camo` | Sobrecamisa Camo | Camo | Sobrecamisa / Sobrecamisas |

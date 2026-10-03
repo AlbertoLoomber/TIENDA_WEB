@@ -37,7 +37,7 @@
 | 2026-10-03 | Cuenta regresiva **sin segundos** | Que no haya movimiento constante |
 | 2026-10-03 | **Sin talla preelegida** en ficha y cajón | Evita compras en la talla equivocada |
 | 2026-10-03 | En celular, encabezado **Tienda · logo · Bolsa** | No caben cinco enlaces en 375 px |
-| 2026-10-03 | Nombres: **categoría en español + diseño en inglés** | El diseño es la frase del estampado |
+| 2026-10-03 | **El nombre del sitio y los nombres de las prendas se quedan en inglés** ("More Than Money Tee"); la categoría va en español (Playera) | Lo decidiste tú |
 | 2026-10-03 | Fotos en la calle **marcadas como muestra** | No presentar contenido de IA como clientes reales |
 | 2026-10-03 | Perfil derecho **generado, no reflejado** | Reflejar invierte el estampado visible |
 | 2026-10-03 | Giro real: **primero solo la 03**, comparado con el actual | Decidir con evidencia antes de pedir cuatro videos más |
@@ -71,7 +71,7 @@ Si algo se siente de más, se apaga en segundos y se revisa con calma.
 
 | # | Decisión | Cuándo hace falta | Mi recomendación |
 |---|---|---|---|
-| 1 | Aprobar nombres en español (`05-textos.md` §3) | Sesión 1 | Como están |
+| 1 | ~~Aprobar nombres en español~~ Resuelto: los nombres se quedan en inglés | — | — |
 | 2 | Datos de envío, cambios y contacto (pueden ser provisionales) | Sesión 5 | — |
 | 3 | Gramaje, técnica de estampado y dónde se hace | Sesión 7 (De cerca) | — |
 | 4 | Fecha del Drop 02 | Sesión 7 | Sábado 24 de octubre, 20:00 h (P) |
