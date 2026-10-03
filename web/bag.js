@@ -155,7 +155,7 @@
     if (line) line.qty = Math.min(MAX_QTY, line.qty + 1);
     else lines.push({ id: item.id, size, qty: 1 });
     const done = () => changed({ bump: true });
-    if (from && !reduceMotion()) fly(from, target(), done);
+    if (from && !reduceMotion() && N.features?.flyToBag !== false) fly(from, target(), done);
     else done();
     toast(`Agregado a tu bolsa · ${item.name}, talla ${size}`, { action: { label: "Ver bolsa", run: () => open() } });
   }

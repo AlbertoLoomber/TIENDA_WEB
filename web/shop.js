@@ -31,7 +31,8 @@
 
   const CANVAS_RATIO = 1000 / 1300;  // every garment cut-out shares this canvas
   const HOOK_Y = 0.029;              // inner top of the hook curl, fraction of canvas height
-  const PACK = 0.92;                 // how closely the front views hang together
+  const PACK = 0.92;
+  const TAG_REST = [-4, 3, -2, 5, -3];   // price tags don't all hang at the same angle                 // how closely the front views hang together
 
   let entrance = null;     // the first "garments drop onto the rail" timeline
   let filtering = null;    // the running filter timeline
@@ -63,7 +64,7 @@
       li.dataset.cat = item.category;
       li.innerHTML = `
         <button class="piece__hang" type="button">
-          <img class="piece__garment" alt="" decoding="async">
+          <span class="piece__body"><img class="piece__garment" alt="" decoding="async"></span>
         </button>
         <div class="piece__meta">
           <p class="piece__name"><span></span></p>
@@ -72,6 +73,7 @@
         </div>`;
       const btn = li.querySelector(".piece__hang");
       const img = li.querySelector(".piece__garment");
+      const body = li.querySelector(".piece__body");   // garment + its price tag: they move together
       img.src = frontSrc(item);
       btn.setAttribute("aria-label", `${item.name}, ${item.category}, ${N.price(item.price)}. Ver detalles`);
       li.querySelector(".piece__name span").textContent = item.name;
@@ -85,10 +87,24 @@
         li.querySelector(".piece__line").appendChild(badge);
       }
 
+      // The price also hangs from the hanger on a little card (aria-hidden: the
+      // line below says it for screen readers).
+      if (N.features?.priceTag !== false) {
+        li.classList.add("has-tag");
+        const tag = document.createElement("span");
+        tag.className = "piece__tag";
+        tag.setAttribute("aria-hidden", "true");
+        tag.style.setProperty("--rest", `${TAG_REST[items.indexOf(item) % TAG_REST.length]}deg`);
+        tag.innerHTML = '<span class="piece__tag-string"></span><span class="piece__tag-card"></span>';
+        tag.querySelector(".piece__tag-card").textContent = N.price(item.price, { short: true });
+        body.appendChild(tag);
+      }
+
       // Quick add (mouse and keyboard): the sizes appear under the price.
       const quick = li.querySelector(".piece__quick");
+      if (N.features?.quickAdd === false) quick.remove();
       quick.setAttribute("aria-label", `Agregar rápido ${item.name}`);
-      (item.sizes || []).forEach((size) => {
+      if (N.features?.quickAdd !== false) (item.sizes || []).forEach((size) => {
         const q = document.createElement("button");
         q.type = "button";
         q.className = "piece__size";
@@ -111,7 +127,10 @@
       // A nudge on hover: the garment swings on its hook.
       btn.addEventListener("pointerenter", (e) => {
         if (e.pointerType !== "mouse" || reduceMotion) return;
-        gsap.fromTo(img, { rotation: -3 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.28)", overwrite: "auto" });
+        gsap.fromTo(body, { rotation: -3 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.28)", overwrite: "auto" });
+        // the tag trails a little behind the garment
+        const tag = body.querySelector(".piece__tag");
+        if (tag) gsap.fromTo(tag, { rotation: 0 }, { keyframes: [{ rotation: 8, duration: 0.35, ease: "power2.out" }, { rotation: 0, duration: 1.3, ease: "elastic.out(1, 0.3)" }], delay: 0.08, overwrite: "auto" });
       });
       btn.addEventListener("click", () => open(item, { card: li }));
       item.card = li;
@@ -161,7 +180,7 @@
   function setupEntrance() {
     if (reduceMotion || !N.hasScrollTrigger) return;
     const pieces = items.map((i) => i.card);
-    const hung = pieces.map((c) => c.querySelector(".piece__garment"));
+    const hung = pieces.map((c) => c.querySelector(".piece__body"));
     const metas = pieces.map((c) => c.querySelector(".piece__meta"));
     entrance = gsap.timeline({
       paused: true,
@@ -227,7 +246,7 @@
 
     // Where the staying pieces hang now, to slide them from there after the re-hang.
     const before = new Map(staying.map((p) => [p, p.getBoundingClientRect().left]));
-    const garment = (p) => p.querySelector(".piece__garment");
+    const garment = (p) => p.querySelector(".piece__body");
     const clean = () => {
       const all = pieces.flatMap((p) => [p, garment(p)]);
       gsap.killTweensOf(all);
@@ -277,8 +296,9 @@
     // A true modal: the page behind can't be reached by Tab or by screen readers.
     $("page").inert = true;
     N.shop.checkSticky?.();
+    showHint();
     const stageImg = $("sheet-stage").querySelector(".sheet__img.is-on");
-    const chrome = [...el.querySelectorAll(".sheet__info > *, .sheet__views, .sheet__close")];
+    const chrome = [...el.querySelectorAll(".sheet__info > *, .sheet__views, .sheet__top")];
 
     if (reduceMotion) {
       busy = false;
@@ -297,7 +317,7 @@
       gsap.fromTo(stageImg,
         { x: a.left - b.left, y: a.top - b.top, scale: a.width / b.width, transformOrigin: "0 0" },
         { x: 0, y: 0, scale: 1, duration: 0.85, ease: "power3.inOut", onComplete: done });
-      from.style.visibility = "hidden";
+      card.querySelector(".piece__body").style.visibility = "hidden";
     } else {
       gsap.fromTo(stageImg, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.7, ease: "back.out(1.4)", onComplete: done });
     }
@@ -319,8 +339,8 @@
     const finish = () => {
       el.hidden = true;
       gsap.set([".sheet__scrim", "#sheet-panel", "#sheet-stage"], { clearProps: "opacity,backgroundColor,backgroundImage,boxShadow,background" });
-      gsap.set(el.querySelectorAll(".sheet__info, .sheet__views, .sheet__close, .sheet__rod"), { clearProps: "opacity" });
-      if (card) card.querySelector(".piece__garment").style.visibility = "";
+      gsap.set(el.querySelectorAll(".sheet__info, .sheet__views, .sheet__top, .sheet__rod"), { clearProps: "opacity" });
+      if (card) card.querySelector(".piece__body").style.visibility = "";
       $("page").inert = false;
       N.scroll?.unlock();
       clearRoute(fromHistory);
@@ -337,14 +357,14 @@
       const a = target.getBoundingClientRect();
       const b = stageImg.getBoundingClientRect();
       // Text and the stage's backdrop leave first, so only the garment travels.
-      const chrome = [...el.querySelectorAll(".sheet__info, .sheet__views, .sheet__close, .sheet__rod")];
+      const chrome = [...el.querySelectorAll(".sheet__info, .sheet__views, .sheet__top, .sheet__rod")];
       gsap.to(chrome, { opacity: 0, duration: 0.25, ease: "power2.in" });
       gsap.set("#sheet-panel", { backgroundColor: "rgba(231, 230, 225, 0)", backgroundImage: "none", boxShadow: "none" });
       gsap.set("#sheet-stage", { background: "transparent" });
       gsap.to(stageImg, { x: a.left - b.left, y: a.top - b.top, scale: a.width / b.width, transformOrigin: "0 0", duration: 0.7, ease: "power3.inOut" });
       gsap.to(".sheet__scrim", { opacity: 0, duration: 0.7, ease: "power2.inOut", onComplete: () => {
         finish();
-        gsap.fromTo(target, { rotation: 3 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.28)" });
+        gsap.fromTo(target.closest(".piece__body"), { rotation: 3 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.28)" });
       } });
     } else {
       gsap.to(["#sheet-panel", ".sheet__scrim"], { opacity: 0, duration: 0.4, ease: "power2.in", onComplete: finish });
@@ -425,10 +445,11 @@
       tabs.appendChild(tab);
     });
     stage.classList.toggle("is-photo", false);
+    stage.setAttribute("aria-label", `${item.name}: vista de frente. Usa las flechas o arrastra para girarla.`);
     paintSticky();
   }
 
-  function showView(key) {
+  function showView(key, { instant = false } = {}) {
     const stage = $("sheet-stage");
     const next = stage.querySelector(`.sheet__img[data-view="${key}"]`);
     const prev = stage.querySelector(".sheet__img.is-on");
@@ -438,7 +459,8 @@
     prev.classList.remove("is-on");
     next.classList.add("is-on");
     stage.classList.toggle("is-photo", next.classList.contains("sheet__img--photo"));
-    if (reduceMotion) {
+    stage.setAttribute("aria-label", `${current?.name || ""}: ${next.alt.replace(`${current?.name}, `, "")}. Usa las flechas o arrastra para girarla.`);
+    if (reduceMotion || instant) {
       gsap.set([prev, next], { clearProps: "opacity" });
       return;
     }
@@ -460,6 +482,111 @@
     status.textContent = "";
     const from = $("sheet-stage").querySelector(".sheet__img.is-on");
     N.bag?.add(current, chosen.textContent, { from });
+  }
+
+  /* ---------- drag to turn ---------- */
+
+  // In the sheet the garment turns on its hook under the finger or the mouse:
+  // drag one way and it shows its side (the view it has on the rack), let go
+  // and it settles on the nearest view. The other way it only gives a little
+  // and comes back, until a right-side photo exists (docs/PROMPTS.md 16.2).
+  // The tabs stay the accessible way to change views; arrows work too.
+  function setupDragTurn() {
+    if (N.features?.dragTurn === false) return;
+    const stage = $("sheet-stage");
+    stage.tabIndex = 0;
+    stage.setAttribute("role", "img");
+    stage.setAttribute("aria-roledescription", "visor");
+    let st = null;
+
+    const viewNow = () => stage.querySelector(".sheet__img.is-on")?.dataset.view;
+    const paint = (p, s = st) => {
+      if (p >= 0) {
+        s.turn.p = 1 - p;           // the turn runs side (0) → front (1)
+        s.box.style.transform = "";
+      } else {
+        s.turn.p = 1;
+        s.box.style.transform = `perspective(1200px) rotateY(${p * 14}deg)`;
+      }
+      N.turn.render(s.turn);
+    };
+    const begin = () => {
+      const box = document.createElement("div");
+      box.className = "sheet__turn";
+      stage.appendChild(box);
+      st.box = box;
+      st.turn = N.turn.make(box, current.frames);
+      st.w = stage.clientWidth;
+      stage.classList.add("is-turning");
+      hideHint();
+    };
+    const end = () => {
+      const s0 = st;
+      st = null;
+      if (!s0.box) return;
+      const p = s0.p;
+      // where to settle: past halfway, or flicked, goes to the side; else front
+      let target = p > 0.5 ? 1 : 0;
+      if (s0.v < -0.6 && p > 0.15) target = 1;
+      if (s0.v > 0.6 && p < 0.85) target = 0;
+      if (p < 0) target = 0;
+      const finish = () => {
+        showView(target ? "side" : "front", { instant: true });
+        s0.box.remove();
+        stage.classList.remove("is-turning");
+      };
+      if (reduceMotion) return finish();
+      const o = { p };
+      gsap.to(o, { p: target, duration: 0.6, ease: "power3.out", onUpdate: () => paint(o.p, s0), onComplete: finish });
+    };
+
+    stage.addEventListener("pointerdown", (e) => {
+      if (busy || !current || !N.turn || e.button > 0) return;
+      const view = viewNow();
+      if (view !== "front" && view !== "side") return;
+      st = { id: e.pointerId, x: e.clientX, y: e.clientY, p0: view === "side" ? 1 : 0, p: view === "side" ? 1 : 0, v: 0, lastX: e.clientX, lastT: performance.now(), box: null };
+    });
+    stage.addEventListener("pointermove", (e) => {
+      if (!st || e.pointerId !== st.id) return;
+      const dx = e.clientX - st.x;
+      if (!st.box) {
+        if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(e.clientY - st.y)) return;
+        stage.setPointerCapture?.(e.pointerId);
+        begin();
+      }
+      const now = performance.now();
+      st.v += ((e.clientX - st.lastX) / Math.max(1, now - st.lastT) - st.v) * 0.4;
+      st.lastX = e.clientX;
+      st.lastT = now;
+      st.p = Math.max(-1, Math.min(1, st.p0 - dx / (st.w * 0.45)));
+      paint(st.p);
+    });
+    const up = (e) => { if (st && e.pointerId === st.id) end(); };
+    stage.addEventListener("pointerup", up);
+    stage.addEventListener("pointercancel", up);
+    stage.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") { e.preventDefault(); showView("side"); }
+      if (e.key === "ArrowRight") { e.preventDefault(); showView("front"); }
+    });
+  }
+
+  // "Arrastra para girar": once per visit, gone at the first drag or after 4 s.
+  let hintTimer = 0;
+  function showHint() {
+    if (N.features?.dragTurn === false) return;
+    try { if (sessionStorage.getItem("nomad.arrastra") === "1") return; } catch (e) { /* show it */ }
+    const hint = $("sheet-drag-hint");
+    hint.hidden = false;
+    if (!reduceMotion) gsap.fromTo(hint, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.4, delay: 0.9, ease: "power2.out" });
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(hideHint, 4800);
+  }
+  function hideHint() {
+    const hint = $("sheet-drag-hint");
+    clearTimeout(hintTimer);
+    if (hint.hidden) return;
+    try { sessionStorage.setItem("nomad.arrastra", "1"); } catch (e) { /* fine */ }
+    gsap.to(hint, { opacity: 0, duration: 0.3, onComplete: () => { hint.hidden = true; gsap.set(hint, { clearProps: "opacity,transform" }); } });
   }
 
   /* ---------- sticky "Agregar" bar (phones and tablets) ---------- */
@@ -724,6 +851,7 @@
     setupSticky();
     setupShare();
     setupFit();
+    setupDragTurn();
     addEventListener("popstate", () => followRoute());
     addEventListener("hashchange", () => followRoute());
     $("guide-close").addEventListener("click", () => closeGuide());

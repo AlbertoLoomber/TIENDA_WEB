@@ -1099,15 +1099,23 @@ body {
 }
 .piece__hang:focus-visible { outline: none; }
 .piece__hang:focus-visible + .piece__meta .piece__name span { background-size: 100% 1px; }
-.piece__garment {
+/* the garment and its price tag hang (and swing) as one, from the hook */
+.piece__body {
   position: absolute;
   top: 0;
   left: 50%;
   width: var(--p-w, 215px);
   height: var(--p-h, 280px);
-  max-width: none;
   margin-left: calc(var(--p-w, 215px) / -2);
   transform-origin: 50% 2.9%;
+  pointer-events: none;
+}
+.piece__garment {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
   filter: drop-shadow(8px 14px 14px rgba(20, 22, 32, .15));
   pointer-events: none;
 }
@@ -1857,3 +1865,87 @@ body {
   .foot__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .foot__base { flex-direction: column; gap: 10px; }
 }
+
+/* price on a kraft card tied to the hanger: the string leaves the base of the
+   hook and the card falls to the right of the collar, clear of the print */
+.piece__tag {
+  position: absolute;
+  left: 57%;
+  top: 10.5%;
+  z-index: 2;
+  transform-origin: 0 0;
+  transform: rotate(var(--rest, 0deg));
+}
+.piece__tag-string {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 16px;
+  background: var(--string, #9b907c);
+  transform: rotate(-24deg);
+  transform-origin: 0 0;
+}
+.piece__tag-card {
+  position: absolute;
+  left: 6px;
+  top: 14px;
+  padding: 5px 8px 4px 13px;
+  font: 600 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  background: #d9c7a7;
+  border-radius: 2px;
+  clip-path: polygon(7px 0, 100% 0, 100% 100%, 7px 100%, 0 50%);
+  filter: drop-shadow(1px 2px 2px rgba(20, 22, 32, .18));
+}
+.piece__tag-card::before {   /* the punched hole */
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--paper);
+}
+/* with the tag on, the line below keeps the price for screen readers only */
+.piece.has-tag .piece__price { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* drag to turn in the sheet */
+.sheet__stage { touch-action: pan-y; cursor: grab; }
+.sheet__stage.is-photo { cursor: default; }
+.sheet__stage.is-turning { cursor: grabbing; }
+.sheet__stage.is-turning .sheet__img--garment { visibility: hidden; }
+.sheet__stage:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.sheet__turn {
+  position: absolute;
+  left: 7%;
+  top: 6%;
+  width: 86%;
+  aspect-ratio: 1000 / 1300;
+  transform-origin: 50% 2.9%;
+  filter: drop-shadow(14px 22px 22px rgba(20, 22, 32, .18));
+  pointer-events: none;
+}
+.sheet__drag-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(231, 230, 225, .9);
+  border: 1px solid rgba(36, 44, 82, .15);
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.sheet__drag-hint span { letter-spacing: 0; font-size: 14px; }

@@ -364,9 +364,79 @@
     });
   }
 
+  /* ---------- brushing past the rack ---------- */
+
+  // Sweep the cursor fast across the rack and the garments it crosses sway the
+  // way it went, like running a hand along a real rail. A slow pass still turns
+  // the garment it rests on (that's the hover delay); this only answers speed.
+  const BRUSH_SPEED = 0.6;      // px/ms; slower is just looking
+  const BRUSH_GAP = 250;        // ms before the same garment answers again
+
+  // The cursor's recent speed, shared with the hover turn: a garment only
+  // turns once the cursor slows down on it, never in the middle of a sweep.
+  let brushV = 0;
+  let brushT = 0;
+  const cursorSpeed = () => (performance.now() - brushT < 80 ? Math.abs(brushV) : 0);
+
+  function setupBrush() {
+    if (reduceMotion || !finePointer || window.NOMAD?.features?.brush === false) return;
+    let lastX = null;
+    let lastT = 0;
+    let v = 0;
+    const answered = new Map();
+    rack.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse") return;
+      const now = performance.now();
+      if (lastX !== null && detailIndex < 0 && !busy) {
+        v += ((e.clientX - lastX) / Math.max(1, now - lastT) - v) * 0.35;   // smoothed
+        if (Math.abs(v) >= BRUSH_SPEED) {
+          const centres = items.map((it) => { const r = it.slot.getBoundingClientRect(); return r.left + r.width / 2; });
+          centres.forEach((cx, i) => {
+            const it = items[i];
+            if ((lastX - cx) * (e.clientX - cx) > 0) return;               // not crossed
+            if (i === active || gsap.isTweening(it.turn)) return;
+            if (now - (answered.get(i) || 0) < BRUSH_GAP) return;
+            answered.set(i, now);
+            lastInput = now;
+            // the pivot is the hook: a negative angle swings the hem to the right
+            sway(it, -Math.sign(v) * clamp(Math.abs(v) * 3.2, 1.5, 5));
+          });
+        }
+      }
+      lastX = e.clientX;
+      lastT = now;
+      brushV = v;
+      brushT = now;
+    });
+    rack.addEventListener("pointerleave", () => { lastX = null; v = 0; brushV = 0; });
+  }
+
+  // Touch: swiping the rack sideways tips the garments a little against the
+  // motion, and they settle when it stops (the same lean as page scrolling).
+  function setupSwipeLean() {
+    if (reduceMotion) return;
+    let lastX = 0;
+    let lastT = 0;
+    let settleTimer = 0;
+    rack.addEventListener("scroll", () => {
+      if (!narrow || detailIndex >= 0) return;
+      const now = performance.now();
+      const v = ((rack.scrollLeft - lastX) / Math.max(1, now - lastT)) * 1000;   // px/s
+      lastX = rack.scrollLeft;
+      lastT = now;
+      const over = Math.max(0, Math.abs(v) - LEAN_THRESHOLD);
+      if (!over || !isFinite(v)) return;
+      const angle = Math.sign(v) * Math.min(3, over * LEAN_PER_PX);
+      items.forEach((it, i) => gsap.to(it.lean, { rotation: angle * LEAN_WEIGHT[i % LEAN_WEIGHT.length], duration: 0.4, ease: "power3.out", overwrite: true }));
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => items.forEach((it, i) => gsap.to(it.lean, {
+        rotation: 0, duration: 1.6, delay: i * 0.04, ease: "elastic.out(1, 0.3)", overwrite: true,
+      })), 140);
+    }, { passive: true });
+  }
+
   /* ---------- detail view ---------- */
 
-  // Rect of an element in the rack as it will be once the rack is back at scale 1.
   // Where an element of the rack sits once the rack is back at rest
   // (no scale, no slide): undoes the transform the detail view puts on it.
   function restingRect(el) {
@@ -699,7 +769,11 @@
         if (e.pointerType !== "mouse" || detailIndex >= 0) return;
         clearTimeout(leaveTimer);
         clearTimeout(hoverTimer);
-        hoverTimer = setTimeout(() => activate(i), HOVER_DELAY);
+        const tryTurn = () => {
+          if (cursorSpeed() >= BRUSH_SPEED) { hoverTimer = setTimeout(tryTurn, HOVER_DELAY); return; }
+          activate(i);
+        };
+        hoverTimer = setTimeout(tryTurn, HOVER_DELAY);
       });
       slot.addEventListener("pointerleave", (e) => {
         if (e.pointerType !== "mouse") return;
@@ -803,7 +877,7 @@
     site = data.site || {};
     buildBand();
     buildRack(data);
-    Object.assign(window.NOMAD, { items, site, rail: RAIL });
+    Object.assign(window.NOMAD, { items, site, rail: RAIL, turn: { make: makeTurn, render: renderTurn } });
     window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
     window.NOMAD.info?.setup();
@@ -812,6 +886,8 @@
     setupNewsletter();
     window.NOMAD?.sections?.setup();
     setupLean();
+    setupBrush();
+    setupSwipeLean();
     wire();
     layout();
     window.NOMAD.swipeHint?.(rack, "perchero");

@@ -147,7 +147,20 @@
     scroll.to(hash === "#top" ? 0 : target);
   });
 
+  // Every newer effect can be switched off here in one go, if it ever feels like
+  // too much (docs/siguiente-nivel/08-riesgos-y-decisiones.md §3).
+  const features = {
+    brush: true,         // garments sway when the cursor sweeps fast across the rack
+    dragTurn: true,      // drag the garment in the sheet to turn it
+    priceTag: true,      // price on a hanging tag on the rail (false = a line of text)
+    flyToBag: true,      // a copy of the garment flies into the bag
+    quickAdd: true,      // sizes under each piece on hover
+    closeupLines: true,  // "De cerca": lines draw and circles open
+    dropCountdown: true, // the newsletter tag counts down to the next drop
+  };
+
   window.NOMAD = Object.assign(window.NOMAD || {}, {
+    features: Object.assign(features, window.NOMAD?.features || {}),
     motion,
     scroll,
     reduceMotion,

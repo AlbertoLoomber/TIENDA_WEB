@@ -5,7 +5,7 @@ const { TAMANOS, navegador, abrir, ir } = require("./comun");
 const estado = (p) => p.evaluate(() => {
   const malas = [];
   document.querySelectorAll(".piece:not([hidden])").forEach((pc, i) => {
-    const g = pc.querySelector(".piece__garment");
+    const g = pc.querySelector(".piece__body");
     const vals = [gsap.getProperty(pc, "x"), gsap.getProperty(pc, "y"), gsap.getProperty(g, "y")];
     if (vals.some((v) => Math.abs(v) > 0.5) || gsap.getProperty(pc, "opacity") < 0.99 || gsap.getProperty(g, "opacity") < 0.99) malas.push(`pieza ${i + 1}`);
   });
