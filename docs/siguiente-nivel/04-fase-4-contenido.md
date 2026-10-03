@@ -96,6 +96,8 @@ giro real a la derecha) y tú eliges. Si gana el real, se piden los videos de la
 
 ## T4.2 Clips del lookbook
 
+> **Descartado:** el lookbook se quitó (2026-10-03). `media.js` y `comprimir_video.py` quedan para el video del estudio y el clip del proceso.
+
 > **Listo para recibir los clips (sesión 9).** `tools/comprimir_video.py` (ffmpeg de `imageio-ffmpeg`) recorta, comprime a MP4 y WebM, revisa el loop (ida y vuelta si salta) y saca la portada → `web/video/`. `web/media.js` los carga al acercarse, los reproduce a la vista y los pausa al salir; con reducir movimiento o ahorro de datos se queda la foto. Prueba `escenas.js` con clips sintéticos.
 
 | | |
@@ -196,6 +198,8 @@ TABLET: 2 × 2.   CELULAR: fila deslizable, con el mismo gancho siguiendo el des
 ---
 
 ## T4.5 Sección "Así se usa"
+
+> Ocupa el lugar del lookbook, justo después de "De cerca".
 
 > **Hecho con muestras (sesión 9).** Datos en `sitio.calle`; las 6 fotos son recortes del lookbook y prendas sobre su color hasta que lleguen las de PROMPTS 22. La leyenda "Fotos de muestra" se ve mientras `sitio.calle.muestra` sea `true` o quede alguna muestra.
 

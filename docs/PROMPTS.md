@@ -393,6 +393,8 @@ Archivo: `cerca-03-etiqueta.jpg`. Si la palabra sale mal, pide la etiqueta **sin
 
 ## 18. Looks 02 y 04 con modelo (reemplazan las fotos en gancho)
 
+> Se usan en la ficha (vista "Puesta"); el lookbook ya no existe.
+
 **Para qué:** que los 5 looks del lookbook sean de la misma sesión.
 **Sube 2 imágenes:** 1) la foto de frente de la prenda; 2) `look-01-camo` (en `assets/raw/fotos/`) solo como referencia de estilo, luz y fondo.
 
@@ -417,6 +419,8 @@ Archivo: `look-04-good-people.jpg`
 ---
 
 ## 19. Clips del lookbook (video en loop)
+
+> **Ya no hacen falta:** el lookbook se quitó de la página. Puedes saltarte esta sección.
 
 **Para qué:** que las fotos del lookbook tengan un movimiento muy sutil (plan, T4.2).
 **Cuadro inicial y cuadro final: la misma foto del look.** Así el clip empieza y termina igual y se repite sin corte. Duración: 5 s.
@@ -533,7 +537,7 @@ Archivo: `drop-02.png` (vertical 3:4).
 | 2 | `cerca-01-estampado.jpg` … `cerca-05-estampado.jpg`, `cerca-03-cuello.jpg`, `cerca-tela.jpg` | 17 |
 | 3 | `look-02-nomad.jpg`, `look-04-good-people.jpg` | 18 |
 | 4 | `drop-02.png` | 23 |
-| 5 | `clip-look-01.mp4` … `clip-look-05.mp4`, `video-estudio.mp4` | 19, 20 |
+| 5 | `video-estudio.mp4` | 20 |
 | 6 | `proceso-1-boceto.jpg` … `proceso-4-perchero.jpg`, `calle-1.jpg` … `calle-6.jpg` | 21, 22 |
 | Después de aprobar el 1 | `giro-01-izquierda.mp4`, `giro-02-…`, `giro-04-…`, `giro-05-…` | 16.1 |
 | Opcional | `lado-derecho-NN.jpg` y `giro-NN-derecha.mp4`, `espalda-NN.jpg`, `cerca-03-dobladillo.jpg`, `cerca-03-etiqueta.jpg`, `video-doblando.mp4`, `clip-estampado.mp4` | 16.2, 16.3, 17, 20, 21 |
@@ -545,5 +549,5 @@ Mándamelos por aquí o súbelos a `assets/raw/` (los videos en `assets/raw/vide
 - **Fotos** `cerca-…`, `drop-02`, `proceso-…` y `calle-…`: déjalas en `assets/raw/fotos-nuevas/` con el nombre de la tabla y corre
   `python tools/fotos_web.py && python tools/catalogo_web.py`. Se recortan al tamaño de la página, van a `web/fotos/` y reemplazan solas a la muestra.
 - `drop-02.png` necesita el fondo quitado para colgar del tubo. Si llega con fondo, se lo quito yo al integrarla.
-- **Videos** `clip-look-NN`, `video-estudio` y `clip-estampado`: en `assets/raw/video/`, luego `python tools/comprimir_video.py && python tools/catalogo_web.py`.
+- **Videos** `video-estudio` y `clip-estampado`: en `assets/raw/video/`, luego `python tools/comprimir_video.py && python tools/catalogo_web.py`.
 - **Giro** `giro-NN-izquierda.mp4`: en `assets/raw/video/`, luego `python tools/cuadros_video.py assets/raw/video/giro-03-izquierda.mp4 && python tools/catalogo_web.py`.

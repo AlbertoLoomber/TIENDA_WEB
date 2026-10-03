@@ -1,10 +1,8 @@
 /* Nomad — everything below the rack, and the way the page moves while you scroll.
  *
  * One lead movement per section, everything else supporting it:
- *   hero      → the rack recedes as the lookbook slides over it like a sheet
+ *   hero      → the rack recedes as the page below slides over it like a sheet
  *   titles    → rise line by line from behind a mask
- *   lookbook  → pinned on desktop: photos travel sideways, each revealed like a
- *               fitting-room curtain; a small hanger on a rod tracks the way
  *   about     → "Nomad" writes itself; the studio photo opens from the centre;
  *               the fact lines draw in
  *   de cerca  → closeup.js: the details' lines draw themselves once
@@ -33,18 +31,13 @@
     align();
     addEventListener("resize", align);
     addEventListener("load", align);
-    // Pinned sections add space above the newsletter; realign after each re-measure.
+    // Realign after each re-measure (fonts and photos change the heights above).
     if (hasScrollTrigger) ScrollTrigger.addEventListener("refresh", align);
 
-    if (!hasScrollTrigger || reduceMotion) {
-      // No motion: the lookbook still gets its swipeable row and counter.
-      lookbook(motion, { animate: false });
-      return;
-    }
+    if (!hasScrollTrigger || reduceMotion) return;
 
     // Created top to bottom, so each trigger measures the page after the pins above it.
     heroExit(motion);
-    lookbook(motion, { animate: true });
     marquee();
     reveals(motion);
     about(motion);
@@ -53,6 +46,17 @@
     titles(motion);
     // Photos load lazily; once they're in, re-measure so pins and triggers are exact.
     addEventListener("load", () => ScrollTrigger.refresh());
+    // Anything that changes the page's height later (lazy photos, hints that go
+    // away, a section filled in) re-measures the triggers too, once it settles.
+    let lastH = document.documentElement.scrollHeight;
+    let remeasure = 0;
+    new ResizeObserver(() => {
+      const h = document.documentElement.scrollHeight;
+      if (Math.abs(h - lastH) < 2) return;
+      lastH = h;
+      clearTimeout(remeasure);
+      remeasure = setTimeout(() => ScrollTrigger.refresh(), 200);
+    }).observe(document.body);
   }
 
   /* Sheets that slide over other content carry their own copy of the dot grid;
@@ -121,7 +125,7 @@
     });
 
     // Small labels arrive with their letters drawing slightly together.
-    gsap.utils.toArray(".more .eyebrow:not(.look__meta .eyebrow):not(.tag .eyebrow)").forEach((el) => {
+    gsap.utils.toArray(".more .eyebrow:not(.tag .eyebrow)").forEach((el) => {
       gsap.from(el, {
         opacity: 0, letterSpacing: "0.34em", duration: motion.base, ease: motion.easeOut,
         scrollTrigger: { trigger: el, start: "top 88%", once: true },
@@ -130,16 +134,6 @@
 
     // (The collection's entrance lives in shop.js, next to its filters, so the two never overlap.)
 
-    // Lookbook: garments drop onto their rods one after another, then settle.
-    const garments = gsap.utils.toArray(".look__garment");
-    if (garments.length) {
-      gsap.from(garments, {
-        y: -36, opacity: 0, duration: 0.7, ease: "back.out(1.5)", stagger: motion.stagger,
-        scrollTrigger: { trigger: "#lookbook-track", start: "top 80%", once: true },
-        onComplete: () => garments.forEach((g, i) =>
-          gsap.fromTo(g, { rotation: i % 2 ? 2 : -2 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.25)" })),
-      });
-    }
     if (document.querySelector(".studio__row img")) {
       gsap.from(".studio__row img", {
         y: -24, opacity: 0, duration: 0.7, ease: "back.out(1.5)", stagger: motion.stagger,
@@ -209,9 +203,10 @@
     const inner = foot?.querySelector(".foot__inner");
     if (!inner) return;
     // While the newsletter lifts away, the footer's content rises gently into place.
+    // It ends exactly at the bottom of the page, so the footer is never left half faded.
     gsap.fromTo(inner, { yPercent: -18, opacity: 0.3 }, {
       yPercent: 0, opacity: 1, ease: "none",
-      scrollTrigger: { trigger: ".newsletter", start: "bottom bottom", end: () => `+=${foot.offsetHeight}`, scrub: true },
+      scrollTrigger: { trigger: ".newsletter", start: "bottom bottom", end: "max", scrub: true },
     });
   }
 
@@ -253,111 +248,6 @@
         });
       });
       ScrollTrigger.refresh();
-    });
-  }
-
-  /* ---------- lookbook: pinned gallery with fitting-room curtains ---------- */
-
-  const CURTAIN_CLOSED = "inset(100% 0% 0% 0%)";
-  const CURTAIN_OPEN = "inset(0% 0% 0% 0%)";
-  const pad = (n) => String(n).padStart(2, "0");
-
-  function lookbook(motion, { animate }) {
-    const section = document.getElementById("lookbook");
-    const viewport = document.getElementById("lookbook-viewport");
-    const track = document.getElementById("lookbook-track");
-    const rod = document.getElementById("lookbook-rod");
-    const hanger = document.getElementById("lookbook-hanger");
-    const now = document.getElementById("lookbook-now");
-    if (!section || !track) return;
-
-    const cards = [...track.children];
-    const frames = cards.map((c) => c.querySelector(".look__frame"));
-    const photos = frames.map((f) => f.querySelector(".look__photo"));
-    document.getElementById("lookbook-total").textContent = pad(cards.length);
-
-    // The hanger slides along its rod; the number changes as each look takes the stage.
-    let current = -1;
-    const setProgress = (p) => {
-      const max = rod.clientWidth - hanger.getBoundingClientRect().width;
-      hanger.style.transform = `translateX(${Math.max(0, max) * p}px)`;
-      const i = Math.min(cards.length - 1, Math.round(p * (cards.length - 1)));
-      if (i === current) return;
-      current = i;
-      now.textContent = pad(i + 1);
-      if (animate) gsap.fromTo(now, { yPercent: 70, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.45, ease: motion.easeOut });
-    };
-    setProgress(0);
-
-    const headerHeight = () => document.querySelector(".top")?.offsetHeight || 0;
-
-    // Both conditions listed: matchMedia only runs the callback when one of them matches.
-    gsap.matchMedia().add({ wide: "(min-width: 641px)", narrow: "(max-width: 640px)" }, ({ conditions }) => {
-      const distance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
-
-      // Desktop: the section holds still while the photos travel past.
-      if (conditions.wide && animate) {
-        section.classList.add("is-pinned");
-        if (distance() > 40) {
-          const travel = gsap.to(track, {
-            x: () => -distance(),
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: () => `top ${headerHeight()}`,
-              end: () => `+=${distance() * 1.35}`,   // a little more scroll than travel: unhurried
-              pin: true,
-              scrub: true,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => setProgress(self.progress),
-            },
-          });
-
-          const firstScreen = viewport.clientWidth * 0.95;
-          let opening = 0;
-          cards.forEach((card, i) => {
-            const frame = frames[i];
-            const photo = photos[i];
-            if (card.offsetLeft < firstScreen) {
-              // Looks already in view open one after another as the section arrives.
-              const tl = gsap.timeline({ scrollTrigger: { trigger: section, start: "top 72%", once: true }, delay: opening++ * 0.14 });
-              tl.fromTo(frame, { clipPath: CURTAIN_CLOSED }, { clipPath: CURTAIN_OPEN, duration: motion.slow, ease: motion.easeOut });
-              if (photo) tl.fromTo(photo, { scale: 1.16 }, { scale: 1, duration: motion.slow + 0.4, ease: motion.easeOut }, 0);
-            } else {
-              // The rest open as they travel in from the right, tied to the scroll.
-              const st = (end) => ({ trigger: card, containerAnimation: travel, start: "left 96%", end, scrub: true });
-              gsap.fromTo(frame, { clipPath: CURTAIN_CLOSED }, { clipPath: CURTAIN_OPEN, ease: "power1.out", scrollTrigger: st("left 58%") });
-              if (photo) gsap.fromTo(photo, { scale: 1.16 }, { scale: 1, ease: "none", scrollTrigger: st("left 30%") });
-            }
-          });
-        }
-        return () => {
-          section.classList.remove("is-pinned");
-          gsap.set(track, { clearProps: "x" });
-          gsap.set([...frames, ...photos.filter(Boolean)], { clearProps: "clipPath,scale,transform" });
-        };
-      }
-
-      // Phones (and wide screens without motion): swipe the row; the counter follows it.
-      const onScroll = () => {
-        const max = viewport.scrollWidth - viewport.clientWidth;
-        setProgress(max > 0 ? viewport.scrollLeft / max : 0);
-      };
-      viewport.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-      // A row you can scroll must also be reachable by keyboard (arrow keys scroll it).
-      Object.entries({ tabindex: "0", role: "region", "aria-label": "Looks, desliza para verlos" })
-        .forEach(([k, v]) => viewport.setAttribute(k, v));
-      if (animate) {
-        gsap.fromTo(frames, { clipPath: CURTAIN_CLOSED }, {
-          clipPath: CURTAIN_OPEN, duration: motion.slow, ease: motion.easeOut, stagger: 0.12,
-          scrollTrigger: { trigger: viewport, start: "top 80%", once: true },
-        });
-      }
-      return () => {
-        viewport.removeEventListener("scroll", onScroll);
-        ["tabindex", "role", "aria-label"].forEach((k) => viewport.removeAttribute(k));
-      };
     });
   }
 

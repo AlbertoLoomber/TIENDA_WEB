@@ -134,7 +134,7 @@
     scroller.addEventListener("scroll", done, { passive: true });
   }
 
-  // In-page links (#about, #lookbook, the logo…) glide to their section.
+  // In-page links (#about, #calle, the logo…) glide to their section.
   document.addEventListener("click", (e) => {
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;

@@ -1,4 +1,4 @@
-/* Beneficios, preguntas frecuentes, hojas de ayuda y legales, contactos de prueba y pie. */
+/* Beneficios, hojas de ayuda y legales, contactos de prueba y pie. */
 const path = require("path");
 const { OUT, TAMANOS, navegador, abrir, ir } = require("./comun");
 
@@ -9,15 +9,9 @@ module.exports = async function ayuda() {
     const p = await abrir(b, t);
     const perks = await p.$$eval(".perk", (l) => l.length);
     if (perks !== 3) fallas.push(`${t.nombre}: ${perks} beneficios`);
-    // preguntas: abre y cierra
-    await ir(p, "#preguntas"); await p.waitForTimeout(1500);
-    const n = await p.$$eval(".faq__item", (l) => l.length);
-    if (n !== 6) fallas.push(`${t.nombre}: ${n} preguntas`);
-    await p.click(".faq__item:nth-child(3) summary"); await p.waitForTimeout(600);
-    if (!(await p.evaluate(() => document.querySelector(".faq__item:nth-child(3)").open))) fallas.push(`${t.nombre}: la pregunta no abrió`);
-    await p.screenshot({ path: path.join(OUT, `ayuda-preguntas-${t.nombre}.png`) });
     // contacto de prueba: avisa en lugar de abrir
-    await p.click(".faq__more a"); await p.waitForTimeout(400);
+    await ir(p, await p.evaluate(() => document.documentElement.scrollHeight)); await p.waitForTimeout(1600);
+    await p.click('.foot a[data-contact="whatsapp"]'); await p.waitForTimeout(400);
     if (!(await p.textContent("#toasts")).includes("Vista previa")) fallas.push(`${t.nombre}: contacto sin aviso`);
     // pie: abrir Envíos, cerrar con Escape
     await ir(p, await p.evaluate(() => document.documentElement.scrollHeight)); await p.waitForTimeout(1600);
@@ -42,6 +36,6 @@ module.exports = async function ayuda() {
     await p.close();
   }
   await b.close();
-  return { nombre: "ayuda", ok: !fallas.length, detalle: fallas.join(" | ") || "beneficios, preguntas, hojas, contactos de prueba y pie" };
+  return { nombre: "ayuda", ok: !fallas.length, detalle: fallas.join(" | ") || "beneficios, hojas, contactos de prueba y pie" };
 };
 if (require.main === module) module.exports().then((r) => console.log(r));

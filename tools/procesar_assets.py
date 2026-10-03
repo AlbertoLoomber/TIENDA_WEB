@@ -143,7 +143,7 @@ def main():
     OUT_JSON.write_text(json.dumps({"canvas": [CANVAS_W, CANVAS_H], "items": items}, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
     print("escrito", OUT_JSON.relative_to(ROOT))
 
-    # Precios, textos y lookbook vienen de catalogo.json: vuelve a aplicarlos.
+    # Precios, textos y fotos puestas vienen de catalogo.json: vuelve a aplicarlos.
     import runpy
     runpy.run_path(str(ROOT / "tools" / "catalogo_web.py"), run_name="__main__")
 

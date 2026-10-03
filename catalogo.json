@@ -53,8 +53,7 @@
             "articulo": "El",
             "estatura": 1.82,
             "talla": "L"
-          },
-          "clip": "clip-look-01"
+          }
         },
         "agotadas": [
           "XL"
@@ -115,8 +114,7 @@
             "articulo": "La",
             "estatura": 1.7,
             "talla": "M"
-          },
-          "clip": "clip-look-02"
+          }
         },
         "agotadas": [],
         "_provisional": [
@@ -176,8 +174,7 @@
             "articulo": "El",
             "estatura": 1.78,
             "talla": "L"
-          },
-          "clip": "clip-look-03"
+          }
         },
         "agotadas": [],
         "_provisional": [
@@ -236,8 +233,7 @@
             "articulo": "La",
             "estatura": 1.68,
             "talla": "M"
-          },
-          "clip": "clip-look-04"
+          }
         },
         "agotadas": [],
         "_provisional": [
@@ -296,8 +292,7 @@
             "articulo": "El",
             "estatura": 1.85,
             "talla": "XL"
-          },
-          "clip": "clip-look-05"
+          }
         },
         "agotadas": [],
         "_provisional": [
@@ -365,7 +360,6 @@
       "drop",
       "envio",
       "hojas",
-      "preguntas",
       "proceso",
       "recomendador"
     ],
@@ -422,32 +416,6 @@
         ]
       }
     },
-    "preguntas": [
-      {
-        "p": "¿Cuánto tarda mi envío?",
-        "r": "Preparamos tu pedido en 1 a 2 días hábiles y llega en 3 a 5 días hábiles a la mayor parte del país. Te mandamos la guía de rastreo por correo."
-      },
-      {
-        "p": "¿Envían a todo México?",
-        "r": "Sí, a toda la República. En zonas extendidas puede tardar hasta 2 días más."
-      },
-      {
-        "p": "¿Puedo cambiar de talla?",
-        "r": "Sí. Tienes 30 días desde que recibes tu pedido; la prenda debe estar sin usar y con su etiqueta. El primer cambio de talla no tiene costo."
-      },
-      {
-        "p": "¿Cómo elijo mi talla?",
-        "r": "Nuestras prendas son de corte oversized. Usa «¿Qué talla soy?» en cada prenda o revisa la guía de tallas. Si estás entre dos, la menor te queda normal y la mayor más holgada."
-      },
-      {
-        "p": "¿Cómo cuido mi prenda?",
-        "r": "Lava en frío y al revés, sin blanqueador. Seca colgada y plancha por el revés sin tocar el estampado."
-      },
-      {
-        "p": "¿Cuándo sale el próximo drop?",
-        "r": "El Drop 02 sale el sábado 24 de octubre a las 20:00 h (hora del centro de México). Déjanos tu correo y te avisamos."
-      }
-    ],
     "hojas": {
       "envios": {
         "grupo": "Ayuda",

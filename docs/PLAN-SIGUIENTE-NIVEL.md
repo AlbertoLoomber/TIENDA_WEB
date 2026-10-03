@@ -69,13 +69,11 @@ el mismo lenguaje (gancho, etiqueta, tubo, cortina) y nunca le quita protagonism
 | 2 | Portada | Perchero y barra en inglés | Perchero en español, precio bajo el perchero y barra útil; detalle con el perchero centrado |
 | 3 | Colección | Tubo con 5 prendas | Tallas rápidas, etiqueta de precio y beneficios |
 | 4 | **De cerca** (nueva) | — | La prenda 03 con estampado, cuello y tela señalados |
-| 5 | Lookbook | 5 fotos (2 en gancho) | 5 looks con modelo, en clips de loop |
+| 5 | ~~Lookbook~~ → **Así se usa** | 5 fotos (2 en gancho) | 6 fotos en la calle conectadas a cada ficha (el lookbook se quitó) |
 | 6 | Nosotros | Texto y foto | Texto nuevo, datos reales y video del estudio |
 | 7 | **Cómo se hace** (nueva) | — | Boceto → malla → estampado → perchero |
-| 8 | **Así se usa** (nueva) | — | 6 fotos en la calle conectadas a cada ficha |
-| 9 | **Preguntas frecuentes** (nueva) | — | Envíos, cambios, tallas, cuidados y drops |
-| 10 | Drop y newsletter | Etiqueta "Subscribe" | Etiqueta "Drop 02" con cuenta regresiva y la prenda tapada al lado |
-| 11 | Pie | 3 columnas cortas | Tienda · Ayuda · Marca · Contacto, más la línea legal |
+| 8 | Drop y newsletter | Etiqueta "Subscribe" | Etiqueta "Drop 02" con cuenta regresiva y la prenda tapada al lado |
+| 9 | Pie | 3 columnas cortas | Tienda · Ayuda · Marca · Contacto, más la línea legal |
 
 Paneles encima de la página: detalle del perchero, ficha, guía de tallas, "¿Qué talla soy?",
 **bolsa** y **hojas de información** (envíos, cambios, aviso de privacidad, términos).
@@ -118,8 +116,8 @@ Los prompts, nombres de archivo y la lista de revisión están en `PROMPTS.md` (
 |---|---|---|
 | `giro-NN-izquierda.mp4` | `assets/raw/video/` | `tools/cuadros_video.py VIDEO` y luego `comparar_giro.js` para decidir |
 | `cerca-…`, `drop-02`, `proceso-…`, `calle-…` | `assets/raw/fotos-nuevas/` | `tools/fotos_web.py` |
-| `clip-look-NN.mp4`, `video-estudio.mp4`, `clip-estampado.mp4` | `assets/raw/video/` | `tools/comprimir_video.py` |
-| `look-02-…`, `look-04-…` | `web/fotos/` y `tienda.look.foto` en `catalogo.json` | — |
+| `video-estudio.mp4`, `clip-estampado.mp4` | `assets/raw/video/` | `tools/comprimir_video.py` |
+| `look-02-…`, `look-04-…` (vista "Puesta" de la ficha) | `web/fotos/` y `tienda.look.foto` en `catalogo.json` | — |
 
 ---
 

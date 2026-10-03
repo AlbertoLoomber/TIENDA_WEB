@@ -416,7 +416,7 @@
       ? `${model.articulo} modelo mide ${Number(model.estatura).toFixed(2)} m y usa talla ${model.talla}.` : "";
     paintSuggestion();
 
-    // Views: front and side on the rod, plus the lookbook photo when there is one.
+    // Views: front and side on the rod, plus the worn photo when there is one.
     const views = [
       { key: "front", label: "Frente", alt: "vista de frente", src: frontSrc(item), kind: "garment" },
       { key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" },

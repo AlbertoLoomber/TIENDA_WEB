@@ -1,9 +1,8 @@
-"""Prepara los clips en loop para la página (T4.2, T4.3 y el clip opcional de T4.4).
+"""Prepara los clips en loop para la página (T4.3 y el clip opcional de T4.4).
 
 Toma los videos de `assets/raw/video/` con el nombre de docs/PROMPTS.md §24 y deja
 en `web/video/` dos formatos (MP4 H.264 y WebM VP9, sin audio) y su portada:
 
-  clip-look-NN      lookbook       4:5, 720×900, 24 fps, máx. 1.5 MB
   video-estudio     Nosotros       3:2, 1280×852, 24 fps, máx. 2.5 MB
   clip-estampado    Cómo se hace   4:5, 720×900, 24 fps, máx. 1.5 MB
 
@@ -32,7 +31,6 @@ RAW = ROOT / "assets" / "raw" / "video"
 OUT = ROOT / "web" / "video"
 
 KINDS = {
-    "clip-look-": ((720, 900), 1.5),
     "video-estudio": ((1280, 852), 2.5),   # 3:2 en medidas pares (H.264)
     "clip-estampado": ((720, 900), 1.5),
 }

@@ -1,10 +1,9 @@
 /* Nomad — the reassuring parts: shipping and returns at a glance, frequently
- * asked questions, WhatsApp, and the help and legal pages (shipping, returns,
+ * WhatsApp, and the help and legal pages (shipping, returns,
  * size guide, privacy, terms) that open over the page with links of their own
  * (#/ayuda/envios, #/legal/privacidad…).
  *
- * Every figure comes from prendas.json (site.shipping, site.returns, site.faq,
- * site.pages) and is provisional until confirmed. While the contact details are
+ * Every figure comes from prendas.json (site.shipping, site.returns, site.pages) and is provisional until confirmed. While the contact details are
  * placeholders, contact links say so instead of opening a wrong number.
  */
 (() => {
@@ -52,33 +51,6 @@
     const rt = site().returns || {};
     const short = [sh.freeFrom && `Envío gratis desde ${price(sh.freeFrom)}`, rt.days && `Cambios en ${rt.days} días`].filter(Boolean);
     if ($("sheet-perks")) $("sheet-perks").textContent = short.join(" · ");
-  }
-
-  /* ---------- frequently asked questions ---------- */
-
-  function buildFaq() {
-    const box = $("faq-list");
-    if (!box) return;
-    (site().faq || []).forEach(({ q, a }) => {
-      const d = document.createElement("details");
-      d.className = "faq__item";
-      d.innerHTML = '<summary class="faq__q"></summary><div class="faq__a"><p></p></div>';
-      d.querySelector(".faq__q").textContent = q;
-      d.querySelector(".faq__a p").textContent = a;
-      // The answer opens with its height (the one layout animation we allow).
-      d.querySelector("summary").addEventListener("click", (e) => {
-        if (reduceMotion) return;
-        e.preventDefault();
-        const body = d.querySelector(".faq__a");
-        if (d.open) {
-          gsap.to(body, { height: 0, opacity: 0, duration: 0.3, ease: "power2.in", onComplete: () => { d.open = false; gsap.set(body, { clearProps: "height,opacity" }); } });
-        } else {
-          d.open = true;
-          gsap.fromTo(body, { height: 0, opacity: 0 }, { height: "auto", opacity: 1, duration: 0.35, ease: "power2.out", clearProps: "height,opacity" });
-        }
-      });
-      box.appendChild(d);
-    });
   }
 
   /* ---------- contact links ---------- */
@@ -190,7 +162,6 @@
     reduceMotion = !!N.reduceMotion;
     baseTitle = document.title;
     buildPerks();
-    buildFaq();
     wireContacts();
     document.querySelectorAll("[data-info-close]").forEach((b) => b.addEventListener("click", () => close()));
     addEventListener("hashchange", () => follow());

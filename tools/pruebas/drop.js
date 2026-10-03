@@ -22,12 +22,15 @@ module.exports = async function drop() {
   for (const t of TAMANOS) {
     const p = await abrir(b, t);
     await ir(p, "#newsletter"); await p.waitForTimeout(400);
+    // Lo esperado justo antes y justo después de leer: si el minuto cambia en
+    // medio, cualquiera de los dos vale.
+    const r0 = await p.evaluate(() => window.NOMAD.drop.remaining());
     const e = await leer(p);
-    const r = await p.evaluate(() => window.NOMAD.drop.remaining());
+    const r1 = await p.evaluate(() => window.NOMAD.drop.remaining());
     if (!/^Drop 02 · \S+ \d+ \S+ · 20:00 h$/.test(e.ceja)) fallas.push(`${t.nombre}: encabezado "${e.ceja}"`);
     if (e.oculto || !e.forma) fallas.push(`${t.nombre}: sin cuenta o sin formulario`);
-    const esperado = [r.days, r.hours, r.min].map((n) => String(n).padStart(2, "0"));
-    if (e.cuenta.join() !== esperado.join()) fallas.push(`${t.nombre}: cuenta ${e.cuenta} ≠ ${esperado}`);
+    const como = (r) => [r.days, r.hours, r.min].map((n) => String(n).padStart(2, "0")).join();
+    if (e.cuenta.join() !== como(r0) && e.cuenta.join() !== como(r1)) fallas.push(`${t.nombre}: cuenta ${e.cuenta} ≠ ${como(r1)}`);
     if (!e.voz.startsWith("Faltan")) fallas.push(`${t.nombre}: texto oculto "${e.voz}"`);
     const desborda = await p.evaluate(() => document.documentElement.scrollWidth > innerWidth);
     if (desborda) fallas.push(`${t.nombre}: la página se sale a lo ancho`);

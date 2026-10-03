@@ -1,6 +1,6 @@
 """Pasa los datos de tienda de catalogo.json a web/prendas.json.
 
-Precios, descripciones, tallas, el lookbook, la guía de tallas y los datos de
+Precios, descripciones, tallas, las fotos puestas, la guía de tallas y los datos de
 contacto viven en catalogo.json; este script los copia a la página sin volver a
 procesar las imágenes (eso lo hace procesar_assets.py).
 
@@ -119,7 +119,7 @@ def main():
             "soldOut": shop.get("agotadas", []),
             "slug": src.get("slug", item["id"]),
             "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"),
-                     "model": look.get("modelo"), "clip": video(look.get("clip"), look.get("foto"))},
+                     "model": look.get("modelo")},
             "closeup": photo(shop.get("cerca")),
             "spin": spin(item["id"], shop.get("giro")),
         })
@@ -136,7 +136,6 @@ def main():
         },
         "contact": site.get("contacto", {}),
         "recommender": site.get("recomendador"),
-        "faq": [{"q": f["p"], "a": f["r"]} for f in site.get("preguntas", [])],
         "pages": {
             key: {"group": h.get("grupo", ""), "title": h["titulo"], "draft": h.get("borrador", False),
                   "sections": [{"title": x["t"], "text": x["p"]} for x in h.get("secciones", [])]}

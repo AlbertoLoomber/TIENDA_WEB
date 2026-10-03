@@ -99,7 +99,7 @@
     place();
     N.swipeHint?.(viewport, "proceso");
 
-    // The cards open like the lookbook's curtains, shorter, once.
+    // The cards open like fitting-room curtains, once.
     if (!N.reduceMotion && N.hasScrollTrigger) {
       gsap.fromTo(steps.map((s) => s.querySelector(".process__frame")), { clipPath: "inset(100% 0% 0% 0%)" }, {
         clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, ease: "expo.out", stagger: 0.12,
@@ -158,8 +158,8 @@
     }
   }
 
-  // Scroll-driven parts, created after the sections above (the pinned lookbook
-  // adds scroll space that these triggers must measure).
+  // Scroll-driven parts, created after the sections above so their triggers
+  // measure the final page.
   function motion() {
     if (!$("proceso").hidden) processMotion();
     if (!$("calle").hidden) streetMotion();

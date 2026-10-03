@@ -30,7 +30,7 @@
 |---|---|---|
 | 2026-10-03 | El sitio va **en español** | Lo pediste; el mercado es México |
 | 2026-10-03 | **Sin pagos** por ahora; bolsa y pago solo de diseño | Lo pediste; la parte funcional va después |
-| 2026-10-03 | **Ninguna sección nueva fija el scroll** | Evitar saturar; el lookbook es la única |
+| 2026-10-03 | **Ninguna sección nueva fija el scroll** | Evitar saturar (y desde que se quitó el lookbook, ninguna lo hace) |
 | 2026-10-03 | En la colección **no se cambia a la foto puesta** al pasar el cursor | Rompería el tubo de prendas recortadas |
 | 2026-10-03 | "De cerca" **sin fijar el scroll**, con líneas y círculos | Mismo motivo; más calmado |
 | 2026-10-03 | El drop **va dentro de la newsletter** (etiqueta y prenda tapada) | Una sección menos; mismo objeto físico |
@@ -38,6 +38,7 @@
 | 2026-10-03 | **Sin talla preelegida** en ficha y cajón | Evita compras en la talla equivocada |
 | 2026-10-03 | En celular, encabezado **Tienda · logo · Bolsa** | No caben cinco enlaces en 375 px |
 | 2026-10-03 | **El nombre del sitio y los nombres de las prendas se quedan en inglés** ("More Than Money Tee"); la categoría va en español (Playera) | Lo decidiste tú |
+| 2026-10-03 | **Se quitan el lookbook ("Cinco prendas, todos los días.") y las preguntas frecuentes**; "Así se usa · En la calle." (cuadrícula de 6 fotos) toma el lugar del lookbook. Ya ninguna sección fija el scroll | Lo decidiste tú: saturaban. Las fotos puestas siguen en la ficha (vista "Puesta"); las respuestas de envíos, cambios y tallas siguen en las hojas de ayuda |
 | 2026-10-03 | Fotos en la calle **marcadas como muestra** | No presentar contenido de IA como clientes reales |
 | 2026-10-03 | Perfil derecho **generado, no reflejado** | Reflejar invierte el estampado visible |
 | 2026-10-03 | Giro real: **primero solo la 03**, comparado con el actual | Decidir con evidencia antes de pedir cuatro videos más |

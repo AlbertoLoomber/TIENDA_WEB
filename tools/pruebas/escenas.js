@@ -1,8 +1,8 @@
 /* Fase 4 sin pin: "Cómo se hace" (el gancho sigue a las tarjetas con el scroll o
    el deslizamiento), "Así se usa" (cada foto abre su ficha, leyenda de muestra) y
    los clips en loop (no cargan antes de acercarse, se reproducen a la vista, se
-   pausan al salir y no existen con "reducir movimiento"). Los clips de prueba
-   salen de tools/comprimir_video.py con videos sintéticos. */
+   pausan al salir y no existen con "reducir movimiento"). El clip de prueba
+   sale de tools/comprimir_video.py con videos sintéticos. */
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
@@ -11,9 +11,9 @@ const { OUT, TAMANOS, navegador, abrir, ir } = require("./comun");
 const ROOT = path.join(__dirname, "..", "..");
 const VID = path.join(OUT, "video");
 
-// Clips sintéticos (una vez): un acercamiento lento sobre la foto del look 01 y del estudio.
+// Clip sintético (una vez): un acercamiento lento sobre la foto del estudio.
 function clipsDePrueba() {
-  if (fs.existsSync(path.join(VID, "clip-look-01.webm")) && fs.existsSync(path.join(VID, "video-estudio.webm"))) return;
+  if (fs.existsSync(path.join(VID, "video-estudio.webm"))) return;
   const tmp = path.join(OUT, "video-crudo");
   fs.mkdirSync(tmp, { recursive: true });
   const py = `
@@ -29,19 +29,17 @@ def kb(src, out, size, secs=4):
         r = cv2.resize(im, (int(w * s) + 1, int(h * s) + 1)); y = (r.shape[0] - H) // 2; x = (r.shape[1] - W) // 2
         vw.write(r[y:y + H, x:x + W])
     vw.release()
-kb('web/fotos/look-01-camo.webp', '${tmp}/clip-look-01.mp4', (1080, 1920))
 kb('web/fotos/studio.webp', '${tmp}/video-estudio.mp4', (1920, 1080))
 `;
   execFileSync("python3", ["-c", py], { cwd: ROOT, stdio: "ignore" });
   execFileSync("python3", [path.join(ROOT, "tools", "comprimir_video.py"), "--salida", VID,
-    path.join(tmp, "clip-look-01.mp4"), path.join(tmp, "video-estudio.mp4")], { cwd: ROOT, stdio: "ignore" });
+    path.join(tmp, "video-estudio.mp4")], { cwd: ROOT, stdio: "ignore" });
 }
 
 const conClips = (registro) => async (page) => {
   await page.route("**/prendas.json", async (route) => {
     const res = await route.fetch();
     const data = await res.json();
-    data.items[0].look.clip = { webm: "video/clip-look-01.webm", mp4: "video/clip-look-01.mp4", poster: "video/clip-look-01.webp" };
     data.site.studioVideo = { webm: "video/video-estudio.webm", mp4: "video/video-estudio.mp4", poster: data.site.studioPhoto };
     await route.fulfill({ response: res, json: data });
   });
@@ -127,17 +125,14 @@ module.exports = async function escenas() {
     const pedidos = [];
     const p = await abrir(b, TAMANOS[1], { antes: conClips(pedidos) });
     if (pedidos.length) fallas.push(`clips pedidos antes de acercarse: ${pedidos}`);
-    await ir(p, "#lookbook"); await p.waitForTimeout(2500);
-    if (!pedidos.some((f) => f.startsWith("clip-look-01"))) fallas.push("el clip del look 01 no cargó al acercarse");
-    const v = await p.$eval("video.look__clip", (v) => ({ t: v.currentTime, paused: v.paused, inline: v.playsInline && v.muted && v.hasAttribute("playsinline") }));
-    if (v.paused || v.t < 0.2) fallas.push(`el clip no se reproduce a la vista (${v.t.toFixed(2)} s)`);
-    if (!v.inline) fallas.push("el clip no es muted + playsinline");
-    await ir(p, "#preguntas"); await p.waitForTimeout(800);
-    if (!(await p.$eval("video.look__clip", (v) => v.paused))) fallas.push("el clip sigue al salir de la vista");
     await ir(p, "#about"); await p.waitForTimeout(2500);
-    if (!(await p.$("video.about__clip"))) fallas.push("Nosotros sin video");
-    else if (await p.$eval("video.about__clip", (v) => v.paused)) fallas.push("el video del estudio no se reproduce");
+    if (!pedidos.some((f) => f.startsWith("video-estudio"))) fallas.push("el video del estudio no cargó al acercarse");
+    const v = await p.$eval("video.about__clip", (v) => ({ t: v.currentTime, paused: v.paused, inline: v.playsInline && v.muted && v.hasAttribute("playsinline") }));
+    if (v.paused || v.t < 0.2) fallas.push(`el video no se reproduce a la vista (${v.t.toFixed(2)} s)`);
+    if (!v.inline) fallas.push("el video no es muted + playsinline");
     await p.screenshot({ path: path.join(OUT, "escenas-estudio-video.png") });
+    await ir(p, "#newsletter"); await p.waitForTimeout(800);
+    if (!(await p.$eval("video.about__clip", (v) => v.paused))) fallas.push("el video sigue al salir de la vista");
     if (p.errores.length) fallas.push(`clips consola: ${p.errores.join(" / ")}`);
     await p.close();
     const q = await abrir(b, TAMANOS[1], { reducir: true, antes: conClips([]) });

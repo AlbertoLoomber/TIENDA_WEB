@@ -14,7 +14,7 @@ module.exports = async function capturas() {
     await foto("01-portada");
     await p.click("#see"); await p.waitForTimeout(1600); await foto("02-detalle");
     await p.click("#close"); await p.waitForTimeout(1800);
-    for (const [sel, n] of [["#shop", "03-coleccion"], ["#lookbook", "04-lookbook"], ["#about", "05-nosotros"], ["#newsletter", "06-newsletter"]]) {
+    for (const [sel, n] of [["#shop", "03-coleccion"], ["#calle", "04-asi-se-usa"], ["#about", "05-nosotros"], ["#newsletter", "06-newsletter"]]) {
       await ir(p, sel); await p.waitForTimeout(2600); await foto(n);
     }
     await ir(p, await p.evaluate(() => document.documentElement.scrollHeight)); await p.waitForTimeout(1500); await foto("07-pie");

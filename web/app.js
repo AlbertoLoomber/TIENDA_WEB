@@ -28,7 +28,7 @@
   const RAIL = { height: 235, tubeTop: 53, tubeHeight: 47, left: 232, right: 234 };
   const MARQUEE = ["Drop 01 ya en el perchero", "Algodón pesado"];   // fallback; the real lines come from site.band
 
-  // Prices, lookbook colours/photos and the studio photo come from prendas.json
+  // Prices, worn photos and the studio photo come from prendas.json
   // (edited in catalogo.json, synced by tools/catalogo_web.py).
   let site = {};
 
@@ -697,62 +697,6 @@
 
   /* ---------- below the rack ---------- */
 
-  function buildLookbook() {
-    const track = $("lookbook-track");
-    items.forEach((item, i) => {
-      // Until a model photo exists, the look shows the garment on a short rod over its own colour.
-      const look = { tone: "#d6cdbd", ...(item.look || {}) };
-      const li = document.createElement("li");
-      li.className = "look";
-      const frame = document.createElement("div");
-      frame.className = "look__frame";
-      frame.style.setProperty("--tone", look.tone);
-      if (look.ink && !look.photo) frame.style.setProperty("--look-ink", look.ink);
-
-      const photo = look.photo || look.clip?.poster;
-      const video = photo && window.NOMAD.media?.clip(look.clip, "look__clip");
-      if (photo) {
-        const img = document.createElement("img");
-        img.className = "look__photo";
-        img.src = photo;
-        img.alt = `Look ${i + 1}: ${item.name} puesta`;
-        img.loading = "lazy";
-        if (video) {
-          // The clip plays over its own poster; the photo stays underneath (and for screen readers).
-          const media = document.createElement("div");
-          media.className = "look__photo look__media";
-          img.className = "";
-          media.append(img, video);
-          frame.appendChild(media);
-        } else {
-          frame.appendChild(img);
-        }
-      } else {
-        const rod = document.createElement("span");
-        rod.className = "look__rod";
-        const img = document.createElement("img");
-        img.className = "look__garment";
-        img.src = item.frames.at(-1).src;
-        img.alt = `${item.name}, vista de frente`;
-        img.loading = "lazy";
-        frame.append(rod, img);
-      }
-      const no = document.createElement("span");
-      no.className = "look__no";
-      no.textContent = `Look ${String(i + 1).padStart(2, "0")}`;
-      frame.appendChild(no);
-
-      const meta = document.createElement("div");
-      meta.className = "look__meta";
-      meta.innerHTML = `<p class="eyebrow"></p><p class="look__name"></p>`;
-      meta.firstChild.textContent = item.category;
-      meta.lastChild.textContent = item.name;
-
-      li.append(frame, meta);
-      track.appendChild(li);
-    });
-  }
-
   function buildStudio() {
     const fig = $("about-photo");
     if (site.studioPhoto) {
@@ -975,10 +919,9 @@
     buildRack(data);
     Object.assign(window.NOMAD, { items, site, rail: RAIL, turn: { make: makeTurn, render: renderTurn, framesFor, loadSpin } });
     window.NOMAD.bag?.setup();
-    window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
+    window.NOMAD.shop?.setup();   // the collection sits above everything else: build it first
     window.NOMAD.info?.setup();
     window.NOMAD.closeup?.setup();
-    buildLookbook();
     buildStudio();
     window.NOMAD.scenes?.setup();
     setupNewsletter();

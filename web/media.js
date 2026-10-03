@@ -1,9 +1,9 @@
-/* Nomad — short looping clips (lookbook, studio, process): silent, inline,
+/* Nomad — short looping clips (studio, process): silent, inline,
  * with the photo as their poster.
  *
  * Nothing downloads until the clip is about a screen away; it plays only while
  * at least half of it is in view and pauses when it leaves (IntersectionObserver
- * measures real positions, so this also works inside the pinned lookbook).
+ * measures real positions, transforms included).
  * With "reduce motion" or data saver on, the photo simply stays.
  *
  * Data: { webm, mp4, poster } from prendas.json (tools/comprimir_video.py).

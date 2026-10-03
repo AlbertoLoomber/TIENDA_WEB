@@ -147,6 +147,8 @@ de tus datos reales.
 
 ## 8. Lookbook
 
+> **Quitado de la página** (2026-10-03). Su lugar lo toma "Así se usa" (sección 11).
+
 | Elemento | Texto |
 |---|---|
 | Encabezado | Lookbook · Vol. 01 |
@@ -191,6 +193,8 @@ de tus datos reales.
 ---
 
 ## 12. Preguntas frecuentes (respuestas P)
+
+> **Quitada de la página** (2026-10-03). Envíos, cambios y tallas siguen en las hojas de ayuda.
 
 | Pregunta | Respuesta |
 |---|---|
