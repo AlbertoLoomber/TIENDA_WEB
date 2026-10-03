@@ -5,7 +5,8 @@ en ella, y la parte en tres piezas: soporte izquierdo, tubo central (se estira
 al ancho del perchero) y soporte derecho.
 
 Entrada:  assets/raw/rail-photo.webp
-Salida:   web/rail/left.webp, mid.webp, right.webp y web/rail/rail.json
+Salida:   assets/raw/rail-piezas/ (piezas sin pulir), web/rail/rail.json, y las
+          piezas finales en web/rail/ al pasar por tools/pulir_rail.py
 
 Uso:  python tools/procesar_rail.py
 """
@@ -20,6 +21,7 @@ from rembg import new_session, remove
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "assets" / "raw" / "rail-photo.webp"
 OUT = ROOT / "web" / "rail"
+RAW_PIECES = ROOT / "assets" / "raw" / "rail-piezas"
 
 # Medidas en píxeles de la foto original (2000 × 667).
 TOP, BOTTOM = 225, 460          # ventana vertical: soportes + sombra
@@ -50,9 +52,10 @@ def main():
     rgba = np.dstack([np.clip(out_rgb, 0, 255), out_a * 255]).astype(np.uint8)[TOP:BOTTOM]
 
     OUT.mkdir(parents=True, exist_ok=True)
+    RAW_PIECES.mkdir(parents=True, exist_ok=True)
     pieces = {"left": (X0, CUT_LEFT), "mid": (CUT_LEFT, CUT_RIGHT), "right": (CUT_RIGHT, X1)}
     for name, (a, b) in pieces.items():
-        Image.fromarray(rgba[:, a:b]).save(OUT / f"{name}.webp", "WEBP", quality=88, method=6)
+        Image.fromarray(rgba[:, a:b]).save(RAW_PIECES / f"{name}.webp", "WEBP", quality=88, method=6)
 
     geometry = {
         "height": BOTTOM - TOP,
@@ -66,6 +69,8 @@ def main():
     }
     (OUT / "rail.json").write_text(json.dumps(geometry, indent=2) + "\n", encoding="utf8")
     print("escrito", OUT.relative_to(ROOT), geometry)
+    import pulir_rail                        # mismo directorio: tools/
+    pulir_rail.main()
 
 
 if __name__ == "__main__":

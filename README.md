@@ -8,7 +8,8 @@ Prototipo de diseño del perchero interactivo (sin inventario, pagos ni envíos)
 - `catalogo.json`: prendas, nombres, estado de cada ángulo y datos de tienda (precio, descripción, tallas, lookbook) más `sitio` (moneda, guía de tallas, contacto). **Precios, textos y medidas son provisionales.**
 - `tools/procesar_assets.py`: quita fondos y alinea el gancho de todas las vistas → `web/prendas/`.
 - `tools/catalogo_web.py`: copia los datos de tienda de `catalogo.json` a `web/prendas.json` (sin reprocesar imágenes).
-- `tools/procesar_rail.py`: recorta la foto del tubo y la parte en tres piezas → `web/rail/`.
+- `tools/procesar_rail.py`: recorta la foto del tubo y la parte en tres piezas; `tools/pulir_rail.py` las deja sin costuras y con la sombra desvanecida → `web/rail/`.
+- `tools/pruebas/`: pruebas automáticas (letra, accesibilidad, restos de animación, rendimiento y capturas); ver su README.
 - `assets/marca/`: logo "Nomad" en SVG (azul marino, claro, negro) e ícono del gancho.
 - `tools/validar_assets.py`: revisa nombres, tamaños y ángulos faltantes.
 - `tools/build_artifact.py`: arma `dist/index.html` para publicar la vista previa.

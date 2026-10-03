@@ -83,6 +83,57 @@
     },
   };
 
+  /* On touch screens, show that a row goes on sideways: its edges fade where
+     there is more to see, and a small "Desliza" note waits under it until the
+     first swipe (remembered for the visit). Mouse users never see it. */
+  const HANGER = '<svg viewBox="0 0 40 26" aria-hidden="true"><path d="M20 9 V6.5 a3 3 0 1 1 3 -3"/><path d="M20 9 L4 20 Q2 21.6 4.2 22 H35.8 Q38 21.6 36 20 Z"/></svg>';
+
+  function swipeHint(scroller, key) {
+    if (!scroller || finePointer) return;
+    let hint = null;
+    // Only rows that really scroll (a rail can stick out of a box that doesn't).
+    const scrolls = () => /auto|scroll/.test(getComputedStyle(scroller).overflowX);
+    const overflow = () => (scrolls() ? scroller.scrollWidth - scroller.clientWidth : 0);
+    const edges = () => {
+      scroller.classList.toggle("can-left", scroller.scrollLeft > 4);
+      scroller.classList.toggle("can-right", overflow() - scroller.scrollLeft > 4);
+      hint?.classList.toggle("is-gone", overflow() < 8);
+    };
+    let raf = 0;
+    scroller.addEventListener("scroll", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(edges); }, { passive: true });
+    addEventListener("resize", edges);
+    edges();
+
+    const storeKey = `nomad.desliza.${key}`;
+    let seen = false;
+    try { seen = sessionStorage.getItem(storeKey) === "1"; } catch (e) { /* storage blocked: show it */ }
+    if (seen || overflow() < 8) return;
+
+    hint = document.createElement("p");
+    hint.className = "swipe-hint";
+    hint.setAttribute("aria-hidden", "true");
+    hint.innerHTML = `Desliza ${HANGER}`;
+    const parent = scroller.parentElement;
+    if (getComputedStyle(parent).position === "static") parent.style.position = "relative";
+    parent.appendChild(hint);
+    const place = () => {
+      const padBottom = parseFloat(getComputedStyle(scroller).paddingBottom) || 0;
+      hint.style.top = `${scroller.offsetTop + scroller.offsetHeight - padBottom + 8}px`;
+      hint.style.right = `${Math.max(16, parent.clientWidth - (scroller.offsetLeft + scroller.offsetWidth) + 16)}px`;
+    };
+    place();
+    addEventListener("resize", place);
+    const done = () => {
+      if (scroller.scrollLeft < 8) return;
+      scroller.removeEventListener("scroll", done);
+      removeEventListener("resize", place);
+      try { sessionStorage.setItem(storeKey, "1"); } catch (e) { /* fine */ }
+      hint.classList.add("is-gone");
+      setTimeout(() => hint.remove(), 500);
+    };
+    scroller.addEventListener("scroll", done, { passive: true });
+  }
+
   // In-page links (#about, #lookbook, the logo…) glide to their section.
   document.addEventListener("click", (e) => {
     const link = e.target.closest('a[href^="#"]');
@@ -99,6 +150,7 @@
     scroll,
     reduceMotion,
     finePointer,
+    swipeHint,
     hasScrollTrigger,
   });
 })();

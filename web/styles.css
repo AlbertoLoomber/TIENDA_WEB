@@ -146,13 +146,21 @@ body {
   max-width: 100%;
   transition: filter .7s var(--ease-out), opacity .7s var(--ease-out);
 }
-.is-detail .rack, .is-detail .caption, .is-detail #see {
-  filter: blur(9px);
-  opacity: .26;
+/* Detail view: the rack stays behind, softly out of focus; its caption and button
+   leave altogether (blurred text read as a smudge behind the garment). */
+.is-detail .rack {
+  filter: blur(6px);
+  opacity: .4;
   pointer-events: none;
 }
-.caption { transition: filter .7s var(--ease-out), opacity .7s var(--ease-out); }
-#see { transition: filter .7s var(--ease-out), opacity .7s var(--ease-out), background-size .5s var(--ease-out), color .35s var(--ease-out); }
+.is-detail .caption, .is-detail #see {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .3s var(--ease-out), visibility 0s .3s;
+}
+.caption { transition: opacity .5s var(--ease-out); }
+#see { transition: opacity .5s var(--ease-out), background-size .5s var(--ease-out), color .35s var(--ease-out); }
 
 .rack__inner {
   position: relative;
@@ -454,7 +462,61 @@ body {
 .band__track span::after { content: "•"; margin-left: 2.2em; font-style: normal; }
 @keyframes band { to { transform: translateX(-50%); } }
 
-/* ---------- phones: the rack scrolls sideways ---------- */
+/* ---------- phones and portrait tablets: big garments on a rack you swipe ----------
+   app.js adds .is-swipe when the stage is narrow (≤ 640px) or a portrait tablet. */
+.rack.is-swipe {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding-block: 2px 36px;
+  margin-bottom: -20px;
+}
+.rack.is-swipe::-webkit-scrollbar { display: none; }
+.rack.is-swipe .rack__inner { margin-inline: auto; }
+.rack.is-swipe .slot { scroll-snap-align: center; }
+
+/* Swipeable rows on touch screens: fade the edge that hides more, plus a
+   one-time "Desliza" note (scroll.js → swipeHint). */
+@media (hover: none) {
+  .rack.is-swipe.can-right, .shelf.can-right { -webkit-mask-image: linear-gradient(to right, #000 84%, transparent); mask-image: linear-gradient(to right, #000 84%, transparent); }
+  .rack.is-swipe.can-left, .shelf.can-left { -webkit-mask-image: linear-gradient(to left, #000 84%, transparent); mask-image: linear-gradient(to left, #000 84%, transparent); }
+  .rack.is-swipe.can-left.can-right, .shelf.can-left.can-right {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 16%, #000 84%, transparent);
+  }
+}
+.swipe-hint {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  pointer-events: none;
+  transition: opacity .4s var(--ease-out);
+}
+.swipe-hint svg {
+  width: 20px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: swipe-nudge 1.1s ease-in-out 1s 2;
+}
+.swipe-hint.is-gone { opacity: 0; }
+.is-detail .swipe-hint { opacity: 0; }
+@keyframes swipe-nudge { 50% { transform: translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .swipe-hint svg { animation: none; } }
+
+/* ---------- phones ---------- */
 @media (max-width: 640px) {
   .top { padding: 14px 16px 0; }
   .logo__mark { width: 79px; }
@@ -462,18 +524,6 @@ body {
      Nosotros stays in the footer and in the page itself. */
   #nav-about { display: none; }
   .stage { padding-inline: 0; }
-  .rack {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    padding-block: 2px 36px;
-    margin-bottom: -20px;
-  }
-  .rack::-webkit-scrollbar { display: none; }
-  .rack__inner { margin-inline: auto; }
-  .slot { scroll-snap-align: center; }
   .detail__figure { grid-column: 1 / -1; }
   .detail__arrow { position: relative; z-index: 2; background: var(--paper); }
   .detail__arrow--prev { grid-column: 1; justify-self: start; margin: 0; }

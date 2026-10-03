@@ -45,6 +45,7 @@
     buildGuide();
     wireSheet();
     layoutRail();
+    N.swipeHint?.($("shelf"), "coleccion");
     addEventListener("resize", () => requestAnimationFrame(layoutRail));
     setupEntrance();
   }

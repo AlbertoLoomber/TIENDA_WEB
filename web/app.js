@@ -164,7 +164,12 @@
 
   function layout() {
     const stage = rack.parentElement;
-    narrow = stage.clientWidth <= 640;
+    // Phones, and tablets held upright: rather than shrinking the five garments
+    // to fit the width, make them big and let the rack scroll sideways.
+    const phone = stage.clientWidth <= 640;
+    const portraitTablet = !phone && stage.clientWidth <= 900 && stage.clientHeight > stage.clientWidth * 1.1;
+    narrow = phone || portraitTablet;
+    rack.classList.toggle("is-swipe", narrow);
     const availH = stage.clientHeight - (narrow ? 120 : 110);
     const sides = items.reduce((s, it) => s + extent(it.frames[0]) * PACK_SIDE, 0);
     const growth = Math.max(...items.map((it) => extent(it.frames.at(-1)) * PACK_FRONT - extent(it.frames[0]) * PACK_SIDE));
@@ -172,7 +177,8 @@
 
     if (narrow) {
       // Phones: bigger garments on a rack you swipe.
-      garmentH = clamp(Math.min(availH, 470, stage.clientWidth * 1.2), 200, 470);
+      const maxH = phone ? 470 : 560;
+      garmentH = clamp(Math.min(availH, maxH, stage.clientWidth * 1.2), 200, maxH);
     } else {
       const availW = stage.clientWidth - 32 - 2 * RAIL_OVER;
       garmentH = clamp(Math.min(availH, 560, availW / perHeight), 180, 560);
@@ -195,7 +201,7 @@
     s.setProperty("--rack-w", `${perHeight * garmentH}px`);
     rackInner.style.paddingInline = narrow ? `${over + 16}px` : "";
 
-    const roomW = stage.clientWidth - (narrow ? 32 : 32 + 2 * 130);
+    const roomW = stage.clientWidth - (phone ? 32 : 32 + 2 * 130);
     const d = Math.min(stage.clientHeight - 160, 760, roomW / CANVAS_RATIO);
     detail.style.setProperty("--d-h", `${Math.max(220, d)}px`);
     items.forEach(render);
@@ -246,7 +252,7 @@
 
   function setCaption(item) {
     if (item) {
-      caption.textContent = `${item.name} — ${item.category}`;
+      caption.textContent = `${item.name} · ${window.NOMAD?.price?.(item.price) || item.category}`;
       caption.classList.remove("is-hint");
     } else {
       caption.textContent = finePointer ? "Pasa el cursor para girar · Clic para ver" : "Toca para girar · Toca otra vez para ver";
@@ -361,14 +367,38 @@
   /* ---------- detail view ---------- */
 
   // Rect of an element in the rack as it will be once the rack is back at scale 1.
+  // Where an element of the rack sits once the rack is back at rest
+  // (no scale, no slide): undoes the transform the detail view puts on it.
   function restingRect(el) {
     const r = el.getBoundingClientRect();
     const s = gsap.getProperty(rack, "scale");
-    if (s === 1) return r;
+    const x = gsap.getProperty(rack, "x");
+    if (s === 1 && !x) return r;
     const c = rack.getBoundingClientRect();
     const cx = c.left + c.width / 2;
     const cy = c.top + c.height / 2;
-    return { left: cx + (r.left - cx) / s, top: cy + (r.top - cy) / s, width: r.width / s, height: r.height / s };
+    return { left: cx - x + (r.left - cx) / s, top: cy + (r.top - cy) / s, width: r.width / s, height: r.height / s };
+  }
+
+  const DETAIL_SCALE = 0.95;
+
+  // Behind the detail view the rack slides so the empty hook of the open garment
+  // sits right behind it, with garments on both sides. Positions are worked out
+  // from the widths the slots will settle at (they are still easing after a step).
+  function rackOffsetFor(i) {
+    const widths = items.map((it, j) => slotWidth({ turn: it.turn, wp: j === i ? 1 : 0 }));
+    const total = widths.reduce((a, b) => a + b, 0);
+    const rowBox = restingRect(row);
+    const centre = rowBox.left + (rowBox.width - total) / 2 + widths.slice(0, i).reduce((a, b) => a + b, 0) + widths[i] / 2;
+    const rackBox = restingRect(rack);
+    const c0 = rackBox.left + rackBox.width / 2;
+    const fig = figure.getBoundingClientRect();
+    const f = fig.left + fig.width / 2 - gsap.getProperty(figure, "x");
+    if (narrow) {
+      // Phones: the rack scrolls sideways, so scroll instead of sliding.
+      return { scrollLeft: clamp(rack.scrollLeft + centre - (rackBox.left + rack.clientWidth / 2), 0, rack.scrollWidth - rack.clientWidth) };
+    }
+    return { x: f - c0 - (centre - c0) * DETAIL_SCALE };
   }
 
   function fillDetail(item, p = 1) {
@@ -383,6 +413,12 @@
     $("detail-price").textContent = window.NOMAD?.price?.(item.price) || "";
   }
 
+  // While the detail view is open the page can't scroll, so everything below the
+  // rack is out of reach: keep Tab and screen readers out of it too.
+  function setBelowInert(on) {
+    document.querySelectorAll(".more, .closing").forEach((el) => { el.inert = on; });
+  }
+
   const detailChrome = () => [$("prev"), $("next"), info, handle];
 
   function openDetail(i) {
@@ -391,6 +427,7 @@
     // The detail view lives over the rack, so bring the rack back into view first.
     if (window.scrollY > 0) pageScroll.to(0, { immediate: true });
     pageScroll.lock();
+    setBelowInert(true);
     clearTimeout(hoverTimer);
     clearTimeout(leaveTimer);
     activate(i, { instant: true });
@@ -413,7 +450,7 @@
         item.swing.style.visibility = "hidden";
         gsap.set(item.swing, { y: 0 });
 
-        gsap.to(rack, { scale: 0.95, duration: dur(0.85), ease: "power3.inOut" });
+        gsap.to(rack, { scale: DETAIL_SCALE, ...rackOffsetFor(i), duration: dur(0.85), ease: "power3.inOut" });
         gsap.fromTo(figure,
           { x: a.left - b.left, y: a.top - b.top, scale: a.height / b.height, opacity: 1, transformOrigin: "0 0" },
           { x: 0, y: 0, scale: 1, duration: dur(0.85), ease: "power3.inOut", onComplete: () => { busy = false; } });
@@ -433,7 +470,7 @@
 
     const to = restingRect(item.swing);
     const from = figure.getBoundingClientRect();
-    gsap.to(rack, { scale: 1, duration: dur(0.75), ease: "power3.inOut" });
+    gsap.to(rack, { scale: 1, x: 0, duration: dur(0.75), ease: "power3.inOut" });
     gsap.to(figure, {
       x: to.left - from.left,
       y: to.top - LIFT - from.top,
@@ -449,6 +486,7 @@
         detail.hidden = true;
         closeBtn.hidden = true;
         pageScroll.unlock();
+        setBelowInert(false);
         gsap.set(figure, { clearProps: "transform,opacity" });
         detailIndex = -1;
         busy = false;
@@ -470,6 +508,7 @@
     activate(nextI, { quiet: true });
     next.swing.style.visibility = "hidden";
     detailIndex = nextI;
+    gsap.to(rack, { ...rackOffsetFor(nextI), duration: dur(0.6), ease: "power3.inOut", overwrite: "auto" });
 
     // A light crossfade: the garment is already facing you, so no turn here.
     const shift = 18 * dir;
@@ -741,6 +780,7 @@
     setupLean();
     wire();
     layout();
+    window.NOMAD.swipeHint?.(rack, "perchero");
     if (hasScrollTrigger) ScrollTrigger.refresh();
     setCaption(null);
     await firstFramesReady();
