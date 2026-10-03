@@ -13,4 +13,4 @@ Prototipo de diseño del perchero interactivo (sin inventario, pagos ni envíos)
 - `tools/validar_assets.py`: revisa nombres, tamaños y ángulos faltantes.
 - `tools/build_artifact.py`: arma `dist/index.html` para publicar la vista previa.
 - `tools/preparar_video.py`: cuadros de inicio y fin para generar el giro de cada prenda con video → `assets/para-video/`.
-- `docs/`: análisis del sitio de referencia, planes (`PLAN-SIGUIENTE-NIVEL.md` es el vigente) y prompts para generar fotos y videos.
+- `docs/`: análisis del sitio de referencia, planes (`PLAN-SIGUIENTE-NIVEL.md` es el vigente; su detalle por fase está en `docs/siguiente-nivel/`) y prompts para generar fotos y videos.
