@@ -3,6 +3,8 @@
 Objetivo: tener todas las imágenes que necesita el prototipo del perchero, con un aspecto parecido al video de referencia.
 Los prompts están en **inglés** porque los generadores de imagen dan mejores resultados así. Cambia lo que está entre `[CORCHETES]`.
 
+> Las secciones **15 a 24** son las fotos y videos del plan "siguiente nivel" (`docs/PLAN-SIGUIENTE-NIVEL.md`).
+
 ---
 
 ## 0. Reglas para que todo se vea consistente
@@ -95,6 +97,8 @@ A single t-shirt hanging on a wooden hanger slowly rotates on its hook from a si
 ```
 
 Después se extraen 16–24 cuadros del video (yo puedo hacerlo con un script). Revisa que el estampado no se deforme.
+
+> Versión actualizada y con cuadros ya alineados: **sección 16**.
 
 ---
 
@@ -215,6 +219,8 @@ Close-up editorial photo of hands folding an oversized black t-shirt on a wooden
 
 ## 13. Detalle de tela y estampado (para más adelante)
 
+> Reemplazada por la **sección 17**, más completa.
+
 Para una futura sección sobre la prenda: **3 fotos cuadradas 1:1**, con la foto de frente como referencia.
 
 ```
@@ -230,3 +236,306 @@ Using the attached garment as exact reference, macro close-up of [the print / th
 - [ ] Opcional: `detail-print.jpg`, `detail-collar.jpg`, `detail-hem.jpg` (1:1)
 
 No hace falta quitarles el fondo: van como fotos completas. Mándamelas por aquí o súbelas a `assets/raw/`.
+
+---
+
+# Fotos y videos del plan "siguiente nivel"
+
+Orden recomendado para generarlos (yo avanzo con el diseño mientras tanto):
+**16.1 → 17 → 18 → 23 → 19 → 20 → 21 → 22.** La lista completa con nombres de archivo está en la sección 24.
+
+---
+
+## 15. Reglas para los videos (de imagen a video)
+
+**Herramientas** (usa la que tengas):
+- **Kling 3.0**: la recomendada para el giro. Acepta cuadro inicial y final, y tiene campo de "negative prompt".
+- **Google Veo 3.1** (en Flow, opción "Frames to video"): muy buena con la tela y la luz.
+- **Runway Gen-4.5** (keyframes inicial y final): controla bien la cámara.
+
+**Ajustes:**
+- Calidad máxima (1080p, modo "Professional" o "High quality").
+- Duración: **5 s** para giros y clips; **8 a 10 s** para el video del estudio.
+- Formato: **9:16 vertical** para los giros (los cuadros de `assets/para-video/` ya vienen así); 4:5 o 9:16 para el lookbook; 16:9 para el estudio. Si no existe el formato exacto, usa el más parecido y yo recorto.
+- Sin música. Si la herramienta agrega audio no importa: yo lo quito.
+- Cámara fija siempre.
+
+**Negative prompt** (pégalo si la herramienta tiene ese campo):
+
+```
+camera movement, zoom, pan, tilt, dolly, cut, scene change, morphing, warped print, distorted text, flickering, extra sleeves, extra hanger, second garment, hands, people, text overlay, watermark, logo, blur
+```
+
+**Antes de mandármelo, revisa:**
+- [ ] El estampado no se deforma ni cambia de letras.
+- [ ] El gancho se queda fijo arriba al centro.
+- [ ] El color de la prenda y del fondo no cambia.
+- [ ] No hay cortes ni saltos; el movimiento es parejo.
+
+**Entrega:** el MP4 **original**, descargado de la herramienta. No lo reenvíes por WhatsApp porque lo comprime. Usa el nombre de archivo que indica cada prompt.
+
+---
+
+## 16. Giro real de cada prenda (video)
+
+**Para qué:** que el giro del perchero pase por ángulos reales y que en la ficha se pueda arrastrar para girar (plan, T4.1 y T3.2).
+
+**Ya preparado:** en `assets/para-video/<prenda>/` están `frente.jpg` y `lado.jpg`, sobre el mismo fondo y con el gancho exactamente en el mismo punto. Úsalos tal cual, sin recortarlos ni cambiarles el tamaño.
+
+### 16.1 Frente → lado izquierdo (empieza solo con la 03)
+
+1. Cuadro inicial: `assets/para-video/03-white-tee-dollar/frente.jpg`
+2. Cuadro final: `assets/para-video/03-white-tee-dollar/lado.jpg`
+3. Prompt:
+
+```
+The white heavyweight t-shirt with the green dollar-bill print and black script lettering hangs on a natural wooden hanger with a curved chrome hook and slowly rotates on the hook, turning smoothly from facing the camera to an edge-on side view. One continuous, steady rotation of about 80 degrees at a constant speed, as if gently turned by an unseen hand. The hook stays fixed at the top center; the garment keeps its exact shape, fabric, color and print; the fabric sways only slightly. Static locked-off camera, no zoom, no pan. Plain seamless light warm-gray studio background (#E7E6E1), soft diffused light from the front-left, subtle soft shadow. Photorealistic product video.
+```
+
+4. Archivo: `giro-03-izquierda.mp4`
+
+Cuando apruebes cómo queda la 03, se hacen las demás con el mismo prompt, cambiando la descripción del inicio y los cuadros de su carpeta:
+
+| # | Carpeta | Cambia "The white heavyweight t-shirt … lettering" por | Archivo |
+|---|---|---|---|
+| 01 | `01-camo-overshirt` | `The oversized camouflage overshirt in muted brown and taupe` | `giro-01-izquierda.mp4` |
+| 02 | `02-black-tee-minimal` | `The black heavyweight t-shirt with a small white NOMAD wordmark on the chest` | `giro-02-izquierda.mp4` |
+| 04 | `04-black-tee-script` | `The black heavyweight t-shirt with cream serif lettering stacked down the front` | `giro-04-izquierda.mp4` |
+| 05 | `05-green-crewneck` | `The forest green crewneck sweatshirt with a cream text print and a small globe emblem` | `giro-05-izquierda.mp4` |
+
+### 16.2 Lado derecho (opcional, para girar hacia los dos lados)
+
+No se puede reflejar el lado izquierdo: el pedazo de estampado que se alcanza a ver quedaría al revés. Se hace en dos pasos.
+
+**Paso 1, imagen** (sube `frente.jpg` como referencia):
+
+```
+Using the attached image as the exact reference, show the SAME garment on the SAME hanger, rotated about 80 degrees on the hook toward its RIGHT side, so it is seen almost edge-on from the right: we mainly see the right side seam, the right sleeve hanging toward the camera and only a thin sliver of the front print at the right edge. Keep identical fabric, color, print, hanger, lighting, background, camera position, framing and scale; the hook stays at exactly the same position at the top center. Plain seamless light warm-gray background (#E7E6E1). Vertical 9:16, same size as the reference.
+```
+
+Archivo: `lado-derecho-03.jpg`
+
+**Paso 2, video:** igual que 16.1, pero con `lado-derecho-03.jpg` como cuadro final. Archivo: `giro-03-derecha.mp4`.
+
+### 16.3 Espalda (opcional)
+
+1. Genera la espalda con el prompt de la sección 5, subiendo `frente.jpg` como referencia. Archivo: `espalda-03.jpg`.
+2. Video: cuadro inicial `lado.jpg` y cuadro final `espalda-03.jpg`:
+
+```
+The same garment keeps rotating slowly on its hook, from the edge-on side view until its back faces the camera. One continuous, steady rotation at a constant speed; the hook stays fixed at the top center; identical fabric, color and hanger. Static locked-off camera, no zoom, no pan. Plain seamless light warm-gray studio background (#E7E6E1), soft diffused light from the front-left. Photorealistic product video.
+```
+
+Archivo: `giro-03-espalda.mp4`
+
+---
+
+## 17. Fotos "De cerca" (macro)
+
+**Para qué:** la sección "De cerca" (plan, T3.4) y la vista "De cerca" de la ficha.
+**Formato:** cuadrado 1:1, 2048×2048 (mínimo 1600). Sube siempre la foto de frente de la prenda como referencia (sirve `assets/para-video/<prenda>/frente.jpg`).
+
+Bloque de estilo macro (pégalo al final de cada prompt de esta sección):
+
+```
+Extreme macro product photograph, 100mm macro lens, soft diffused studio light from the upper left with a gentle raking light that reveals the fabric texture, true-to-life colors, razor-sharp focus on the subject with a soft falloff at the edges, plain light warm-gray background (#E7E6E1) where visible, muted calm tones. Square 1:1. No text other than the existing print, no watermark.
+```
+
+### 17.1 Estampado de cada prenda (5 fotos)
+
+Plantilla:
+
+```
+Using the attached garment as exact reference, an extreme macro close-up of [DETALLE] on this exact garment, filling most of the frame. Visible cotton texture and slightly raised matte screen-print ink with tiny natural imperfections; the fabric lies flat with one soft fold in a corner. [BLOQUE MACRO]
+```
+
+| # | [DETALLE] | Archivo |
+|---|---|---|
+| 01 | `the camouflage cotton twill weave and one brown button on the chest pocket` | `cerca-01-estampado.jpg` |
+| 02 | `the small white printed NOMAD wordmark on the black chest` | `cerca-02-estampado.jpg` |
+| 03 | `the green one-dollar bill print and the black script lettering "More Than Money"` | `cerca-03-estampado.jpg` |
+| 04 | `the cream serif letters "Good People" on the black fabric` | `cerca-04-estampado.jpg` |
+| 05 | `the cream "Create Good Habits" print and the small globe emblem on green brushed fleece` | `cerca-05-estampado.jpg` |
+
+### 17.2 Cuello de la 03
+
+```
+Using the attached garment as exact reference, an extreme macro close-up of the ribbed crew-neck collar of this exact white t-shirt seen from slightly above: thick 1x1 rib knit, neat double-needle stitching and the inside neck tape. [BLOQUE MACRO]
+```
+
+Archivo: `cerca-03-cuello.jpg`
+
+### 17.3 Grosor de la tela
+
+```
+Side view at eye level of a neat stack of three folded heavyweight cotton t-shirts (black, white, black) on a light wooden table, emphasizing the thickness and density of the fabric at the folded edges. [BLOQUE MACRO]
+```
+
+Archivo: `cerca-tela.jpg`
+
+### 17.4 Dobladillo (opcional)
+
+```
+Using the attached garment as exact reference, an extreme macro close-up of the bottom hem of this exact white t-shirt: even double-needle stitching, the hem slightly folded back to show the fabric thickness. [BLOQUE MACRO]
+```
+
+Archivo: `cerca-03-dobladillo.jpg`
+
+### 17.5 Etiqueta del cuello (opcional)
+
+```
+Using the attached garment as exact reference, an extreme macro close-up of a small woven neck label sewn inside the collar of this exact white t-shirt: an off-white label with the word "NOMAD" woven in navy blue script lettering. [BLOQUE MACRO]
+```
+
+Archivo: `cerca-03-etiqueta.jpg`. Si la palabra sale mal, pide la etiqueta **sin texto** y yo le pongo el logo.
+
+---
+
+## 18. Looks 02 y 04 con modelo (reemplazan las fotos en gancho)
+
+**Para qué:** que los 5 looks del lookbook sean de la misma sesión.
+**Sube 2 imágenes:** 1) la foto de frente de la prenda; 2) `look-01-camo` (en `assets/raw/fotos/`) solo como referencia de estilo, luz y fondo.
+
+Look 02:
+
+```
+Use image 1 as the exact garment reference and image 2 only as the reference for style, set, lighting and color grading. Editorial streetwear lookbook photo, full body: a young woman with shoulder-length dark hair wearing this exact oversized black t-shirt with the small white NOMAD wordmark on the chest, loosely tucked into wide light-gray pleated trousers, black leather loafers, standing relaxed with one hand in her pocket, looking slightly away from the camera. Same plain light warm-gray studio wall and matte concrete floor as image 2, soft diffused daylight from the left, gentle natural shadow on the wall, muted colors, subtle 35mm film grain. The print must stay exactly as in image 1: same size, position and lettering. Vertical 4:5 (1600×2000). Fictional model, not a real person. No text other than the garment print, no watermark.
+```
+
+Archivo: `look-02-nomad.jpg`
+
+Look 04:
+
+```
+Use image 1 as the exact garment reference and image 2 only as the reference for style, set, lighting and color grading. Editorial streetwear lookbook photo, full body: a young woman with curly hair tied back wearing this exact oversized black t-shirt with the cream serif lettering "Good People Better Days" stacked down the front, olive cargo pants, white sneakers and a thin silver chain necklace, caught mid-step walking toward the camera. Same plain light warm-gray studio wall and matte concrete floor as image 2, soft diffused daylight from the left, gentle natural shadow on the wall, muted colors, subtle 35mm film grain. The print must stay exactly as in image 1: same size, position and lettering. Vertical 4:5 (1600×2000). Fictional model, not a real person. No text other than the garment print, no watermark.
+```
+
+Archivo: `look-04-good-people.jpg`
+
+> Si el estampado cambia, vuelve a pedir agregando: "keep the print exactly as in image 1".
+
+---
+
+## 19. Clips del lookbook (video en loop)
+
+**Para qué:** que las fotos del lookbook tengan un movimiento muy sutil (plan, T4.2).
+**Cuadro inicial y cuadro final: la misma foto del look.** Así el clip empieza y termina igual y se repite sin corte. Duración: 5 s.
+
+Bloque final (pégalo después de la acción de cada look):
+
+```
+Very subtle natural movement only, gentle fabric motion and breathing. Static locked-off camera, no zoom, no pan, same lighting, same background, same framing. The last frame matches the first frame for a seamless loop.
+```
+
+| Look | Acción (va antes del bloque) | Archivo |
+|---|---|---|
+| 01 | `The model stands relaxed, shifts his weight slightly, lightly adjusts the open camouflage overshirt at the chest with one hand and returns to the same pose.` | `clip-look-01.mp4` |
+| 02 | `The model slowly turns her head toward the camera and back, with a small natural movement of the hand in her pocket.` | `clip-look-02.mp4` |
+| 03 | `Sitting on the stool, the model leans back slightly, rests his hands on his knees, then returns to the same pose.` | `clip-look-03.mp4` |
+| 04 | `The model shifts her weight from one foot to the other and lightly touches her necklace, then returns to the same pose.` | `clip-look-04.mp4` |
+| 05 | `The model lifts the coffee cup slightly as if about to drink, smiles softly and lowers it back to the same pose.` | `clip-look-05.mp4` |
+
+Los looks 02 y 04 se hacen después de tener sus fotos con modelo (sección 18).
+
+---
+
+## 20. Video del estudio (Nosotros)
+
+### 20.1 Recorrido por el perchero
+
+Cuadro inicial: la foto del estudio (`assets/raw/fotos/studio.webp`; si la herramienta no acepta WebP, conviértela a JPG). Formato 16:9, de 8 a 10 s.
+
+```
+Very slow, smooth lateral camera dolly from left to right along the clothing rail in this exact studio. The garments on the wooden hangers sway very gently as if moved by a soft breeze from the open window, a few dust particles float in the sunbeam, the light stays soft and natural. No people. Calm, cinematic, 24 fps. Keep every object identical to the reference image, no new objects.
+```
+
+Archivo: `video-estudio.mp4`
+
+### 20.2 Manos doblando (opcional)
+
+```
+Close-up of hands folding an oversized black t-shirt on a light wooden worktable in a minimalist studio, light warm-gray wall in the background, soft daylight from the left, slow calm movements, muted colors, subtle 35mm film grain, no face visible, no text, static camera. Vertical 4:5.
+```
+
+Archivo: `video-doblando.mp4`
+
+---
+
+## 21. Cómo se hace (4 fotos + 1 clip opcional)
+
+**Para qué:** la sección "Del boceto al perchero" (plan, T4.4). Formato vertical 4:5 (1600×2000).
+
+Bloque de estilo del proceso:
+
+```
+Editorial documentary photo in a small minimalist screen-printing studio, light warm-gray walls (#E7E6E1), soft daylight from a large window on the left, calm and tidy, muted colors, subtle 35mm film grain, no faces visible, no text other than the design, no logos, no watermark. Vertical 4:5 (1600×2000).
+```
+
+| Paso | Prompt (antes del bloque) | Archivo |
+|---|---|---|
+| 1. Boceto | `Top-down view of a hand-drawn pencil and ink sketch of a t-shirt graphic, a banknote outline with the words "More Than Money" in script, on off-white paper, with a pencil, an eraser and three color swatches (green, black, cream) on a light wooden table.` | `proceso-1-boceto.jpg` |
+| 2. Malla | `A screen-printing frame (aluminum frame with fine yellow mesh) showing the exposed stencil of a banknote graphic, leaning against the wall on a worktable, light passing through the mesh.` | `proceso-2-malla.jpg` |
+| 3. Estampado | `Close-up of gloved hands pulling a squeegee across a screen on a manual printing press, printing green ink onto a white t-shirt; the ink texture is visible.` | `proceso-3-estampado.jpg` |
+| 4. Al perchero | `Freshly printed white t-shirts on natural wooden hangers on a brushed-chrome rail mounted on the wall; the one in front shows the green banknote print.` | `proceso-4-perchero.jpg` |
+
+Clip opcional (cuadro inicial: `proceso-3-estampado.jpg`):
+
+```
+The squeegee is pulled slowly across the screen in one smooth stroke and then lifted. Static locked-off camera, no zoom, same lighting and framing.
+```
+
+Archivo: `clip-estampado.mp4`
+
+---
+
+## 22. Así se usa (6 fotos en la calle)
+
+**Para qué:** la sección "En la calle" (plan, T4.5). En la página dirán **"Fotos de muestra"** hasta tener fotos reales de clientes.
+**Formato:** cuadrado 1:1 (2048×2048). Sube la foto de frente de la prenda en cada una.
+
+Bloque de estilo:
+
+```
+Candid street-style editorial photo shot on a 35mm film camera, natural daylight, a Mexico City neighborhood with trees and colorful façades (Roma or Condesa style), muted colors, subtle film grain, relaxed and real, fictional people, no readable signs, no brand logos other than the garment print, no watermark. Square 1:1 (2048×2048).
+```
+
+| # | Prompt (antes del bloque) | Archivo |
+|---|---|---|
+| 1 | `A young man wearing this exact camouflage overshirt open over a white tee, crossing a tree-lined street.` | `calle-1.jpg` |
+| 2 | `A young woman wearing this exact black NOMAD tee, sitting at a small sidewalk café table with a coffee.` | `calle-2.jpg` |
+| 3 | `Two friends laughing on a rooftop at golden hour; one of them wears this exact white "More Than Money" tee.` | `calle-3.jpg` |
+| 4 | `A young woman wearing this exact black "Good People Better Days" tee riding a bicycle through a park.` | `calle-4.jpg` |
+| 5 | `A young man wearing this exact green "Create Good Habits" crewneck waiting at a bus stop in the morning.` | `calle-5.jpg` |
+| 6 | `Close-up of a torso wearing this exact white dollar-print tee, hands holding a skateboard.` | `calle-6.jpg` |
+
+---
+
+## 23. Prenda tapada para el Drop 02
+
+**Para qué:** cuelga junto a la etiqueta del drop, en el mismo tubo (plan, T3.5). Va con el **bloque de estilo de la sección 1**, así queda igual que las demás prendas y se le puede quitar el fondo.
+
+```
+A single oversized t-shirt completely covered by a translucent frosted-white garment bag, hanging on a natural light-wood clothes hanger with a curved chrome hook; the garment inside shows only as a soft dark silhouette. A small kraft-paper tag hangs from the hanger neck on a thin cotton string with the handwritten text "Drop 02". [BLOQUE DE ESTILO]
+```
+
+Archivo: `drop-02.png` (vertical 3:4).
+
+- Si la palabra sale mal, pide la etiqueta **sin texto** y yo la escribo.
+- Variante para dar una pista del color: agrega `The garment bag is slightly open at the bottom, revealing only the hem of a [COLOR] t-shirt.`
+
+---
+
+## 24. Entrega (lista completa)
+
+| Prioridad | Archivos | Sección |
+|---|---|---|
+| 1 | `giro-03-izquierda.mp4` | 16.1 |
+| 2 | `cerca-01-estampado.jpg` … `cerca-05-estampado.jpg`, `cerca-03-cuello.jpg`, `cerca-tela.jpg` | 17 |
+| 3 | `look-02-nomad.jpg`, `look-04-good-people.jpg` | 18 |
+| 4 | `drop-02.png` | 23 |
+| 5 | `clip-look-01.mp4` … `clip-look-05.mp4`, `video-estudio.mp4` | 19, 20 |
+| 6 | `proceso-1-boceto.jpg` … `proceso-4-perchero.jpg`, `calle-1.jpg` … `calle-6.jpg` | 21, 22 |
+| Después de aprobar el 1 | `giro-01-izquierda.mp4`, `giro-02-…`, `giro-04-…`, `giro-05-…` | 16.1 |
+| Opcional | `lado-derecho-NN.jpg` y `giro-NN-derecha.mp4`, `espalda-NN.jpg`, `cerca-03-dobladillo.jpg`, `cerca-03-etiqueta.jpg`, `video-doblando.mp4`, `clip-estampado.mp4` | 16.2, 16.3, 17, 20, 21 |
+
+Mándamelos por aquí o súbelos a `assets/raw/` (los videos en `assets/raw/video/`). Yo me encargo de quitar fondos, alinear al gancho, comprimir y montarlos en la página.
