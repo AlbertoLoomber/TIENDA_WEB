@@ -1,5 +1,5 @@
 /* Corre todas las pruebas y termina con un resumen. Sale con código 1 si alguna falla. */
-const pruebas = ["letra", "accesibilidad", "restos", "rendimiento", "capturas"];
+const pruebas = ["letra", "accesibilidad", "restos", "bolsa", "rendimiento", "capturas"];
 (async () => {
   const solo = process.argv.slice(2);
   const res = [];

@@ -46,6 +46,16 @@ def main():
             "rows": site.get("guia_tallas", {}).get("filas", {}),
         },
         "contact": site.get("contacto", {}),
+        "shipping": {
+            "prep": site.get("envio", {}).get("preparacion"),
+            "delivery": site.get("envio", {}).get("entrega"),
+            "cost": site.get("envio", {}).get("costo"),
+            "freeFrom": site.get("envio", {}).get("gratis_desde"),
+        },
+        "returns": {
+            "days": site.get("cambios", {}).get("dias"),
+            "firstFree": site.get("cambios", {}).get("primer_cambio_gratis", False),
+        },
     }
     web_path.write_text(json.dumps(web, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
     print("escrito", web_path.relative_to(ROOT))

@@ -25,6 +25,9 @@ module.exports = async function accesibilidad() {
     await ir(p, "#shop"); await p.waitForTimeout(1600);
     await p.click(".piece:nth-child(3) .piece__hang"); await p.waitForTimeout(1500);
     fallas.push(...(await revisar(p, `${t.nombre} ficha`)));
+    await p.click("#sheet-sizes button:nth-child(2)"); await p.click("#sheet-add"); await p.waitForTimeout(1300);
+    await p.click(".sheet__bag"); await p.waitForTimeout(900);
+    fallas.push(...(await revisar(p, `${t.nombre} bolsa`)));
     await p.close();
   }
   await b.close();

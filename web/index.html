@@ -26,8 +26,11 @@
       <a class="top__link" href="#about" id="nav-about">Nosotros</a>
     </nav>
     <a class="logo" href="#top" aria-label="Nomad, inicio"><svg class="logo__mark" viewBox="0 0 5790.1 2331.8" aria-hidden="true" focusable="false"><use href="#logo-nomad"/></svg></a>
-    <a class="top__link" href="#contact" id="nav-contact">Contacto</a>
-    <button class="top__close" id="close" type="button" aria-label="Cerrar la vista de detalle" hidden>Cerrar</button>
+    <div class="top__group top__group--end">
+      <a class="top__link" href="#contact" id="nav-contact">Contacto</a>
+      <button class="top__close" id="close" type="button" aria-label="Cerrar la vista de detalle" hidden>Cerrar</button>
+      <button class="top__bag" id="bag-open" type="button" aria-haspopup="dialog" aria-controls="bag" aria-label="Bolsa, 0 prendas">Bolsa <span class="bag-count" data-bag-count><span>0</span></span></button>
+    </div>
   </header>
 
   <section class="hero" id="top" aria-labelledby="hero-title">
@@ -60,14 +63,18 @@
       <button class="handle" id="handle" type="button" aria-label="Mostrar tallas" aria-expanded="false" aria-controls="drawer"></button>
       <div class="drawer" id="drawer" hidden>
         <p class="drawer__label">Elige tu talla</p>
-        <div class="sizes" role="radiogroup" aria-label="Talla">
+        <div class="sizes" id="drawer-sizes" role="radiogroup" aria-label="Talla">
           <button type="button" role="radio" aria-checked="false">S</button>
-          <button type="button" role="radio" aria-checked="true">M</button>
+          <button type="button" role="radio" aria-checked="false">M</button>
           <button type="button" role="radio" aria-checked="false">L</button>
           <button type="button" role="radio" aria-checked="false">XL</button>
         </div>
         <p class="drawer__note">Algodón pesado · Corte oversized</p>
-        <button class="pill" type="button" id="detail-more">Ver detalles</button>
+        <div class="drawer__actions">
+          <button class="pill pill--solid" type="button" id="drawer-add">Agregar a la bolsa</button>
+          <button class="pill" type="button" id="detail-more">Ver detalles</button>
+        </div>
+        <p class="drawer__status" id="drawer-status" aria-live="polite"></p>
       </div>
     </section>
   </div>
@@ -198,7 +205,10 @@
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-name" hidden>
   <div class="sheet__scrim" data-sheet-close></div>
   <div class="sheet__panel" id="sheet-panel" data-lenis-prevent>
-    <button class="sheet__close" type="button" data-sheet-close>Cerrar</button>
+    <div class="sheet__top">
+      <button class="sheet__bag" type="button" aria-haspopup="dialog" aria-controls="bag" data-bag-open aria-label="Bolsa, 0 prendas">Bolsa <span class="bag-count" data-bag-count><span>0</span></span></button>
+      <button class="sheet__close" type="button" data-sheet-close>Cerrar</button>
+    </div>
     <div class="sheet__gallery">
       <div class="sheet__stage" id="sheet-stage">
         <span class="sheet__rod" aria-hidden="true"></span>
@@ -226,6 +236,11 @@
         <p id="sheet-care"></p>
       </details>
     </div>
+    <!-- Phones and tablets: when the main button scrolls away, this bar keeps "Agregar" at hand -->
+    <div class="sheet__sticky" id="sheet-sticky" hidden>
+      <p class="sheet__sticky-text"><span class="sheet__sticky-name" id="sticky-name"></span><span class="sheet__sticky-meta" id="sticky-meta"></span></p>
+      <button class="pill pill--solid" type="button" id="sticky-add">Agregar</button>
+    </div>
     <div class="guide" id="guide" hidden>
       <div class="guide__swing" id="guide-swing">
         <span class="guide__string" aria-hidden="true"></span>
@@ -240,6 +255,35 @@
     </div>
   </div>
 </div>
+<!-- Bag: a panel from the right. Design only: nothing is charged or sent. -->
+<div class="bag" id="bag" role="dialog" aria-modal="true" aria-labelledby="bag-title" hidden>
+  <div class="bag__scrim" data-bag-close></div>
+  <aside class="bag__panel" id="bag-panel" data-lenis-prevent>
+    <header class="bag__head">
+      <h2 class="bag__title" id="bag-title" tabindex="-1">Tu bolsa <span class="bag__title-count" id="bag-title-count"></span></h2>
+      <button class="bag__close" type="button" data-bag-close>Cerrar</button>
+    </header>
+    <ul class="bag__lines" id="bag-lines"></ul>
+    <div class="bag__empty" id="bag-empty" hidden>
+      <span class="bag__empty-rod" aria-hidden="true"></span>
+      <svg class="bag__empty-hanger" viewBox="0 0 40 26" aria-hidden="true"><path d="M20 9 V6.5 a3 3 0 1 1 3 -3"/><path d="M20 9 L4 20 Q2 21.6 4.2 22 H35.8 Q38 21.6 36 20 Z"/></svg>
+      <p class="bag__empty-title">Tu bolsa está vacía.</p>
+      <p class="bag__empty-text">Las prendas que agregues aparecen aquí.</p>
+      <button class="pill" type="button" id="bag-browse">Ver la colección</button>
+    </div>
+    <footer class="bag__foot" id="bag-foot">
+      <div class="bag__ship">
+        <div class="bag__rail" aria-hidden="true"><span class="bag__tube"></span><span class="bag__fill" id="bag-fill"></span><svg class="bag__hanger" id="bag-hanger" viewBox="0 0 40 26" aria-hidden="true"><path d="M20 9 V6.5 a3 3 0 1 1 3 -3"/><path d="M20 9 L4 20 Q2 21.6 4.2 22 H35.8 Q38 21.6 36 20 Z"/></svg></div>
+        <p class="bag__ship-text" id="bag-ship-text"></p>
+      </div>
+      <p class="bag__subtotal"><span>Subtotal</span><span id="bag-subtotal"></span></p>
+      <p class="bag__note">El envío se calcula al pagar.</p>
+      <button class="pill pill--solid pill--lg bag__checkout" type="button" id="bag-checkout">Finalizar compra</button>
+      <button class="bag__continue" type="button" data-bag-close>Seguir comprando</button>
+    </footer>
+  </aside>
+</div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 <!-- PAGE:END -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
@@ -247,6 +291,7 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 <script src="scroll.js"></script>
 <script src="sections.js"></script>
+<script src="bag.js"></script>
 <script src="shop.js"></script>
 <script src="app.js"></script>
 </body>

@@ -275,7 +275,8 @@
     },
     "contacto": {
       "instagram": "@nomad",
-      "email": "hello@nomad.example"
+      "whatsapp": "52XXXXXXXXXX",
+      "correo": "hola@nomad.example"
     },
     "barra": [
       "Drop 01 ya en el perchero",
@@ -284,7 +285,20 @@
       "Avísame del Drop 02"
     ],
     "_provisional": [
-      "barra"
-    ]
+      "barra",
+      "cambios",
+      "contacto",
+      "envio"
+    ],
+    "envio": {
+      "preparacion": "1 a 2 días hábiles",
+      "entrega": "3 a 5 días hábiles",
+      "costo": 149,
+      "gratis_desde": 1500
+    },
+    "cambios": {
+      "dias": 30,
+      "primer_cambio_gratis": true
+    }
   }
 }

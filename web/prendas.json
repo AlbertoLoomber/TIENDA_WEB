@@ -270,7 +270,18 @@
     },
     "contact": {
       "instagram": "@nomad",
-      "email": "hello@nomad.example"
+      "whatsapp": "52XXXXXXXXXX",
+      "correo": "hola@nomad.example"
+    },
+    "shipping": {
+      "prep": "1 a 2 días hábiles",
+      "delivery": "3 a 5 días hábiles",
+      "cost": 149,
+      "freeFrom": 1500
+    },
+    "returns": {
+      "days": 30,
+      "firstFree": true
     }
   }
 }

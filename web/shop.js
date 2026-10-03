@@ -251,6 +251,7 @@
     el.hidden = false;
     // A true modal: the page behind can't be reached by Tab or by screen readers.
     $("page").inert = true;
+    N.shop.checkSticky?.();
     const stageImg = $("sheet-stage").querySelector(".sheet__img.is-on");
     const chrome = [...el.querySelectorAll(".sheet__info > *, .sheet__views, .sheet__close")];
 
@@ -285,6 +286,7 @@
     if (busy || sheet().hidden) return;
     busy = true;
     closeGuide(true);
+    N.shop.hideSticky?.();
     const el = sheet();
     const card = originCard;
     const finish = () => {
@@ -346,6 +348,7 @@
       b.addEventListener("click", () => {
         sizes.querySelectorAll("button").forEach((o) => o.setAttribute("aria-checked", String(o === b)));
         $("sheet-status").textContent = "";
+        paintSticky();
       });
       return b;
     }));
@@ -380,6 +383,7 @@
       tabs.appendChild(tab);
     });
     stage.classList.toggle("is-photo", false);
+    paintSticky();
   }
 
   function showView(key) {
@@ -411,7 +415,52 @@
       if (!reduceMotion) gsap.fromTo("#sheet-sizes", { x: -6 }, { x: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
       return;
     }
-    status.textContent = `${current.name}, talla ${chosen.textContent}: esto es una vista previa del diseño; la bolsa aún no está conectada.`;
+    status.textContent = "";
+    const from = $("sheet-stage").querySelector(".sheet__img.is-on");
+    N.bag?.add(current, chosen.textContent, { from });
+  }
+
+  /* ---------- sticky "Agregar" bar (phones and tablets) ---------- */
+
+  // When the main button scrolls out of the sheet, a small bar keeps it at hand.
+  let stickyObserver = null;
+  function setupSticky() {
+    const bar = $("sheet-sticky");
+    const narrow = matchMedia("(max-width: 900px)");
+    $("sticky-add").addEventListener("click", () => {
+      if ($("sheet-sizes").querySelector('[aria-checked="true"]')) return addToBag();
+      // No size yet: take the visitor to the sizes and say so.
+      $("sheet-sizes").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      addToBag();
+    });
+    let shown = false;
+    const show = (on) => {
+      if (on === shown) return;
+      shown = on;
+      if (on) {
+        bar.hidden = false;
+        if (!reduceMotion) gsap.fromTo(bar, { yPercent: 130 }, { yPercent: 0, duration: 0.3, ease: "power3.out" });
+      } else if (reduceMotion) {
+        bar.hidden = true;
+      } else {
+        gsap.to(bar, { yPercent: 130, duration: 0.25, ease: "power2.in", onComplete: () => { if (!shown) bar.hidden = true; } });
+      }
+    };
+    stickyObserver = new IntersectionObserver(([entry]) => {
+      show(narrow.matches && !sheet().hidden && !entry.isIntersecting);
+    }, { root: $("sheet-panel"), threshold: 0 });
+    stickyObserver.observe($("sheet-add"));
+    N.shop.hideSticky = () => show(false);
+    // The observer only reports changes; a sheet that opens with the button
+    // already out of view is not one, so ask again on every opening.
+    N.shop.checkSticky = () => { stickyObserver.unobserve($("sheet-add")); stickyObserver.observe($("sheet-add")); };
+  }
+
+  function paintSticky() {
+    const chosen = $("sheet-sizes").querySelector('[aria-checked="true"]');
+    $("sticky-name").textContent = current?.name || "";
+    $("sticky-meta").textContent = `${chosen ? `Talla ${chosen.textContent} · ` : ""}${N.price(current?.price)}`;
+    $("sticky-add").textContent = chosen ? "Agregar" : "Elige talla";
   }
 
   /* ---------- size guide: a hang tag that swings in ---------- */
@@ -452,6 +501,7 @@
     sheet().querySelectorAll("[data-sheet-close]").forEach((b) => b.addEventListener("click", close));
     $("sheet-add").addEventListener("click", addToBag);
     $("sheet-guide-open").addEventListener("click", openGuide);
+    setupSticky();
     $("guide-close").addEventListener("click", () => closeGuide());
 
     // Escape closes the guide first, then the sheet; Tab stays inside the sheet.
@@ -473,5 +523,5 @@
     }, true);
   }
 
-  N.shop = { setup, open: (item, opts) => open(item, opts) };
+  N.shop = Object.assign(N.shop || {}, { setup, open: (item, opts) => open(item, opts), close: () => close() });
 })();

@@ -95,6 +95,7 @@ body {
   transition: opacity .3s var(--ease-out);
 }
 .top__link { justify-self: start; }   /* hug the text, so the underline matches the word */
+.top__group--end { justify-self: end; align-items: center; }
 .top__group { display: flex; gap: 22px; justify-self: start; }
 .top__link:last-of-type { justify-self: end; }
 .top__close { grid-column: 3; grid-row: 1; justify-self: end; }
@@ -118,6 +119,7 @@ body {
   transition: opacity .3s var(--ease-out);
 }
 .is-detail .top__link, .is-detail .logo { opacity: 0; pointer-events: none; }
+.is-detail #nav-contact { display: none; }   /* "Cerrar" takes its place; the bag stays */
 /* The logo is the brand's SVG (already set on its slant), sized to match the old script. */
 .logo__mark { display: block; width: 96px; height: auto; }
 .detail__price {
@@ -520,9 +522,9 @@ body {
 @media (max-width: 640px) {
   .top { padding: 14px 16px 0; }
   .logo__mark { width: 79px; }
-  /* "Tienda · Nosotros · logo · Contacto" doesn't fit at 375px in Spanish:
-     Nosotros stays in the footer and in the page itself. */
-  #nav-about { display: none; }
+  /* Five links don't fit at 375px in Spanish: Nosotros and Contacto stay in the
+     footer and in the page itself. */
+  #nav-about, #nav-contact { display: none; }   /* phones: Tienda · logo · Bolsa */
   .stage { padding-inline: 0; }
   .detail__figure { grid-column: 1 / -1; }
   .detail__arrow { position: relative; z-index: 2; background: var(--paper); }
@@ -1188,11 +1190,16 @@ body {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: start;
 }
-.sheet__close {
+.sheet__top {
   position: absolute;
-  top: 18px;
+  top: 14px;
   right: 22px;
   z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.sheet__close {
   font: 500 var(--fs-label)/1 var(--font-ui);
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -1370,4 +1377,236 @@ body {
   .shop__filters::-webkit-scrollbar { display: none; }
   .filter { flex: none; }
   .sheet__panel { inset: 0; border-radius: 0; }
+}
+
+/* =========================================================
+   Bag: header button, panel, flight and toasts
+   ========================================================= */
+.top__bag, .sheet__bag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.top__bag:focus-visible, .sheet__bag:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+/* the counter: an outlined circle that fills once something is in the bag */
+.bag-count {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  overflow: hidden;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  transition: background .3s var(--ease-out), color .3s var(--ease-out);
+}
+.bag-count > span { grid-area: 1 / 1; line-height: 1; }
+.bag-count.is-full { background: var(--ink); color: var(--paper); }
+
+.drawer__actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.drawer__status { margin: -4px 0 0; min-height: 1.3em; font: 400 13px/1.3 var(--font-ui); color: var(--ink); }
+
+.bag { position: fixed; inset: 0; z-index: 70; }
+.bag__scrim { position: absolute; inset: 0; background: var(--scrim, rgba(20, 22, 40, .35)); }
+.bag__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  box-shadow: -30px 0 80px -30px rgba(20, 22, 40, .45);
+  overflow: hidden;
+}
+.bag__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid rgba(36, 44, 82, .15);
+}
+.bag__title { margin: 0; font: italic 400 clamp(22px, 2.6vw, 28px)/1.1 var(--font-ui); color: var(--ink); }
+.bag__title:focus { outline: none; }
+.bag__title-count { font-style: normal; font-size: .6em; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.bag__close, .bag__continue {
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  cursor: pointer;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: 0% 1px;
+  transition: background-size .45s var(--ease-out);
+}
+.bag__close:hover, .bag__continue:hover { background-position: 0% 100%; background-size: 100% 1px; }
+.bag__close:focus-visible, .bag__continue:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.bag__lines { list-style: none; margin: 0; padding: 0 24px; flex: 1; overflow-y: auto; overscroll-behavior: contain; }
+.bag__line {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(36, 44, 82, .15);
+}
+.bag__thumb { display: block; width: 72px; height: 94px; border-radius: 6px; background: #efeee9; overflow: hidden; }
+.bag__thumb img { width: 100%; height: 100%; object-fit: contain; }
+.bag__info { display: grid; gap: 6px; justify-items: start; }
+.bag__name { margin: 0; font: italic 400 15px/1.25 var(--font-ui); color: var(--ink); }
+.bag__meta { margin: 0; font: 500 var(--fs-label)/1.3 var(--font-ui); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.bag__qty { display: inline-flex; align-items: center; gap: 4px; margin-top: 4px; }
+.bag__step {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(36, 44, 82, .35);
+  background: transparent;
+  color: var(--ink);
+  font: 400 16px/1 var(--font-ui);
+  cursor: pointer;
+}
+.bag__step:hover:not(:disabled) { border-color: var(--ink); }
+.bag__step:disabled { opacity: .35; cursor: default; }
+.bag__step:focus-visible, .bag__remove:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.bag__n { min-width: 22px; text-align: center; font: 500 14px/1 var(--font-ui); font-variant-numeric: tabular-nums; }
+.bag__remove {
+  font: 400 13px/1 var(--font-ui);
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.bag__price { margin: 0; font: 500 var(--fs-price)/1 var(--font-ui); color: var(--ink); font-variant-numeric: tabular-nums; }
+.bag__empty { flex: 1; display: grid; align-content: center; justify-items: center; gap: 10px; padding: 24px; text-align: center; }
+.bag__empty-rod { width: 120px; height: 7px; background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat; border-radius: 4px; }
+.bag__empty-hanger { width: 64px; height: 42px; margin-top: -12px; fill: none; stroke: var(--ink-soft); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.bag__empty-title { margin: 8px 0 0; font: italic 400 22px/1.2 var(--font-ui); color: var(--ink); }
+.bag__empty-text { margin: 0 0 8px; font: 400 14px/1.5 var(--font-ui); color: var(--ink-soft); }
+.bag__foot { display: grid; gap: 12px; padding: 18px 24px 24px; border-top: 1px solid rgba(36, 44, 82, .15); background: rgba(231, 230, 225, .92); }
+.bag__ship { display: grid; gap: 10px; }
+/* the free-shipping bar is a short rail: the tube darkens as it fills, a hanger rides on it */
+.bag__rail { position: relative; height: 22px; }
+.bag__tube, .bag__fill { position: absolute; left: 0; right: 0; top: 4px; height: 6px; border-radius: 3px; }
+.bag__tube { background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat; opacity: .45; }
+.bag__fill { background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat; transform-origin: 0 50%; transform: scaleX(0); }
+.bag__hanger {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 26px;
+  height: 17px;
+  margin-left: -13px;
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bag__ship-text { margin: 0; font: 400 14px/1.4 var(--font-ui); color: var(--ink); }
+.bag__subtotal { margin: 4px 0 0; display: flex; justify-content: space-between; font: 500 var(--fs-price-lg)/1 var(--font-ui); color: var(--ink); font-variant-numeric: tabular-nums; }
+.bag__subtotal span:first-child { font-size: var(--fs-label); letter-spacing: .14em; text-transform: uppercase; align-self: center; }
+.bag__note { margin: 0; font: 400 13px/1.4 var(--font-ui); color: var(--ink-soft); }
+.pill--lg { padding: 14px 28px 13px; }
+.bag__checkout { width: 100%; }
+.bag__continue { justify-self: center; }
+
+/* a copy of the garment that flies into the bag */
+.fly {
+  position: fixed;
+  z-index: 90;
+  margin: 0;
+  max-width: none;
+  pointer-events: none;
+  object-fit: contain;
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 10px 14px rgba(30, 32, 44, .2));
+}
+
+/* sticky "Agregar" bar in the sheet (phones and tablets) */
+.sheet__sticky {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 10px 10px 16px;
+  border-radius: 16px;
+  background: var(--paper);
+  border: 1px solid rgba(36, 44, 82, .14);
+  box-shadow: 0 18px 40px -18px rgba(20, 22, 40, .4);
+}
+.sheet__sticky-text { margin: 0; display: grid; gap: 4px; min-width: 0; }
+.sheet__sticky-name { font: italic 400 15px/1.2 var(--font-ui); color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sheet__sticky-meta { font: 500 var(--fs-label)/1 var(--font-ui); letter-spacing: .1em; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.sheet__sticky .pill { flex: none; min-width: 120px; }
+@media (min-width: 901px) { .sheet__sticky { display: none; } }
+
+/* toasts */
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 80;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 8px;
+  width: min(440px, calc(100% - 32px));
+  pointer-events: none;
+}
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 16px 34px -14px rgba(20, 22, 40, .5);
+  pointer-events: auto;
+}
+.toast p { margin: 0; font: 400 14px/1.35 var(--font-ui); }
+.toast button {
+  flex: none;
+  font: 500 var(--fs-label)/1 var(--font-ui);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: none;
+  border: 0;
+  padding: 6px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.toast button:focus-visible { outline: 2px solid var(--paper); outline-offset: 3px; }
+/* phones and tablets: at the top, clear of the sticky bar and the bag's button */
+@media (max-width: 900px) {
+  .toasts { top: calc(12px + env(safe-area-inset-top, 0px)); bottom: auto; }
 }

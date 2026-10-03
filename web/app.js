@@ -518,6 +518,11 @@
       .fromTo([figure, info], { opacity: 0, x: shift }, { opacity: 1, x: 0, duration: dur(0.32), ease: "power2.out" });
   }
 
+  // The image of a turn that is showing (the turn stacks several).
+  function visibleImage(container) {
+    return [...container.querySelectorAll("img")].find((im) => parseFloat(getComputedStyle(im).opacity) > 0.5) || null;
+  }
+
   function setDrawer(open) {
     if (open === !drawer.hidden) return;
     handle.setAttribute("aria-expanded", String(open));
@@ -718,7 +723,20 @@
     detailSee.addEventListener("click", () => setDrawer(drawer.hidden));
     $("detail-more").addEventListener("click", () => window.NOMAD.shop?.open(items[detailIndex]));
     drawer.querySelectorAll(".sizes button").forEach((b, _, all) => {
-      b.addEventListener("click", () => all.forEach((o) => o.setAttribute("aria-checked", String(o === b))));
+      b.addEventListener("click", () => {
+        all.forEach((o) => o.setAttribute("aria-checked", String(o === b)));
+        $("drawer-status").textContent = "";
+      });
+    });
+    // Add from the drawer: a size is required (nothing is chosen for you).
+    $("drawer-add").addEventListener("click", () => {
+      const chosen = drawer.querySelector('.sizes [aria-checked="true"]');
+      if (!chosen) {
+        $("drawer-status").textContent = "Elige una talla.";
+        if (!reduceMotion) gsap.fromTo("#drawer-sizes", { x: -6 }, { x: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
+        return;
+      }
+      window.NOMAD.bag?.add(items[detailIndex], chosen.textContent, { from: visibleImage(figure) });
     });
 
     addEventListener("pointerdown", (e) => { lastPointer = e.pointerType || "mouse"; }, { capture: true });
@@ -772,6 +790,7 @@
     buildBand();
     buildRack(data);
     Object.assign(window.NOMAD, { items, site, rail: RAIL });
+    window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above the lookbook: build it first
     buildLookbook();
     buildStudio();
