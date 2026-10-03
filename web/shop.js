@@ -522,8 +522,8 @@
       box.className = "sheet__turn";
       stage.appendChild(box);
       st.box = box;
-      const { frames, video } = N.turn.framesFor?.(current, "full") || { frames: current.frames, video: false };
-      st.turn = N.turn.make(box, frames, { video });
+      const { frames, video, steps } = N.turn.framesFor?.(current, "full") || { frames: current.frames, video: false };
+      st.turn = N.turn.make(box, frames, { video, steps });
       st.w = stage.clientWidth;
       stage.classList.add("is-turning");
       hideHint();

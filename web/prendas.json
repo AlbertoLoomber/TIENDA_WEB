@@ -74,7 +74,8 @@
         "src": "fotos/muestra/cerca-01-estampado.webp",
         "sample": true
       },
-      "spin": null
+      "spin": null,
+      "inBetweens": false
     },
     {
       "id": "02-black-tee-minimal",
@@ -132,7 +133,8 @@
         "src": "fotos/muestra/cerca-02-estampado.webp",
         "sample": true
       },
-      "spin": null
+      "spin": null,
+      "inBetweens": false
     },
     {
       "id": "03-white-tee-dollar",
@@ -184,7 +186,8 @@
         "src": "fotos/muestra/cerca-03-estampado.webp",
         "sample": true
       },
-      "spin": null
+      "spin": null,
+      "inBetweens": false
     },
     {
       "id": "04-black-tee-script",
@@ -236,7 +239,8 @@
         "src": "fotos/muestra/cerca-04-estampado.webp",
         "sample": true
       },
-      "spin": null
+      "spin": null,
+      "inBetweens": false
     },
     {
       "id": "05-green-crewneck",
@@ -288,7 +292,8 @@
         "src": "fotos/muestra/cerca-05-estampado.webp",
         "sample": true
       },
-      "spin": null
+      "spin": null,
+      "inBetweens": false
     },
     {
       "id": "06-cream-tee-nomad",
@@ -298,14 +303,20 @@
         {
           "angle": 80,
           "src": "prendas/06-cream-tee-nomad/80.webp",
-          "left": 0.39,
-          "right": 0.603
+          "left": 0.327,
+          "right": 0.642
+        },
+        {
+          "angle": 45,
+          "src": "prendas/06-cream-tee-nomad/45.webp",
+          "left": 0.21,
+          "right": 0.759
         },
         {
           "angle": 0,
           "src": "prendas/06-cream-tee-nomad/0.webp",
-          "left": 0.117,
-          "right": 0.886
+          "left": 0.13,
+          "right": 0.839
         }
       ],
       "categoryPlural": "Playeras",
@@ -336,7 +347,8 @@
         "src": "fotos/muestra/cerca-06-bordado.webp",
         "sample": true
       },
-      "spin": null
+      "spin": null,
+      "inBetweens": true
     }
   ],
   "site": {

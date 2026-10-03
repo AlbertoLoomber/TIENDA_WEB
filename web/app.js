@@ -18,7 +18,8 @@
   const PACK_SIDE = 0.78;             // how tightly side views pack on the rail
   const PACK_FRONT = 0.8;             // same for the turned garment; it overlaps its neighbours a little
                                       // instead of shoving the whole rack along the rail
-  const USE_IN_BETWEENS = false;      // the current 60/45/25 shots don't match the front photo yet
+  const USE_IN_BETWEENS = false;      // for every garment; one whose in-between shots match its front
+                                      // and side (item.inBetweens, from catalogo.json) steps through them
   const RAIL_OVER = 56;               // rail length past the outer garments, px
   const HOVER_DELAY = 90;             // ms the cursor must rest before a garment turns
   const LEAVE_DELAY = 260;            // ms after leaving the rack before it settles back
@@ -85,7 +86,7 @@
   // ("small" on the rack, "full" in the sheet), otherwise its photos.
   function framesFor(item, size = "small") {
     const spin = item.spin;
-    if (SPIN_OFF || !spin?.ready?.[size]) return { frames: item.frames, video: false };
+    if (SPIN_OFF || !spin?.ready?.[size]) return { frames: item.frames, video: false, steps: !!item.inBetweens };
     return { frames: spin.frames.map((f) => ({ ...f, src: size === "small" ? f.small : f.src })), video: true };
   }
 
@@ -137,8 +138,8 @@
     rack.addEventListener("pointerenter", run, { once: true });
   }
 
-  function makeTurn(container, allFrames, { video = false } = {}) {
-    const frames = video ? allFrames : turnFrames(allFrames);
+  function makeTurn(container, allFrames, { video = false, steps = false } = {}) {
+    const frames = video || steps ? allFrames : turnFrames(allFrames);
     const box = document.createElement("div");
     box.className = "turn";
     const imgs = frames.map((f, k) => {
@@ -199,14 +200,15 @@
     const ratio = extent(frames[i]) / extent(frames[i + 1]);
     imgs.forEach((img, k) => {
       if (k === i) {
-        // Outgoing view stays on top and fades, easing toward the next width.
-        img.style.zIndex = "2";
-        img.style.opacity = 1 - smooth(clamp((f - 0.15) / 0.6));
+        // Outgoing view stays opaque underneath, easing toward the next width,
+        // and steps out only at the very end: the garment is never see-through.
+        img.style.zIndex = "1";
+        img.style.opacity = 1 - smooth(clamp((f - 0.8) / 0.2));
         img.style.transform = `scaleX(${lerp(1, Math.min(1 / ratio, 1.3), smooth(f))})`;
       } else if (k === i + 1) {
-        // Incoming view sits underneath, starts at the outgoing width and opens up.
-        img.style.zIndex = "1";
-        img.style.opacity = smooth(clamp(f / 0.25));
+        // Incoming view fades in on top, starting at the outgoing width and opening up.
+        img.style.zIndex = "2";
+        img.style.opacity = smooth(clamp(f / 0.7));
         img.style.transform = `scaleX(${lerp(ratio, 1, smooth(f))})`;
       } else {
         img.style.zIndex = "0";
@@ -549,8 +551,8 @@
 
   function fillDetail(item, p = 1) {
     figure.replaceChildren();
-    const { frames, video } = framesFor(item);
-    detailTurn = makeTurn(figure, frames, { video });
+    const { frames, video, steps } = framesFor(item);
+    detailTurn = makeTurn(figure, frames, { video, steps });
     detailTurn.p = p;
     renderTurn(detailTurn);
     figure.setAttribute("aria-label", `${item.name}, vista de frente`);
@@ -803,7 +805,7 @@
       slot.append(contact, lean);
       row.appendChild(slot);
 
-      const item = { ...d, slot, lean, swing, turn: makeTurn(swing, d.frames), wp: 0 };
+      const item = { ...d, slot, lean, swing, turn: makeTurn(swing, d.frames, { steps: !!d.inBetweens }), wp: 0 };
 
       slot.addEventListener("pointerenter", (e) => {
         if (e.pointerType !== "mouse" || detailIndex >= 0) return;

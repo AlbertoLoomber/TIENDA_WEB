@@ -314,12 +314,12 @@
       "side": "assets/raw/06-cream-tee-nomad-side.png",
       "approved_angles": [
         0,
+        45,
         80
       ],
       "review_angles": [],
       "missing_angles": [
         60,
-        45,
         25
       ],
       "tienda": {
@@ -350,7 +350,8 @@
       },
       "categoria_plural": "Playeras",
       "slug": "nomad-embroidered-tee",
-      "escala": 0.78
+      "escala": 0.9,
+      "giro_intermedios": true
     }
   ],
   "sitio": {

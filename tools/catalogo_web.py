@@ -122,6 +122,9 @@ def main():
                      "model": look.get("modelo")},
             "closeup": photo(shop.get("cerca")),
             "spin": spin(item["id"], shop.get("giro")),
+            # Las vistas intermedias (60/45/25) solo entran al giro si se marcaron
+            # como de la misma sesión que el frente y el perfil.
+            "inBetweens": bool(src.get("giro_intermedios")),
         })
 
     web["site"] = {
