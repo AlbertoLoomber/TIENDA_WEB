@@ -1,5 +1,4 @@
-/* Fase 4 sin pin: "Cómo se hace" (el gancho sigue a las tarjetas con el scroll o
-   el deslizamiento), "Así se usa" (cada foto abre su ficha, leyenda de muestra) y
+/* Fase 4 sin pin: "Así se usa" (cada foto abre su ficha, leyenda de muestra) y
    los clips en loop (no cargan antes de acercarse, se reproducen a la vista, se
    pausan al salir y no existen con "reducir movimiento"). El clip de prueba
    sale de tools/comprimir_video.py con videos sintéticos. */
@@ -50,53 +49,11 @@ const conClips = (registro) => async (page) => {
   });
 };
 
-const ganchoSobre = (p) => p.evaluate(() => {
-  const h = document.getElementById("process-hanger").getBoundingClientRect();
-  const cards = [...document.querySelectorAll(".process__step")].map((s) => { const b = s.getBoundingClientRect(); return b.left + b.width / 2; });
-  return { x: h.left + h.width / 2, cards };
-});
-
 module.exports = async function escenas() {
   clipsDePrueba();
   const b = await navegador();
   const fallas = [];
 
-  // Cómo se hace, escritorio: del primer paso al último con el scroll, sin fijar la sección.
-  {
-    const p = await abrir(b, TAMANOS[0]);
-    if (await p.isHidden("#proceso")) fallas.push("Cómo se hace oculta");
-    if (await p.evaluate(() => !!document.querySelector(".pin-spacer #proceso, #proceso.pin-spacer"))) fallas.push("Cómo se hace fija el scroll");
-    const lista = async (frac, borde) => {
-      await p.evaluate(([frac, borde]) => {
-        const r = document.getElementById("process-list").getBoundingClientRect();
-        const y = scrollY + (borde === "top" ? r.top : r.bottom) - innerHeight * frac;
-        window.NOMAD.scroll.to(y, { immediate: true });
-      }, [frac, borde]);
-      await p.waitForTimeout(400);
-      return ganchoSobre(p);
-    };
-    const ini = await lista(0.7, "top");
-    const mid = await lista(0.3, "top");
-    const fin = await lista(0.4, "bottom");
-    if (Math.abs(ini.x - ini.cards[0]) > 4) fallas.push(`gancho al inicio a ${(ini.x - ini.cards[0]).toFixed(0)} px del paso 1`);
-    if (Math.abs(fin.x - fin.cards[3]) > 4) fallas.push(`gancho al final a ${(fin.x - fin.cards[3]).toFixed(0)} px del paso 4`);
-    if (!(ini.x < mid.x && mid.x < fin.x)) fallas.push("el gancho no avanza parejo");
-    await p.screenshot({ path: path.join(OUT, "escenas-proceso-1440.png") });
-    if (p.errores.length) fallas.push(`1440 consola: ${p.errores.join(" / ")}`);
-    await p.close();
-  }
-  // Cómo se hace, celular: el gancho sigue el deslizamiento.
-  {
-    const p = await abrir(b, TAMANOS[3]);
-    await ir(p, "#proceso"); await p.waitForTimeout(500);
-    const a = await ganchoSobre(p);
-    await p.$eval("#process-viewport", (v) => { v.scrollLeft = v.scrollWidth; });
-    await p.waitForTimeout(400);
-    const z = await ganchoSobre(p);
-    const rod = await p.$eval(".process__rod", (r) => r.getBoundingClientRect().right);
-    if (!(z.x > a.x + 100) || rod - z.x > 20) fallas.push(`390: el gancho no siguió el deslizamiento (${a.x.toFixed(0)} → ${z.x.toFixed(0)})`);
-    await p.close();
-  }
   // Así se usa: cada foto abre la ficha de su prenda; leyenda de muestra.
   for (const t of [TAMANOS[0], TAMANOS[3]]) {
     const p = await abrir(b, t);
@@ -148,6 +105,6 @@ module.exports = async function escenas() {
     }
   }
   await b.close();
-  return { nombre: "escenas", ok: !fallas.length, detalle: fallas.join(" | ") || "gancho del proceso al scroll y al deslizar, fotos de calle a su ficha, clips al acercarse, a la vista y en pausa al salir" };
+  return { nombre: "escenas", ok: !fallas.length, detalle: fallas.join(" | ") || "fotos de calle a su ficha, clips al acercarse, a la vista y en pausa al salir" };
 };
 if (require.main === module) module.exports().then((r) => console.log(r));

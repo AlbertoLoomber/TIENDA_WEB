@@ -26,14 +26,13 @@ SAMPLE = OUT / "muestra"
 PAPER = (231, 230, 225)
 
 # Tamaño final por prefijo de archivo: (ancho, alto). Cuadradas para los círculos
-# de "De cerca"; 3:4 para la prenda tapada, el proceso y la calle.
+# de "De cerca"; 3:4 para la prenda tapada; 4:5 para la calle.
 SIZES = {
     "cerca-": (600, 600),
     "drop-": (750, 1000),
-    "proceso-": (1000, 1250),
     "calle-": (1000, 1250),
 }
-SAMPLE_SIZE = (800, 1000)   # las muestras de proceso y calle, 4:5
+SAMPLE_SIZE = (800, 1000)   # las muestras de la calle, 4:5
 
 # Muestras: (prenda, centro x, centro y, lado del recorte) en el lienzo de 1000×1300.
 SAMPLES = {
@@ -48,13 +47,7 @@ SAMPLES = {
 }
 
 
-# Muestras de "Cómo se hace" y "Así se usa": (cómo se arma, de dónde sale).
-PROCESS = {
-    "proceso-1-boceto": ("boceto", "03-white-tee-dollar"),
-    "proceso-2-malla": ("malla", "03-white-tee-dollar"),
-    "proceso-3-estampado": ("estampado", "03-white-tee-dollar"),
-    "proceso-4-perchero": ("perchero", "03-white-tee-dollar"),
-}
+# Muestras de "Así se usa": (cómo se arma, de dónde sale).
 STREET = {
     "calle-1": ("foto", "look-01-camo.webp", 0.5, 0.42, 1.0),
     "calle-2": ("prenda", "02-black-tee-minimal", "#cdd0d4"),
@@ -135,41 +128,6 @@ def on_ground(fg, color, size, scale=0.92, top=0.04):
     return bg.convert("RGB")
 
 
-def process_sample(kind, item):
-    import numpy as np
-    from PIL import ImageFilter, ImageOps
-    size = SAMPLE_SIZE
-    paper = Image.new("RGB", size, (236, 233, 224))
-    if kind == "boceto":
-        # Efecto de lápiz: gris, invertido, difuminado y "sobreexpuesto".
-        base = on_ground(garment(item), (236, 233, 224), size, 0.86, 0.07).convert("L")
-        inv = ImageOps.invert(base).filter(ImageFilter.GaussianBlur(10))
-        a, b = np.asarray(base, np.float32), np.asarray(inv, np.float32)
-        dodge = np.clip(a * 255 / np.maximum(255 - b, 1), 0, 255)
-        sketch = Image.fromarray(dodge.astype("uint8")).filter(ImageFilter.SMOOTH)
-        sketch = ImageOps.grayscale(sketch.convert("RGB")).point(lambda v: 255 * (v / 255) ** 4)   # trazo más marcado
-        tint = Image.merge("RGB", [sketch.point(lambda v: v * 0.98), sketch.point(lambda v: v * 0.97), sketch.point(lambda v: v * 0.93)])
-        return tint
-    print_crop = Image.open(SAMPLE / "cerca-03-estampado.webp").convert("RGB")
-    if kind == "estampado":
-        return cover(print_crop, size)
-    if kind == "malla":
-        # El estampado visto a través de una malla amarilla, dentro de un marco de aluminio.
-        img = ImageOps.grayscale(cover(print_crop, size)).convert("RGB")
-        img = Image.blend(img, Image.new("RGB", size, (232, 214, 120)), 0.45)
-        arr = np.asarray(img).copy()
-        arr[::4, :] = (arr[::4, :] * 0.86).astype("uint8")
-        arr[:, ::4] = (arr[:, ::4] * 0.86).astype("uint8")
-        img = Image.fromarray(arr)
-        frame = Image.new("RGB", size, (168, 170, 172))
-        inner = img.resize((size[0] - 96, size[1] - 96), Image.LANCZOS)
-        frame.paste(inner, (48, 48))
-        return frame
-    if kind == "perchero":
-        return on_ground(garment(item), (226, 224, 218), size, 0.9, 0.06)
-    return paper
-
-
 def street_sample(spec):
     if spec[0] == "prenda":
         _, item, color = spec
@@ -186,11 +144,6 @@ def street_sample(spec):
 
 def make_scene_samples(skip):
     made = []
-    for name, (kind, item) in PROCESS.items():
-        if name in skip or (OUT / f"{name}.webp").exists():
-            continue
-        process_sample(kind, item).save(SAMPLE / f"{name}.webp", quality=78, method=6)
-        made.append(name)
     for name, spec in STREET.items():
         if name in skip or (OUT / f"{name}.webp").exists():
             continue

@@ -152,7 +152,6 @@
   const features = {
     brush: true,         // garments sway when the cursor sweeps fast across the rack
     dragTurn: true,      // drag the garment in the sheet to turn it
-    priceTag: true,      // price on a hanging tag on the rail (false = a line of text)
     flyToBag: true,      // a copy of the garment flies into the bag
     quickAdd: true,      // sizes under each piece on hover
     closeupLines: true,  // "De cerca": lines draw and circles open

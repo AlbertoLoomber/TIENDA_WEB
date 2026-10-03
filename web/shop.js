@@ -31,8 +31,7 @@
 
   const CANVAS_RATIO = 1000 / 1300;  // every garment cut-out shares this canvas
   const HOOK_Y = 0.029;              // inner top of the hook curl, fraction of canvas height
-  const PACK = 0.92;
-  const TAG_REST = [-4, 3, -2, 5, -3];   // price tags don't all hang at the same angle                 // how closely the front views hang together
+  const PACK = 0.92;                 // how closely the front views hang together
 
   let entrance = null;     // the first "garments drop onto the rail" timeline
   let filtering = null;    // the running filter timeline
@@ -73,7 +72,7 @@
         </div>`;
       const btn = li.querySelector(".piece__hang");
       const img = li.querySelector(".piece__garment");
-      const body = li.querySelector(".piece__body");   // garment + its price tag: they move together
+      const body = li.querySelector(".piece__body");   // the garment, swinging from its hook
       img.src = frontSrc(item);
       btn.setAttribute("aria-label", `${item.name}, ${item.category}, ${N.price(item.price)}. Ver detalles`);
       li.querySelector(".piece__name span").textContent = item.name;
@@ -85,19 +84,6 @@
         badge.className = "piece__badge";
         badge.textContent = "Nuevo";
         li.querySelector(".piece__line").appendChild(badge);
-      }
-
-      // The price also hangs from the hanger on a little card (aria-hidden: the
-      // line below says it for screen readers).
-      if (N.features?.priceTag !== false) {
-        li.classList.add("has-tag");
-        const tag = document.createElement("span");
-        tag.className = "piece__tag";
-        tag.setAttribute("aria-hidden", "true");
-        tag.style.setProperty("--rest", `${TAG_REST[items.indexOf(item) % TAG_REST.length]}deg`);
-        tag.innerHTML = '<span class="piece__tag-string"></span><span class="piece__tag-card"></span>';
-        tag.querySelector(".piece__tag-card").textContent = N.price(item.price, { short: true });
-        body.appendChild(tag);
       }
 
       // Quick add (mouse and keyboard): the sizes appear under the price.
@@ -128,9 +114,6 @@
       btn.addEventListener("pointerenter", (e) => {
         if (e.pointerType !== "mouse" || reduceMotion) return;
         gsap.fromTo(body, { rotation: -3 }, { rotation: 0, duration: 1.6, ease: "elastic.out(1, 0.28)", overwrite: "auto" });
-        // the tag trails a little behind the garment
-        const tag = body.querySelector(".piece__tag");
-        if (tag) gsap.fromTo(tag, { rotation: 0 }, { keyframes: [{ rotation: 8, duration: 0.35, ease: "power2.out" }, { rotation: 0, duration: 1.3, ease: "elastic.out(1, 0.3)" }], delay: 0.08, overwrite: "auto" });
       });
       btn.addEventListener("click", () => open(item, { card: li }));
       item.card = li;

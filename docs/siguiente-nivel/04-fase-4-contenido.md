@@ -157,6 +157,8 @@ giro real a la derecha) y tú eliges. Si gana el real, se piden los videos de la
 
 ## T4.4 Sección "Cómo se hace"
 
+> **Quitada** (2026-10-03): saturaba la página.
+
 > **Hecho con muestras (sesión 9).** `web/scenes.js`; datos en `sitio.proceso`. Las 4 fotos son muestras armadas con las prendas (boceto a lápiz, malla, estampado y perchero; `tools/fotos_web.py`) hasta que lleguen las de PROMPTS 21. El clip opcional del paso 3 entra solo cuando exista `clip-estampado`.
 
 | | |

@@ -32,7 +32,8 @@ module.exports = async function drop() {
     const como = (r) => [r.days, r.hours, r.min].map((n) => String(n).padStart(2, "0")).join();
     if (e.cuenta.join() !== como(r0) && e.cuenta.join() !== como(r1)) fallas.push(`${t.nombre}: cuenta ${e.cuenta} ≠ ${como(r1)}`);
     if (!e.voz.startsWith("Faltan")) fallas.push(`${t.nombre}: texto oculto "${e.voz}"`);
-    const desborda = await p.evaluate(() => document.documentElement.scrollWidth > innerWidth);
+    // clientWidth, no innerWidth: en celular innerWidth crece con lo que se desborda
+    const desborda = await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     if (desborda) fallas.push(`${t.nombre}: la página se sale a lo ancho`);
     const conPrenda = await p.isVisible("#drop-hang");
     if (conPrenda !== (t.width > 820)) fallas.push(`${t.nombre}: prenda tapada ${conPrenda ? "visible" : "oculta"}`);

@@ -63,14 +63,6 @@ def closeup(c):
     return {"item": c["prenda"], "eyebrow": c.get("encabezado", ""), "title": c.get("titulo", ""), "points": points}
 
 
-def process(p):
-    if not p:
-        return None
-    steps = [{"title": x["titulo"], "text": x["texto"], "photo": photo(x.get("foto")),
-              "clip": video(x.get("clip"))} for x in p.get("pasos", [])]
-    return {"eyebrow": p.get("encabezado", ""), "title": p.get("titulo", ""), "steps": steps}
-
-
 def street(c, by_id, catalog):
     if not c:
         return None
@@ -156,7 +148,6 @@ def main():
         },
         "closeup": closeup(site.get("cerca")),
         "drop": drop(site.get("drop")),
-        "process": process(site.get("proceso")),
         "street": street(site.get("calle"), by_id, catalog),
     }
     # Validaciones: mejor detenerse con un mensaje claro que publicar datos rotos.

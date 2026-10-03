@@ -626,48 +626,6 @@
       },
       "photo": null
     },
-    "process": {
-      "eyebrow": "Cómo se hace",
-      "title": "Del boceto al perchero.",
-      "steps": [
-        {
-          "title": "Boceto",
-          "text": "Cada diseño empieza a mano, en papel.",
-          "photo": {
-            "src": "fotos/muestra/proceso-1-boceto.webp",
-            "sample": true
-          },
-          "clip": null
-        },
-        {
-          "title": "Malla",
-          "text": "Grabamos el diseño en una malla por cada color.",
-          "photo": {
-            "src": "fotos/muestra/proceso-2-malla.webp",
-            "sample": true
-          },
-          "clip": null
-        },
-        {
-          "title": "Estampado",
-          "text": "Se imprime a mano, prenda por prenda.",
-          "photo": {
-            "src": "fotos/muestra/proceso-3-estampado.webp",
-            "sample": true
-          },
-          "clip": null
-        },
-        {
-          "title": "Al perchero",
-          "text": "Revisamos, doblamos y colgamos. Listo para ti.",
-          "photo": {
-            "src": "fotos/muestra/proceso-4-perchero.webp",
-            "sample": true
-          },
-          "clip": null
-        }
-      ]
-    },
     "street": {
       "eyebrow": "Así se usa",
       "title": "En la calle.",

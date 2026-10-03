@@ -467,6 +467,8 @@ Archivo: `video-doblando.mp4`
 
 ## 21. Cómo se hace (4 fotos + 1 clip opcional)
 
+> **Ya no hacen falta:** la sección se quitó de la página.
+
 **Para qué:** la sección "Del boceto al perchero" (plan, T4.4). Formato vertical 4:5 (1600×2000).
 
 Bloque de estilo del proceso:

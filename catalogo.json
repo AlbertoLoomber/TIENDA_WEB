@@ -407,7 +407,6 @@
       "drop",
       "envio",
       "hojas",
-      "proceso",
       "recomendador"
     ],
     "envio": {
@@ -631,34 +630,6 @@
       "foto": "drop-02.webp"
     },
     "video_estudio": "video-estudio",
-    "proceso": {
-      "_nota": "Fotos 4:5 de docs/PROMPTS.md §21 (se buscan en web/fotos y, si faltan, en web/fotos/muestra). clip: video opcional del paso (web/video/<clip>.webm y .mp4).",
-      "encabezado": "Cómo se hace",
-      "titulo": "Del boceto al perchero.",
-      "pasos": [
-        {
-          "titulo": "Boceto",
-          "texto": "Cada diseño empieza a mano, en papel.",
-          "foto": "proceso-1-boceto.webp"
-        },
-        {
-          "titulo": "Malla",
-          "texto": "Grabamos el diseño en una malla por cada color.",
-          "foto": "proceso-2-malla.webp"
-        },
-        {
-          "titulo": "Estampado",
-          "texto": "Se imprime a mano, prenda por prenda.",
-          "foto": "proceso-3-estampado.webp",
-          "clip": "clip-estampado"
-        },
-        {
-          "titulo": "Al perchero",
-          "texto": "Revisamos, doblamos y colgamos. Listo para ti.",
-          "foto": "proceso-4-perchero.webp"
-        }
-      ]
-    },
     "calle": {
       "_nota": "muestra: true mientras no sean fotos reales de clientes (la página lo dice). Sin nombres de usuarios ni reseñas inventadas.",
       "encabezado": "Así se usa",

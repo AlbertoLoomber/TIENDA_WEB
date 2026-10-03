@@ -79,6 +79,7 @@ body {
 .hero {
   height: calc(100svh - var(--top-h) - env(safe-area-inset-top, 0px));
   min-height: 520px;
+  overflow-x: clip;   /* before the rack is laid out it can be wider than the screen */
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
   grid-template-columns: minmax(0, 1fr);
@@ -96,8 +97,8 @@ body {
   transition: opacity .3s var(--ease-out);
 }
 .top__link { justify-self: start; }   /* hug the text, so the underline matches the word */
-.top__group--end { justify-self: end; align-items: center; }
 .top__group { display: flex; gap: 22px; justify-self: start; }
+.top__group--end { justify-self: end; align-items: center; }   /* after .top__group, so it wins */
 .top__link:last-of-type { justify-self: end; }
 .top__close { grid-column: 3; grid-row: 1; justify-self: end; }
 /* links: the underline draws in from the left and leaves to the right */
@@ -556,6 +557,7 @@ body {
   background-position: 50% var(--dots-y, 0);
   border-radius: 22px 22px 0 0;
   box-shadow: 0 -22px 44px -18px rgba(28, 30, 44, .16);
+  overflow-x: clip;   /* entrances start scaled or tilted: they must never widen the page */
 }
 .more > section { scroll-margin-top: var(--top-h); }
 
@@ -857,9 +859,8 @@ body {
   filter: drop-shadow(8px 14px 14px rgba(20, 22, 32, .16));
 }
 
-/* ---------- clips over their photos (studio, process) ---------- */
-.about__media > img, .about__media > video,
-.process__frame > img, .process__frame > video {
+/* ---------- the studio clip over its photo ---------- */
+.about__media > img, .about__media > video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -872,81 +873,6 @@ body {
   aspect-ratio: 3 / 2;
   border-radius: 3px;
   overflow: hidden;
-}
-
-/* ---------- cómo se hace: four steps under a short rod ---------- */
-.process { padding-block: clamp(64px, 9vw, 120px) clamp(24px, 4vw, 56px); }
-.process__rod {
-  position: relative;
-  max-width: 1152px;
-  height: 5px;
-  margin: clamp(32px, 5vw, 56px) auto 0;
-  margin-inline: max(24px, calc((100% - 1152px) / 2));
-}
-.process__tube {
-  position: absolute;
-  inset: 0;
-  background: url("rail/mid.webp") 0 28% / 100% 500% no-repeat;
-}
-.process__hanger {
-  position: absolute;
-  left: 0;
-  top: -4px;
-  width: 28px;
-  height: 18px;
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  will-change: transform;
-}
-.process__viewport { margin-top: 26px; }
-.process__viewport:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-.process__list {
-  list-style: none;
-  margin: 0 auto;
-  padding: 0 24px;
-  max-width: 1200px;
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(16px, 2vw, 28px);
-}
-.process__step { display: grid; gap: 8px; align-content: start; }
-.process__frame {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  margin-bottom: 8px;
-  overflow: hidden;
-  border-radius: 3px;
-  background: #dddad2;
-}
-.process__frame.is-empty { background: repeating-linear-gradient(135deg, #dddad2 0 8px, #d5d2c9 8px 16px); }
-.process__num {
-  margin: 0;
-  font: 500 var(--fs-label)/1 var(--font-ui);
-  letter-spacing: .16em;
-  color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
-}
-.process__title { margin: 0; font: italic 400 22px/1.15 var(--font-ui); color: var(--ink); }
-.process__text { margin: 0; max-width: 28ch; font: 400 14px/1.5 var(--font-ui); color: var(--ink-soft); text-wrap: pretty; }
-.scene__note {
-  max-width: 1200px;
-  margin: 28px auto 0;
-  padding-inline: 24px;
-  font: 400 12px/1.4 var(--font-ui);
-  color: var(--ink-soft);
-}
-@media (max-width: 900px) {
-  .process__list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
-}
-@media (max-width: 640px) {
-  .process__viewport { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .process__viewport::-webkit-scrollbar { display: none; }
-  .process__list { display: flex; width: max-content; max-width: none; gap: 16px; }
-  .process__step { width: 72vw; scroll-snap-align: center; }
 }
 
 /* ---------- así se usa: the clothes out in the street ---------- */
@@ -1026,7 +952,7 @@ body {
 }
 
 /* ---------- newsletter: a hang tag on a short rod ---------- */
-.closing { position: relative; z-index: 2; }
+.closing { position: relative; z-index: 2; overflow-x: clip; }   /* the tag swings in tilted: never let it widen the page */
 .newsletter {
   /* the curtain: same wall, rounded at the bottom, lifting off the footer */
   position: relative;
@@ -2091,55 +2017,6 @@ body {
   .foot__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .foot__base { flex-direction: column; gap: 10px; }
 }
-
-/* price on a kraft card tied to the hanger: the string leaves the base of the
-   hook and the card falls to the right of the collar, clear of the print */
-.piece__tag {
-  position: absolute;
-  left: 57%;
-  top: 10.5%;
-  z-index: 2;
-  transform-origin: 0 0;
-  transform: rotate(var(--rest, 0deg));
-}
-.piece__tag-string {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1px;
-  height: 16px;
-  background: var(--string, #9b907c);
-  transform: rotate(-24deg);
-  transform-origin: 0 0;
-}
-.piece__tag-card {
-  position: absolute;
-  left: 6px;
-  top: 14px;
-  padding: 5px 8px 4px 13px;
-  font: 600 var(--fs-label)/1 var(--font-ui);
-  letter-spacing: .02em;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  background: #d9c7a7;
-  border-radius: 2px;
-  clip-path: polygon(7px 0, 100% 0, 100% 100%, 7px 100%, 0 50%);
-  filter: drop-shadow(1px 2px 2px rgba(20, 22, 32, .18));
-}
-.piece__tag-card::before {   /* the punched hole */
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 50%;
-  width: 4px;
-  height: 4px;
-  margin-top: -2px;
-  border-radius: 50%;
-  background: var(--paper);
-}
-/* with the tag on, the line below keeps the price for screen readers only */
-.piece.has-tag .piece__price { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* drag to turn in the sheet */
 .sheet__stage { touch-action: pan-y; cursor: grab; }

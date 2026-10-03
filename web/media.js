@@ -1,4 +1,4 @@
-/* Nomad — short looping clips (studio, process): silent, inline,
+/* Nomad — short looping clips (the studio): silent, inline,
  * with the photo as their poster.
  *
  * Nothing downloads until the clip is about a screen away; it plays only while

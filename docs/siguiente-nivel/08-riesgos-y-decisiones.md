@@ -39,6 +39,8 @@
 | 2026-10-03 | En celular, encabezado **Tienda · logo · Bolsa** | No caben cinco enlaces en 375 px |
 | 2026-10-03 | **El nombre del sitio y los nombres de las prendas se quedan en inglés** ("More Than Money Tee"); la categoría va en español (Playera) | Lo decidiste tú |
 | 2026-10-03 | **Se quitan el lookbook ("Cinco prendas, todos los días.") y las preguntas frecuentes**; "Así se usa · En la calle." (cuadrícula de 6 fotos) toma el lugar del lookbook. Ya ninguna sección fija el scroll | Lo decidiste tú: saturaban. Las fotos puestas siguen en la ficha (vista "Puesta"); las respuestas de envíos, cambios y tallas siguen en las hojas de ayuda |
+| 2026-10-03 | **Se quita la etiqueta de precio colgante** de la colección (T3.3); el precio va en texto bajo el nombre | Lo decidiste tú: no se veía bien |
+| 2026-10-03 | **Se quita "Cómo se hace"** (Del boceto al perchero) | Lo decidiste tú: saturaba |
 | 2026-10-03 | Fotos en la calle **marcadas como muestra** | No presentar contenido de IA como clientes reales |
 | 2026-10-03 | Perfil derecho **generado, no reflejado** | Reflejar invierte el estampado visible |
 | 2026-10-03 | Giro real: **primero solo la 03**, comparado con el actual | Decidir con evidencia antes de pedir cuatro videos más |
@@ -54,7 +56,6 @@ nada más:
 NOMAD.features = {
   brush: true,        // T3.1 prendas que se mecen al pasar la mano
   dragTurn: true,     // T3.2 arrastrar para girar
-  priceTag: true,     // T3.3 etiqueta de precio (false = línea de texto)
   closeupLines: true, // T3.4 líneas que se dibujan
   dropCountdown: true,// T3.5 cuenta regresiva
   flyToBag: true,     // T2.2 vuelo a la bolsa

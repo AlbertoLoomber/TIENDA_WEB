@@ -1,10 +1,9 @@
-"""Prepara los clips en loop para la página (T4.3 y el clip opcional de T4.4).
+"""Prepara los clips en loop para la página (T4.3).
 
 Toma los videos de `assets/raw/video/` con el nombre de docs/PROMPTS.md §24 y deja
 en `web/video/` dos formatos (MP4 H.264 y WebM VP9, sin audio) y su portada:
 
   video-estudio     Nosotros       3:2, 1280×852, 24 fps, máx. 2.5 MB
-  clip-estampado    Cómo se hace   4:5, 720×900, 24 fps, máx. 1.5 MB
 
 Cada clip se recorta al centro a su proporción. Si el primer y el último cuadro no
 coinciden, el clip se arma de ida y vuelta (normal y al revés) para que el loop no
@@ -32,7 +31,6 @@ OUT = ROOT / "web" / "video"
 
 KINDS = {
     "video-estudio": ((1280, 852), 2.5),   # 3:2 en medidas pares (H.264)
-    "clip-estampado": ((720, 900), 1.5),
 }
 LOOP_DIFF = 6.0     # diferencia media (0–255) aceptable entre el primer y el último cuadro
 
