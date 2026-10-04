@@ -619,8 +619,8 @@
         },
         {
           "photo": {
-            "src": "fotos/muestra/calle-5.webp",
-            "sample": true
+            "src": "fotos/calle-5.webp",
+            "sample": false
           },
           "item": "05-green-crewneck"
         },
@@ -629,7 +629,7 @@
             "src": "fotos/muestra/calle-6.webp",
             "sample": true
           },
-          "item": "03-white-tee-dollar"
+          "item": "06-cream-tee-nomad"
         }
       ]
     }
