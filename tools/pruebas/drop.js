@@ -36,8 +36,14 @@ module.exports = async function drop() {
     const desborda = await p.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
     if (desborda) fallas.push(`${t.nombre}: la página se sale a lo ancho`);
     const conPrenda = await p.isVisible("#drop-hang");
-    if (conPrenda !== (t.width > 820)) fallas.push(`${t.nombre}: prenda tapada ${conPrenda ? "visible" : "oculta"}`);
-    if (conPrenda) {
+    if (!conPrenda) fallas.push(`${t.nombre}: prenda tapada oculta`);
+    if (conPrenda && t.width <= 820) {
+      // en pantallas chicas cuelga arriba y la etiqueta debajo: nunca se enciman
+      await p.waitForTimeout(2600);
+      const sobre = await p.evaluate(() => document.getElementById("drop-swing").getBoundingClientRect().bottom - document.getElementById("tag").getBoundingClientRect().top);
+      if (sobre > 0) fallas.push(`${t.nombre}: la funda se encima ${sobre.toFixed(0)} px con la etiqueta`);
+    }
+    if (conPrenda && t.width > 820) {
       // se columpian: la funda nunca toca la etiqueta
       await p.evaluate(() => window.scrollBy(0, -innerHeight)); await p.waitForTimeout(300);
       await ir(p, "#newsletter");

@@ -916,7 +916,20 @@ body {
     width: 260px;
   }
 }
-@media (max-width: 820px) { .drop-hang { display: none; } }
+/* Tablets and phones: no room beside the tag, so the covered garment hangs
+   small at the left of the rod and the tag hangs below it on a longer string. */
+@media (max-width: 820px) {
+  .tag-hang.has-drop { padding-top: 250px; }
+  .tag-hang.has-drop .tag-hang__rod { left: 0; margin-left: 0; width: calc(50% + 40px); }
+  .tag-hang.has-drop .tag-hang__string { top: -246px; height: 275px; }
+  .tag-hang.has-drop .tag-swing { transform-origin: 50% -246px; }
+  .drop-hang {
+    position: absolute;
+    left: 4px;
+    top: -6px;                     /* the hook's curl sits on the tube */
+    width: 150px;
+  }
+}
 .drop-swing { transform-origin: 50% 3.5%; }
 .drop-bag, .drop-photo { display: block; width: 100%; height: auto; }
 .drop-bag { filter: drop-shadow(10px 18px 16px rgba(20, 22, 32, .16)); overflow: visible; }
