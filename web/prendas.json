@@ -59,6 +59,7 @@
         "tone": "#d6cdbd",
         "ink": null,
         "photo": "fotos/look-01-camo.webp",
+        "photoBack": null,
         "model": {
           "articulo": "El",
           "estatura": 1.82,
@@ -122,6 +123,7 @@
         "tone": "#cdd0d4",
         "ink": null,
         "photo": null,
+        "photoBack": null,
         "model": {
           "articulo": "La",
           "estatura": 1.7,
@@ -177,6 +179,7 @@
         "tone": "#3e4874",
         "ink": "#eceae3",
         "photo": "fotos/look-03-money.webp",
+        "photoBack": null,
         "model": {
           "articulo": "El",
           "estatura": 1.78,
@@ -232,6 +235,7 @@
         "tone": "#c4b5a3",
         "ink": null,
         "photo": null,
+        "photoBack": null,
         "model": {
           "articulo": "La",
           "estatura": 1.68,
@@ -287,6 +291,7 @@
         "tone": "#dcd5c4",
         "ink": null,
         "photo": "fotos/look-05-habits.webp",
+        "photoBack": null,
         "model": {
           "articulo": "El",
           "estatura": 1.85,
@@ -357,6 +362,7 @@
         "tone": "#d9d3c4",
         "ink": null,
         "photo": null,
+        "photoBack": null,
         "model": null
       },
       "closeup": {
@@ -403,6 +409,7 @@
         "tone": "#c9ccd6",
         "ink": null,
         "photo": null,
+        "photoBack": null,
         "model": null
       },
       "closeup": null,
@@ -445,8 +452,13 @@
       "look": {
         "tone": "#d9d3c4",
         "ink": null,
-        "photo": null,
-        "model": null
+        "photo": "fotos/look-08-frente.webp",
+        "photoBack": "fotos/look-08-espalda.webp",
+        "model": {
+          "articulo": "El",
+          "estatura": 1.85,
+          "talla": "L"
+        }
       },
       "closeup": null,
       "spin": null,

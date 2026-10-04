@@ -407,6 +407,7 @@
     // A piece photographed only from the front (collection only) has no side view.
     if (item.frames.length > 1) views.push({ key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" });
     if (item.look?.photo) views.push({ key: "worn", label: "Puesta", alt: "puesta", src: item.look.photo, kind: "photo" });
+    if (item.look?.photoBack) views.push({ key: "wornBack", label: "Puesta atrás", alt: "puesta, de espalda", src: item.look.photoBack, kind: "photo" });
     // The print up close (a sample crop until the macro photo arrives).
     if (item.closeup?.src) views.push({ key: "closeup", label: "De cerca", alt: "detalle del estampado", src: item.closeup.src, kind: "photo", sample: item.closeup.sample });
 
@@ -419,6 +420,7 @@
       img.className = `sheet__img sheet__img--${v.kind}${i === 0 ? " is-on" : ""}`;
       img.src = v.src;
       img.alt = v.key === "worn" ? `${item.name} puesta` : `${item.name}, ${v.alt}`;
+      if (v.kind === "photo" && v.key !== "worn") img.loading = "lazy";
       img.dataset.view = v.key;
       if (v.sample) img.dataset.sample = "";
       if (v.key === "closeup") img.loading = "lazy";

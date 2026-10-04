@@ -98,7 +98,7 @@ def main():
             "sizes": shop.get("tallas", []),
             "soldOut": shop.get("agotadas", []),
             "slug": src.get("slug", item["id"]),
-            "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"),
+            "look": {"tone": look.get("tono"), "ink": look.get("tinta"), "photo": look.get("foto"), "photoBack": look.get("foto_espalda"),
                      "model": look.get("modelo")},
             "closeup": photo(shop.get("cerca")),
             "spin": spin(item["id"], shop.get("giro")),

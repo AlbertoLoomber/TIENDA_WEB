@@ -435,11 +435,18 @@
         ],
         "look": {
           "tono": "#d9d3c4",
-          "foto": null
+          "foto": "fotos/look-08-frente.webp",
+          "foto_espalda": "fotos/look-08-espalda.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.85,
+            "talla": "L"
+          }
         },
         "agotadas": [],
         "_provisional": [
-          "precio"
+          "precio",
+          "look.modelo"
         ],
         "en_perchero": false
       },
