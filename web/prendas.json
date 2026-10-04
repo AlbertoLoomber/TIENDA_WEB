@@ -605,8 +605,8 @@
         },
         {
           "photo": {
-            "src": "fotos/muestra/calle-3.webp",
-            "sample": true
+            "src": "fotos/calle-3.webp",
+            "sample": false
           },
           "item": "03-white-tee-dollar"
         },
