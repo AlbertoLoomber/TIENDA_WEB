@@ -9,6 +9,181 @@
   ],
   "items": [
     {
+      "id": "08-cream-tee-archive",
+      "nombre": "Archive 01 Tee",
+      "categoria": "Playera",
+      "immutable_description": "Playera crema boxy heavyweight; frente con NOMAD®, etiqueta nmd y nota chica en negro; espalda con 'nomad' verde botella con cortes de velocidad, MADE TO MOVE, BUILT TO LAST e insignia ARCHIVE 01.",
+      "front": "assets/raw/08-cream-tee-archive-front.png",
+      "back": "assets/raw/08-cream-tee-archive-back.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+        "precio": 790,
+        "nuevo": true,
+        "descripcion": "Playera crema de corte boxy en algodón pesado. Detalles chicos al frente y el gráfico \"nomad\" en verde botella en la espalda.",
+        "detalles": [
+          "Algodón pesado 280 g",
+          "Corte boxy",
+          "Serigrafía frente y espalda"
+        ],
+        "look": {
+          "tono": "#d9d3c4",
+          "foto": "fotos/look-08-frente.webp",
+          "foto_espalda": "fotos/look-08-espalda.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.85,
+            "talla": "L"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "look.modelo"
+        ],
+        "en_perchero": true,
+        "orden_perchero": 1
+      },
+      "categoria_plural": "Playeras",
+      "slug": "archive-01-tee",
+      "escala": 1.0,
+      "side": "assets/raw/08-cream-tee-archive-side.png",
+      "calidad": 80
+    },
+    {
+      "id": "09-black-longsleeve-noise",
+      "nombre": "Noise Long Sleeve",
+      "categoria": "Manga larga",
+      "immutable_description": "Manga larga negra deslavada boxy heavyweight; frente con NOMAD chico en crema y dos rayas inclinadas terracota y azul; espalda con NOMAD gigante en crema cortado por los lados y tres líneas: MOVEMENT WITHOUT DIRECTION IS JUST NOISE, CRAFTED IN MÉXICO © 2026, ALWAYS MOVING.",
+      "front": "assets/raw/09-black-longsleeve-noise-front.png",
+      "back": "assets/raw/09-black-longsleeve-noise-back.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+        "precio": 890,
+        "nuevo": true,
+        "descripcion": "Manga larga negra deslavada de corte boxy en algodón pesado. NOMAD chico al frente y el NOMAD gigante, cortado por los lados, en la espalda.",
+        "detalles": [
+          "Algodón pesado 280 g",
+          "Corte boxy, hombro caído",
+          "Puños de rib",
+          "Serigrafía frente y espalda"
+        ],
+        "look": {
+          "tono": "#2b2b2b",
+          "foto": "fotos/look-09-frente.webp",
+          "foto_espalda": "fotos/look-09-espalda.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.87,
+            "talla": "L"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "look.modelo"
+        ],
+        "en_perchero": true,
+        "orden_perchero": 2
+      },
+      "categoria_plural": "Mangas largas",
+      "slug": "noise-long-sleeve",
+      "escala": 1.0,
+      "side": "assets/raw/09-black-longsleeve-noise-side.png",
+      "calidad": 80
+    },
+    {
+      "id": "10-charcoal-knit-zip",
+      "nombre": "Varsity Knit Zip",
+      "categoria": "Chamarra",
+      "immutable_description": "Chamarra de punto gris carbón jaspeado, rib grueso vertical, cuello polo, cierre de dos jaladores y bolsas sesgadas; NMD en chenilla crema en el pecho izquierdo; espalda con NOMAD MÉXICO en arco, aplique de fieltro tono sobre tono.",
+      "front": "assets/raw/10-charcoal-knit-zip-front.png",
+      "back": "assets/raw/10-charcoal-knit-zip-back.png",
+      "approved_angles": [
+        0,
+        80
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava a mano en frío o en ciclo de lana, al revés. Seca extendida, sin colgar. No uses secadora.",
+        "precio": 1490,
+        "nuevo": true,
+        "descripcion": "Chamarra de punto grueso en gris carbón, con cuello polo y cierre de dos jaladores. NMD en chenilla al pecho y NOMAD MÉXICO en arco, tono sobre tono, en la espalda.",
+        "detalles": [
+          "Punto rib grueso, mezcla de lana",
+          "Cierre metálico de dos vías",
+          "Chenilla al frente, fieltro bordado atrás"
+        ],
+        "agotadas": [
+          "XL"
+        ],
+        "_provisional": [
+          "precio",
+          "look.modelo"
+        ],
+        "en_perchero": true,
+        "look": {
+          "tono": "#3c3d3e",
+          "foto": "fotos/look-10-frente.webp",
+          "foto_espalda": "fotos/look-10-espalda.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.83,
+            "talla": "L"
+          }
+        },
+        "orden_perchero": 3
+      },
+      "categoria_plural": "Chamarras",
+      "slug": "varsity-knit-zip",
+      "escala": 1.0,
+      "side": "assets/raw/10-charcoal-knit-zip-side.png",
+      "suavizado": 0.8,
+      "calidad": 76
+    },
+    {
       "id": "01-camo-overshirt",
       "nombre": "Camo Overshirt",
       "categoria": "Sobrecamisa",
@@ -48,7 +223,7 @@
         ],
         "look": {
           "tono": "#d6cdbd",
-          "foto": "fotos/look-01-camo.webp",
+          "foto": "../assets/raw/descartadas/look-01-camo.webp",
           "modelo": {
             "articulo": "El",
             "estatura": 1.82,
@@ -64,7 +239,8 @@
           "look.modelo"
         ],
         "cerca": "cerca-01-estampado.webp",
-        "en_perchero": false
+        "en_perchero": false,
+        "en_tienda": false
       },
       "categoria_plural": "Sobrecamisas",
       "slug": "camo-overshirt"
@@ -124,7 +300,8 @@
           "look.modelo"
         ],
         "cerca": "cerca-02-estampado.webp",
-        "en_perchero": false
+        "en_perchero": false,
+        "en_tienda": false
       },
       "categoria_plural": "Playeras",
       "slug": "nomad-minimal-tee"
@@ -403,179 +580,6 @@
       },
       "categoria_plural": "Playeras",
       "slug": "hanger-line-tee"
-    },
-    {
-      "id": "08-cream-tee-archive",
-      "nombre": "Archive 01 Tee",
-      "categoria": "Playera",
-      "immutable_description": "Playera crema boxy heavyweight; frente con NOMAD®, etiqueta nmd y nota chica en negro; espalda con 'nomad' verde botella con cortes de velocidad, MADE TO MOVE, BUILT TO LAST e insignia ARCHIVE 01.",
-      "front": "assets/raw/08-cream-tee-archive-front.png",
-      "back": "assets/raw/08-cream-tee-archive-back.png",
-      "approved_angles": [
-        0,
-        80
-      ],
-      "review_angles": [],
-      "missing_angles": [
-        60,
-        45,
-        25
-      ],
-      "tienda": {
-        "tallas": [
-          "S",
-          "M",
-          "L",
-          "XL"
-        ],
-        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
-        "precio": 790,
-        "nuevo": true,
-        "descripcion": "Playera crema de corte boxy en algodón pesado. Detalles chicos al frente y el gráfico \"nomad\" en verde botella en la espalda.",
-        "detalles": [
-          "Algodón pesado 280 g",
-          "Corte boxy",
-          "Serigrafía frente y espalda"
-        ],
-        "look": {
-          "tono": "#d9d3c4",
-          "foto": "fotos/look-08-frente.webp",
-          "foto_espalda": "fotos/look-08-espalda.webp",
-          "modelo": {
-            "articulo": "El",
-            "estatura": 1.85,
-            "talla": "L"
-          }
-        },
-        "agotadas": [],
-        "_provisional": [
-          "precio",
-          "look.modelo"
-        ],
-        "en_perchero": true,
-        "orden_perchero": 1
-      },
-      "categoria_plural": "Playeras",
-      "slug": "archive-01-tee",
-      "escala": 1.0,
-      "side": "assets/raw/08-cream-tee-archive-side.png",
-      "calidad": 80
-    },
-    {
-      "id": "09-black-longsleeve-noise",
-      "nombre": "Noise Long Sleeve",
-      "categoria": "Manga larga",
-      "immutable_description": "Manga larga negra deslavada boxy heavyweight; frente con NOMAD chico en crema y dos rayas inclinadas terracota y azul; espalda con NOMAD gigante en crema cortado por los lados y tres líneas: MOVEMENT WITHOUT DIRECTION IS JUST NOISE, CRAFTED IN MÉXICO © 2026, ALWAYS MOVING.",
-      "front": "assets/raw/09-black-longsleeve-noise-front.png",
-      "back": "assets/raw/09-black-longsleeve-noise-back.png",
-      "approved_angles": [
-        0,
-        80
-      ],
-      "review_angles": [],
-      "missing_angles": [
-        60,
-        45,
-        25
-      ],
-      "tienda": {
-        "tallas": [
-          "S",
-          "M",
-          "L",
-          "XL"
-        ],
-        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
-        "precio": 890,
-        "nuevo": true,
-        "descripcion": "Manga larga negra deslavada de corte boxy en algodón pesado. NOMAD chico al frente y el NOMAD gigante, cortado por los lados, en la espalda.",
-        "detalles": [
-          "Algodón pesado 280 g",
-          "Corte boxy, hombro caído",
-          "Puños de rib",
-          "Serigrafía frente y espalda"
-        ],
-        "look": {
-          "tono": "#2b2b2b",
-          "foto": "fotos/look-09-frente.webp",
-          "foto_espalda": "fotos/look-09-espalda.webp",
-          "modelo": {
-            "articulo": "El",
-            "estatura": 1.87,
-            "talla": "L"
-          }
-        },
-        "agotadas": [],
-        "_provisional": [
-          "precio",
-          "look.modelo"
-        ],
-        "en_perchero": true,
-        "orden_perchero": 2
-      },
-      "categoria_plural": "Mangas largas",
-      "slug": "noise-long-sleeve",
-      "escala": 1.0,
-      "side": "assets/raw/09-black-longsleeve-noise-side.png",
-      "calidad": 80
-    },
-    {
-      "id": "10-charcoal-knit-zip",
-      "nombre": "Varsity Knit Zip",
-      "categoria": "Chamarra",
-      "immutable_description": "Chamarra de punto gris carbón jaspeado, rib grueso vertical, cuello polo, cierre de dos jaladores y bolsas sesgadas; NMD en chenilla crema en el pecho izquierdo; espalda con NOMAD MÉXICO en arco, aplique de fieltro tono sobre tono.",
-      "front": "assets/raw/10-charcoal-knit-zip-front.png",
-      "back": "assets/raw/10-charcoal-knit-zip-back.png",
-      "approved_angles": [
-        0,
-        80
-      ],
-      "review_angles": [],
-      "missing_angles": [
-        60,
-        45,
-        25
-      ],
-      "tienda": {
-        "tallas": [
-          "S",
-          "M",
-          "L",
-          "XL"
-        ],
-        "cuidados": "Lava a mano en frío o en ciclo de lana, al revés. Seca extendida, sin colgar. No uses secadora.",
-        "precio": 1490,
-        "nuevo": true,
-        "descripcion": "Chamarra de punto grueso en gris carbón, con cuello polo y cierre de dos jaladores. NMD en chenilla al pecho y NOMAD MÉXICO en arco, tono sobre tono, en la espalda.",
-        "detalles": [
-          "Punto rib grueso, mezcla de lana",
-          "Cierre metálico de dos vías",
-          "Chenilla al frente, fieltro bordado atrás"
-        ],
-        "agotadas": [],
-        "_provisional": [
-          "precio",
-          "look.modelo"
-        ],
-        "en_perchero": true,
-        "look": {
-          "tono": "#3c3d3e",
-          "foto": "fotos/look-10-frente.webp",
-          "foto_espalda": "fotos/look-10-espalda.webp",
-          "modelo": {
-            "articulo": "El",
-            "estatura": 1.83,
-            "talla": "L"
-          }
-        },
-        "orden_perchero": 3
-      },
-      "categoria_plural": "Chamarras",
-      "slug": "varsity-knit-zip",
-      "escala": 1.0,
-      "side": "assets/raw/10-charcoal-knit-zip-side.png",
-      "suavizado": 0.8,
-      "calidad": 76
     }
   ],
   "sitio": {

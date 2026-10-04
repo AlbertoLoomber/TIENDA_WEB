@@ -5,313 +5,6 @@
   ],
   "items": [
     {
-      "id": "01-camo-overshirt",
-      "name": "Camo Overshirt",
-      "category": "Sobrecamisa",
-      "frames": [
-        {
-          "angle": 80,
-          "src": "prendas/01-camo-overshirt/80.webp",
-          "left": 0.313,
-          "right": 0.665
-        },
-        {
-          "angle": 60,
-          "src": "prendas/01-camo-overshirt/60.webp",
-          "left": 0.172,
-          "right": 0.858
-        },
-        {
-          "angle": 45,
-          "src": "prendas/01-camo-overshirt/45.webp",
-          "left": 0.116,
-          "right": 0.899
-        },
-        {
-          "angle": 25,
-          "src": "prendas/01-camo-overshirt/25.webp",
-          "left": 0.109,
-          "right": 0.902
-        },
-        {
-          "angle": 0,
-          "src": "prendas/01-camo-overshirt/0.webp",
-          "left": 0.096,
-          "right": 0.894
-        }
-      ],
-      "price": 1290,
-      "isNew": false,
-      "description": "Sobrecamisa amplia con camuflaje en tonos café y arena. Botones al frente, bolsa en el pecho y manga larga; hecha para usarse abierta sobre una playera.",
-      "details": [
-        "Sarga de algodón gruesa",
-        "Corte oversized",
-        "Bolsa en el pecho"
-      ],
-      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
-      "look": {
-        "tone": "#d6cdbd",
-        "ink": null,
-        "photo": "fotos/look-01-camo.webp",
-        "photoBack": null,
-        "model": {
-          "articulo": "El",
-          "estatura": 1.82,
-          "talla": "L"
-        }
-      },
-      "categoryPlural": "Sobrecamisas",
-      "soldOut": [
-        "XL"
-      ],
-      "slug": "camo-overshirt",
-      "closeup": {
-        "src": "fotos/muestra/cerca-01-estampado.webp",
-        "sample": true
-      },
-      "spin": null,
-      "inBetweens": false,
-      "onRack": false,
-      "back": null,
-      "rackOrder": null
-    },
-    {
-      "id": "02-black-tee-minimal",
-      "name": "Nomad Minimal Tee",
-      "category": "Playera",
-      "frames": [
-        {
-          "angle": 80,
-          "src": "prendas/02-black-tee-minimal/80.webp",
-          "left": 0.339,
-          "right": 0.661
-        },
-        {
-          "angle": 60,
-          "src": "prendas/02-black-tee-minimal/60.webp",
-          "left": 0.321,
-          "right": 0.744
-        },
-        {
-          "angle": 0,
-          "src": "prendas/02-black-tee-minimal/0.webp",
-          "left": 0.144,
-          "right": 0.848
-        }
-      ],
-      "price": 690,
-      "isNew": true,
-      "description": "Playera negra de algodón pesado con el nombre NOMAD pequeño en el pecho. Cuerpo amplio y hombro caído.",
-      "details": [
-        "Algodón pesado",
-        "Corte oversized",
-        "Logo estampado"
-      ],
-      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
-      "look": {
-        "tone": "#cdd0d4",
-        "ink": null,
-        "photo": null,
-        "photoBack": null,
-        "model": {
-          "articulo": "La",
-          "estatura": 1.7,
-          "talla": "M"
-        }
-      },
-      "categoryPlural": "Playeras",
-      "soldOut": [],
-      "slug": "nomad-minimal-tee",
-      "closeup": {
-        "src": "fotos/muestra/cerca-02-estampado.webp",
-        "sample": true
-      },
-      "spin": null,
-      "inBetweens": false,
-      "onRack": false,
-      "back": null,
-      "rackOrder": null
-    },
-    {
-      "id": "05-green-crewneck",
-      "name": "Create Good Habits Crewneck",
-      "category": "Sudadera",
-      "frames": [
-        {
-          "angle": 80,
-          "src": "prendas/05-green-crewneck/80.webp",
-          "left": 0.372,
-          "right": 0.703
-        },
-        {
-          "angle": 0,
-          "src": "prendas/05-green-crewneck/0.webp",
-          "left": 0.136,
-          "right": 0.872
-        }
-      ],
-      "price": 990,
-      "isNew": false,
-      "description": "Sudadera verde bosque con el estampado \"Create Good Habits\" en crema y un pequeño globo terráqueo. Puños y resorte acanalados.",
-      "details": [
-        "Felpa de algodón perchada",
-        "Corte relajado",
-        "Serigrafía"
-      ],
-      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
-      "look": {
-        "tone": "#dcd5c4",
-        "ink": null,
-        "photo": "fotos/look-05-habits.webp",
-        "photoBack": null,
-        "model": {
-          "articulo": "El",
-          "estatura": 1.85,
-          "talla": "XL"
-        }
-      },
-      "categoryPlural": "Sudaderas",
-      "soldOut": [],
-      "slug": "create-good-habits-crewneck",
-      "closeup": {
-        "src": "fotos/muestra/cerca-05-estampado.webp",
-        "sample": true
-      },
-      "spin": null,
-      "inBetweens": false,
-      "onRack": true,
-      "back": null,
-      "rackOrder": null
-    },
-    {
-      "id": "06-cream-tee-nomad",
-      "name": "Nomad Embroidered Tee",
-      "category": "Playera",
-      "frames": [
-        {
-          "angle": 80,
-          "src": "prendas/06-cream-tee-nomad/80.webp",
-          "left": 0.393,
-          "right": 0.626
-        },
-        {
-          "angle": 60,
-          "src": "prendas/06-cream-tee-nomad/60.webp",
-          "left": 0.275,
-          "right": 0.773
-        },
-        {
-          "angle": 25,
-          "src": "prendas/06-cream-tee-nomad/25.webp",
-          "left": 0.152,
-          "right": 0.869
-        },
-        {
-          "angle": 0,
-          "src": "prendas/06-cream-tee-nomad/0.webp",
-          "left": 0.089,
-          "right": 0.877
-        }
-      ],
-      "categoryPlural": "Playeras",
-      "price": 750,
-      "isNew": true,
-      "description": "Playera crema de algodón pesado con «Nomad» bordado en azul marino en el pecho. Cuerpo amplio y hombro caído.",
-      "details": [
-        "Algodón pesado",
-        "Corte oversized",
-        "Bordado"
-      ],
-      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. No planches sobre el bordado.",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
-      "soldOut": [],
-      "slug": "nomad-embroidered-tee",
-      "look": {
-        "tone": "#d9d3c4",
-        "ink": null,
-        "photo": null,
-        "photoBack": null,
-        "model": null
-      },
-      "closeup": {
-        "src": "fotos/muestra/cerca-06-bordado.webp",
-        "sample": true
-      },
-      "spin": null,
-      "inBetweens": true,
-      "onRack": true,
-      "back": null,
-      "rackOrder": null
-    },
-    {
-      "id": "07-navy-tee-hanger",
-      "name": "Hanger Line Tee",
-      "category": "Playera",
-      "frames": [
-        {
-          "angle": 0,
-          "src": "prendas/07-navy-tee-hanger/0.webp",
-          "left": 0.078,
-          "right": 0.908
-        }
-      ],
-      "categoryPlural": "Playeras",
-      "price": 690,
-      "isNew": true,
-      "description": "Playera azul marino lavado de algodón pesado con un gancho dibujado en una sola línea y NOMAD pequeño en el pecho. Cuerpo amplio y hombro caído.",
-      "details": [
-        "Algodón pesado",
-        "Corte oversized",
-        "Teñida en prenda",
-        "Serigrafía"
-      ],
-      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
-      "soldOut": [],
-      "slug": "hanger-line-tee",
-      "look": {
-        "tone": "#c9ccd6",
-        "ink": null,
-        "photo": null,
-        "photoBack": null,
-        "model": null
-      },
-      "closeup": null,
-      "spin": null,
-      "inBetweens": false,
-      "onRack": false,
-      "back": null,
-      "rackOrder": null
-    },
-    {
       "id": "08-cream-tee-archive",
       "name": "Archive 01 Tee",
       "category": "Playera",
@@ -455,7 +148,9 @@
         "L",
         "XL"
       ],
-      "soldOut": [],
+      "soldOut": [
+        "XL"
+      ],
       "slug": "varsity-knit-zip",
       "look": {
         "tone": "#3c3d3e",
@@ -473,6 +168,173 @@
       "inBetweens": false,
       "onRack": true,
       "rackOrder": 3
+    },
+    {
+      "id": "05-green-crewneck",
+      "name": "Create Good Habits Crewneck",
+      "category": "Sudadera",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/05-green-crewneck/80.webp",
+          "left": 0.372,
+          "right": 0.703
+        },
+        {
+          "angle": 0,
+          "src": "prendas/05-green-crewneck/0.webp",
+          "left": 0.136,
+          "right": 0.872
+        }
+      ],
+      "categoryPlural": "Sudaderas",
+      "price": 990,
+      "isNew": false,
+      "description": "Sudadera verde bosque con el estampado \"Create Good Habits\" en crema y un pequeño globo terráqueo. Puños y resorte acanalados.",
+      "details": [
+        "Felpa de algodón perchada",
+        "Corte relajado",
+        "Serigrafía"
+      ],
+      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "soldOut": [],
+      "slug": "create-good-habits-crewneck",
+      "look": {
+        "tone": "#dcd5c4",
+        "ink": null,
+        "photo": "fotos/look-05-habits.webp",
+        "photoBack": null,
+        "model": {
+          "articulo": "El",
+          "estatura": 1.85,
+          "talla": "XL"
+        }
+      },
+      "closeup": {
+        "src": "fotos/muestra/cerca-05-estampado.webp",
+        "sample": true
+      },
+      "spin": null,
+      "inBetweens": false,
+      "onRack": true,
+      "rackOrder": null,
+      "back": null
+    },
+    {
+      "id": "06-cream-tee-nomad",
+      "name": "Nomad Embroidered Tee",
+      "category": "Playera",
+      "frames": [
+        {
+          "angle": 80,
+          "src": "prendas/06-cream-tee-nomad/80.webp",
+          "left": 0.393,
+          "right": 0.626
+        },
+        {
+          "angle": 60,
+          "src": "prendas/06-cream-tee-nomad/60.webp",
+          "left": 0.275,
+          "right": 0.773
+        },
+        {
+          "angle": 25,
+          "src": "prendas/06-cream-tee-nomad/25.webp",
+          "left": 0.152,
+          "right": 0.869
+        },
+        {
+          "angle": 0,
+          "src": "prendas/06-cream-tee-nomad/0.webp",
+          "left": 0.089,
+          "right": 0.877
+        }
+      ],
+      "categoryPlural": "Playeras",
+      "price": 750,
+      "isNew": true,
+      "description": "Playera crema de algodón pesado con «Nomad» bordado en azul marino en el pecho. Cuerpo amplio y hombro caído.",
+      "details": [
+        "Algodón pesado",
+        "Corte oversized",
+        "Bordado"
+      ],
+      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. No planches sobre el bordado.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "soldOut": [],
+      "slug": "nomad-embroidered-tee",
+      "look": {
+        "tone": "#d9d3c4",
+        "ink": null,
+        "photo": null,
+        "photoBack": null,
+        "model": null
+      },
+      "closeup": {
+        "src": "fotos/muestra/cerca-06-bordado.webp",
+        "sample": true
+      },
+      "spin": null,
+      "inBetweens": true,
+      "onRack": true,
+      "back": null,
+      "rackOrder": null
+    },
+    {
+      "id": "07-navy-tee-hanger",
+      "name": "Hanger Line Tee",
+      "category": "Playera",
+      "frames": [
+        {
+          "angle": 0,
+          "src": "prendas/07-navy-tee-hanger/0.webp",
+          "left": 0.078,
+          "right": 0.908
+        }
+      ],
+      "categoryPlural": "Playeras",
+      "price": 690,
+      "isNew": true,
+      "description": "Playera azul marino lavado de algodón pesado con un gancho dibujado en una sola línea y NOMAD pequeño en el pecho. Cuerpo amplio y hombro caído.",
+      "details": [
+        "Algodón pesado",
+        "Corte oversized",
+        "Teñida en prenda",
+        "Serigrafía"
+      ],
+      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "soldOut": [],
+      "slug": "hanger-line-tee",
+      "look": {
+        "tone": "#c9ccd6",
+        "ink": null,
+        "photo": null,
+        "photoBack": null,
+        "model": null
+      },
+      "closeup": null,
+      "spin": null,
+      "inBetweens": false,
+      "onRack": false,
+      "back": null,
+      "rackOrder": null
     }
   ],
   "site": {

@@ -3,7 +3,7 @@
 const path = require("path");
 const { OUT, TAMANOS, navegador, abrir, ir } = require("./comun");
 
-async function abrirFicha(p, n = 2) {
+async function abrirFicha(p, n = 6) {
   await ir(p, "#shop"); await p.waitForTimeout(1500);
   await p.click(`.piece:nth-child(${n}) .piece__hang`); await p.waitForTimeout(1400);
 }
@@ -17,7 +17,7 @@ module.exports = async function bolsa() {
   // 1. ficha → sin talla no agrega; con talla agrega y vuela
   let p = await abrir(b, t);
   await p.evaluate(() => localStorage.clear());
-  await abrirFicha(p, 2);
+  await abrirFicha(p, 6);
   await p.click("#sheet-add"); await p.waitForTimeout(400);
   if (await cuenta(p) !== 0) fallas.push("agregó sin talla");
   if (!(await p.textContent("#sheet-status")).includes("Elige")) fallas.push("no pidió talla");
@@ -82,7 +82,7 @@ module.exports = async function bolsa() {
 
   // 8. celular: barra fija y panel a pantalla completa
   p = await abrir(b, TAMANOS[3]);
-  await abrirFicha(p, 2);
+  await abrirFicha(p, 6);
   await p.waitForTimeout(500);
   const barra = await p.evaluate(() => !document.getElementById("sheet-sticky").hidden);
   if (!barra) fallas.push("celular: no apareció la barra fija");

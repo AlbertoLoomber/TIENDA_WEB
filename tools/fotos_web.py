@@ -36,8 +36,6 @@ SAMPLE_SIZE = (800, 1000)   # las muestras de la calle, 4:5
 
 # Muestras: (prenda, centro x, centro y, lado del recorte) en el lienzo de 1000×1300.
 SAMPLES = {
-    "cerca-01-estampado": ("01-camo-overshirt", 590, 590, 300),
-    "cerca-02-estampado": ("02-black-tee-minimal", 500, 492, 190),
     "cerca-05-estampado": ("05-green-crewneck", 500, 640, 440),
     "cerca-06-bordado": ("06-cream-tee-nomad", 636, 522, 190),
 }

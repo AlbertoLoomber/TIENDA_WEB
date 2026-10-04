@@ -9,7 +9,7 @@ module.exports = async function enlaces() {
   let p = await abrir(b, t);
   // abrir desde la colección pone la dirección; atrás la cierra
   await ir(p, "#shop"); await p.waitForTimeout(1500);
-  await p.click(".piece:nth-child(3) .piece__hang"); await p.waitForTimeout(1400);
+  await p.click(".piece:nth-child(4) .piece__hang"); await p.waitForTimeout(1400);
   if (!p.url().endsWith("#/prenda/create-good-habits-crewneck")) fallas.push(`dirección al abrir: ${p.url()}`);
   if (!(await p.title()).startsWith("Create Good Habits Crewneck")) fallas.push(`título: ${await p.title()}`);
   await p.goBack(); await p.waitForTimeout(1500);
@@ -21,7 +21,7 @@ module.exports = async function enlaces() {
   if (p.url().includes("#/prenda")) fallas.push("cerrar no limpió la dirección");
   // compartir (sin navigator.share en este navegador): copiar enlace
   await p.context().grantPermissions(["clipboard-read", "clipboard-write"], { origin: new URL(BASE).origin });
-  await p.click(".piece:nth-child(3) .piece__hang"); await p.waitForTimeout(1400);
+  await p.click(".piece:nth-child(4) .piece__hang"); await p.waitForTimeout(1400);
   const hasShare = await p.evaluate(() => !!navigator.share);
   if (!hasShare) {
     await p.click("#sheet-share"); await p.waitForTimeout(200);
@@ -36,12 +36,12 @@ module.exports = async function enlaces() {
   // tallas rápidas: con el cursor encima aparecen y agregan sin abrir la ficha
   await p.evaluate(() => localStorage.removeItem("nomad.bolsa.v1"));
   await ir(p, "#shop"); await p.waitForTimeout(800);
-  await p.hover(".piece:nth-child(3) .piece__hang"); await p.waitForTimeout(400);
+  await p.hover(".piece:nth-child(4) .piece__hang"); await p.waitForTimeout(400);
   await p.screenshot({ path: path.join(OUT, "tallas-rapidas.png") });
-  await p.click(".piece:nth-child(3) .piece__size:nth-child(2)"); await p.waitForTimeout(1300);
+  await p.click(".piece:nth-child(4) .piece__size:nth-child(2)"); await p.waitForTimeout(1300);
   if (!(await p.evaluate(() => document.getElementById("sheet").hidden))) fallas.push("talla rápida abrió la ficha");
   if (await p.evaluate(() => window.NOMAD.bag.count()) !== 1) fallas.push("talla rápida no agregó");
-  if (!(await p.evaluate(() => document.querySelector(".piece:nth-child(1) .piece__size:nth-child(4)").disabled))) fallas.push("XL de Camo debería estar agotada");
+  if (!(await p.evaluate(() => document.querySelector(".piece:nth-child(3) .piece__size:nth-child(4)").disabled))) fallas.push("XL de la Varsity Knit Zip debería estar agotada");
   if (p.errores.length) fallas.push(`consola: ${p.errores.join(" / ")}`);
   await p.close();
   // enlace directo y enlace inválido
