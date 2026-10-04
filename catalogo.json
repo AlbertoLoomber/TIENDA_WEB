@@ -450,12 +450,14 @@
           "precio",
           "look.modelo"
         ],
-        "en_perchero": true
+        "en_perchero": true,
+        "orden_perchero": 1
       },
       "categoria_plural": "Playeras",
       "slug": "archive-01-tee",
-      "escala": 0.96,
-      "side": "assets/raw/08-cream-tee-archive-side.png"
+      "escala": 1.0,
+      "side": "assets/raw/08-cream-tee-archive-side.png",
+      "calidad": 80
     },
     {
       "id": "09-black-longsleeve-noise",
@@ -506,12 +508,14 @@
           "precio",
           "look.modelo"
         ],
-        "en_perchero": true
+        "en_perchero": true,
+        "orden_perchero": 2
       },
       "categoria_plural": "Mangas largas",
       "slug": "noise-long-sleeve",
-      "escala": 0.96,
-      "side": "assets/raw/09-black-longsleeve-noise-side.png"
+      "escala": 1.0,
+      "side": "assets/raw/09-black-longsleeve-noise-side.png",
+      "calidad": 80
     },
     {
       "id": "10-charcoal-knit-zip",
@@ -561,11 +565,12 @@
             "estatura": 1.83,
             "talla": "L"
           }
-        }
+        },
+        "orden_perchero": 3
       },
       "categoria_plural": "Chamarras",
       "slug": "varsity-knit-zip",
-      "escala": 0.96,
+      "escala": 1.0,
       "side": "assets/raw/10-charcoal-knit-zip-side.png",
       "suavizado": 0.8,
       "calidad": 76

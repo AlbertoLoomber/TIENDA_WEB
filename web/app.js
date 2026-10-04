@@ -788,8 +788,12 @@
 
   function buildRack(data) {
     // The front rack shows only the pieces marked for it (catalogo.json
-    // tienda.en_perchero); the collection below still lists every piece.
-    items = data.items.filter((d) => d.onRack !== false).map((d, i) => {
+    // tienda.en_perchero), those with tienda.orden_perchero first and in that
+    // order; the collection below still lists every piece in catalog order.
+    const rackPos = (d) => d.rackOrder ?? Infinity;
+    items = data.items.filter((d) => d.onRack !== false)
+      .map((d, i) => [d, i]).sort((a, b) => rackPos(a[0]) - rackPos(b[0]) || a[1] - b[1]).map(([d]) => d)
+      .map((d, i) => {
       const slot = document.createElement("button");
       slot.type = "button";
       slot.className = "slot";

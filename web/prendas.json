@@ -78,7 +78,8 @@
       "spin": null,
       "inBetweens": false,
       "onRack": true,
-      "back": null
+      "back": null,
+      "rackOrder": null
     },
     {
       "id": "02-black-tee-minimal",
@@ -140,7 +141,8 @@
       "spin": null,
       "inBetweens": false,
       "onRack": true,
-      "back": null
+      "back": null,
+      "rackOrder": null
     },
     {
       "id": "05-green-crewneck",
@@ -196,7 +198,8 @@
       "spin": null,
       "inBetweens": false,
       "onRack": true,
-      "back": null
+      "back": null,
+      "rackOrder": null
     },
     {
       "id": "06-cream-tee-nomad",
@@ -260,7 +263,8 @@
       "spin": null,
       "inBetweens": true,
       "onRack": true,
-      "back": null
+      "back": null,
+      "rackOrder": null
     },
     {
       "id": "07-navy-tee-hanger",
@@ -304,7 +308,8 @@
       "spin": null,
       "inBetweens": false,
       "onRack": false,
-      "back": null
+      "back": null,
+      "rackOrder": null
     },
     {
       "id": "08-cream-tee-archive",
@@ -314,14 +319,14 @@
         {
           "angle": 80,
           "src": "prendas/08-cream-tee-archive/80.webp",
-          "left": 0.384,
-          "right": 0.675
+          "left": 0.379,
+          "right": 0.682
         },
         {
           "angle": 0,
           "src": "prendas/08-cream-tee-archive/0.webp",
-          "left": 0.045,
-          "right": 0.947
+          "left": 0.025,
+          "right": 0.965
         }
       ],
       "back": "prendas/08-cream-tee-archive/back.webp",
@@ -357,7 +362,8 @@
       "closeup": null,
       "spin": null,
       "inBetweens": false,
-      "onRack": true
+      "onRack": true,
+      "rackOrder": 1
     },
     {
       "id": "09-black-longsleeve-noise",
@@ -367,14 +373,14 @@
         {
           "angle": 80,
           "src": "prendas/09-black-longsleeve-noise/80.webp",
-          "left": 0.373,
-          "right": 0.677
+          "left": 0.368,
+          "right": 0.684
         },
         {
           "angle": 0,
           "src": "prendas/09-black-longsleeve-noise/0.webp",
-          "left": 0.046,
-          "right": 0.953
+          "left": 0.028,
+          "right": 0.973
         }
       ],
       "back": "prendas/09-black-longsleeve-noise/back.webp",
@@ -411,7 +417,8 @@
       "closeup": null,
       "spin": null,
       "inBetweens": false,
-      "onRack": true
+      "onRack": true,
+      "rackOrder": 2
     },
     {
       "id": "10-charcoal-knit-zip",
@@ -421,14 +428,14 @@
         {
           "angle": 80,
           "src": "prendas/10-charcoal-knit-zip/80.webp",
-          "left": 0.37,
-          "right": 0.64
+          "left": 0.364,
+          "right": 0.646
         },
         {
           "angle": 0,
           "src": "prendas/10-charcoal-knit-zip/0.webp",
-          "left": 0.038,
-          "right": 0.967
+          "left": 0.018,
+          "right": 0.986
         }
       ],
       "back": "prendas/10-charcoal-knit-zip/back.webp",
@@ -464,7 +471,8 @@
       "closeup": null,
       "spin": null,
       "inBetweens": false,
-      "onRack": true
+      "onRack": true,
+      "rackOrder": 3
     }
   ],
   "site": {
