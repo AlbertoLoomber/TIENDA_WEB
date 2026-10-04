@@ -105,6 +105,8 @@ def main():
             # Las vistas intermedias (60/45/25) solo entran al giro si se marcaron
             # como de la misma sesión que el frente y el perfil.
             "inBetweens": bool(src.get("giro_intermedios")),
+            # false: solo en la colección, no en el perchero de la portada.
+            "onRack": shop.get("en_perchero", True),
         })
 
     web["site"] = {

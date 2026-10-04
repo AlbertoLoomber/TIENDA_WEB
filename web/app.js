@@ -787,7 +787,9 @@
   }
 
   function buildRack(data) {
-    items = data.items.map((d, i) => {
+    // The front rack shows only the pieces marked for it (catalogo.json
+    // tienda.en_perchero); the collection below still lists every piece.
+    items = data.items.filter((d) => d.onRack !== false).map((d, i) => {
       const slot = document.createElement("button");
       slot.type = "button";
       slot.className = "slot";
@@ -919,7 +921,10 @@
     site = data.site || {};
     buildBand();
     buildRack(data);
-    Object.assign(window.NOMAD, { items, site, rail: RAIL, turn: { make: makeTurn, render: renderTurn, framesFor, loadSpin } });
+    // Everything else (collection, sheet, bag) works with every piece; the
+    // ones on the rack are the same objects, carrying their turn and slot.
+    const all = data.items.map((d) => items.find((it) => it.id === d.id) || d);
+    Object.assign(window.NOMAD, { items: all, rackItems: items, site, rail: RAIL, turn: { make: makeTurn, render: renderTurn, framesFor, loadSpin } });
     window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above everything else: build it first
     window.NOMAD.info?.setup();

@@ -75,7 +75,8 @@
         "sample": true
       },
       "spin": null,
-      "inBetweens": false
+      "inBetweens": false,
+      "onRack": true
     },
     {
       "id": "02-black-tee-minimal",
@@ -134,7 +135,8 @@
         "sample": true
       },
       "spin": null,
-      "inBetweens": false
+      "inBetweens": false,
+      "onRack": true
     },
     {
       "id": "03-white-tee-dollar",
@@ -187,7 +189,8 @@
         "sample": true
       },
       "spin": null,
-      "inBetweens": false
+      "inBetweens": false,
+      "onRack": false
     },
     {
       "id": "04-black-tee-script",
@@ -240,7 +243,8 @@
         "sample": true
       },
       "spin": null,
-      "inBetweens": false
+      "inBetweens": false,
+      "onRack": false
     },
     {
       "id": "05-green-crewneck",
@@ -293,7 +297,8 @@
         "sample": true
       },
       "spin": null,
-      "inBetweens": false
+      "inBetweens": false,
+      "onRack": true
     },
     {
       "id": "06-cream-tee-nomad",
@@ -348,7 +353,8 @@
         "sample": true
       },
       "spin": null,
-      "inBetweens": true
+      "inBetweens": true,
+      "onRack": true
     }
   ],
   "site": {
@@ -605,20 +611,6 @@
             "sample": false
           },
           "item": "02-black-tee-minimal"
-        },
-        {
-          "photo": {
-            "src": "fotos/calle-3.webp",
-            "sample": false
-          },
-          "item": "03-white-tee-dollar"
-        },
-        {
-          "photo": {
-            "src": "fotos/calle-4.webp",
-            "sample": false
-          },
-          "item": "04-black-tee-script"
         },
         {
           "photo": {

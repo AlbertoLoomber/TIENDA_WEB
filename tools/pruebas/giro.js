@@ -9,7 +9,7 @@ const { OUT, TAMANOS, navegador, abrir } = require("./comun");
 
 const ROOT = path.join(__dirname, "..", "..");
 const DIR = path.join(OUT, "giro-prueba");
-const ID = "03-white-tee-dollar";
+const ID = "02-black-tee-minimal";   // una prenda del perchero (los cuadros de prueba son de la 03: solo se prueba la mecánica)
 
 function cuadros() {
   if (!fs.existsSync(path.join(DIR, "11-700.webp"))) {

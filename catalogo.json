@@ -182,7 +182,8 @@
           "agotadas",
           "look.modelo"
         ],
-        "cerca": "cerca-03-estampado.webp"
+        "cerca": "cerca-03-estampado.webp",
+        "en_perchero": false
       },
       "categoria_plural": "Playeras",
       "slug": "more-than-money-tee"
@@ -241,7 +242,8 @@
           "agotadas",
           "look.modelo"
         ],
-        "cerca": "cerca-04-estampado.webp"
+        "cerca": "cerca-04-estampado.webp",
+        "en_perchero": false
       },
       "categoria_plural": "Playeras",
       "slug": "good-people-tee"
@@ -608,14 +610,6 @@
         {
           "foto": "calle-2.webp",
           "prenda": "02-black-tee-minimal"
-        },
-        {
-          "foto": "calle-3.webp",
-          "prenda": "03-white-tee-dollar"
-        },
-        {
-          "foto": "calle-4.webp",
-          "prenda": "04-black-tee-script"
         },
         {
           "foto": "calle-5.webp",

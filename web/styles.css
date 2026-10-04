@@ -732,7 +732,7 @@ body {
   margin: clamp(32px, 5vw, 56px) auto 0;
   padding: 0 24px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(12px, 1.6vw, 22px);
 }
 .street__card { display: grid; gap: 10px; color: var(--ink); text-decoration: none; }

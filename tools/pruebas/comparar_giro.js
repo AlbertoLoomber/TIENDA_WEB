@@ -2,7 +2,7 @@
    de dos fotos (?giro=foto), a la derecha el giro real. Las dos mitades giran
    la misma prenda al mismo tiempo, tres veces.
 
-   tools/pruebas/con-servidor.sh node tools/pruebas/comparar_giro.js [--prueba] [--prenda 03-white-tee-dollar]
+   tools/pruebas/con-servidor.sh node tools/pruebas/comparar_giro.js [--prueba] [--prenda 06-cream-tee-nomad]
      --prueba  usa los cuadros del video sintético (sin video real todavía)
    Sale en tools/pruebas/salida/giro-comparacion.webm */
 const fs = require("fs");
@@ -12,7 +12,7 @@ const { conGiro, cuadros } = require("./giro");
 
 const arg = (k) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
 const prueba = process.argv.includes("--prueba");
-const ID = arg("--prenda") || "03-white-tee-dollar";
+const ID = arg("--prenda") || "06-cream-tee-nomad";
 const NM = path.join(__dirname, "node_modules");
 const LIBS = { "gsap.min.js": "gsap/dist/gsap.min.js", "ScrollTrigger.min.js": "gsap/dist/ScrollTrigger.min.js", "SplitText.min.js": "gsap/dist/SplitText.min.js", "lenis.min.js": "lenis/dist/lenis.min.js" };
 
