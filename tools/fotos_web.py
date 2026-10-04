@@ -48,7 +48,6 @@ STREET = {
     "calle-1": ("foto", "look-01-camo.webp", 0.5, 0.42, 1.0),
     "calle-2": ("prenda", "02-black-tee-minimal", "#cdd0d4"),
     "calle-5": ("foto", "look-05-habits.webp", 0.5, 0.42, 1.0),
-    "calle-6": ("prenda", "06-cream-tee-nomad", "#d9d3c4"),
 }
 
 
