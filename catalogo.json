@@ -512,6 +512,52 @@
       "slug": "noise-long-sleeve",
       "escala": 0.96,
       "side": "assets/raw/09-black-longsleeve-noise-side.png"
+    },
+    {
+      "id": "10-charcoal-knit-zip",
+      "nombre": "Varsity Knit Zip",
+      "categoria": "Chamarra",
+      "immutable_description": "Chamarra de punto gris carbón jaspeado, rib grueso vertical, cuello polo, cierre de dos jaladores y bolsas sesgadas; NMD en chenilla crema en el pecho izquierdo; espalda con NOMAD MÉXICO en arco, aplique de fieltro tono sobre tono.",
+      "front": "assets/raw/10-charcoal-knit-zip-front.png",
+      "back": "assets/raw/10-charcoal-knit-zip-back.png",
+      "approved_angles": [
+        0
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        80,
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava a mano en frío o en ciclo de lana, al revés. Seca extendida, sin colgar. No uses secadora.",
+        "precio": 1490,
+        "nuevo": true,
+        "descripcion": "Chamarra de punto grueso en gris carbón, con cuello polo y cierre de dos jaladores. NMD en chenilla al pecho y NOMAD MÉXICO en arco, tono sobre tono, en la espalda.",
+        "detalles": [
+          "Punto rib grueso, mezcla de lana",
+          "Cierre metálico de dos vías",
+          "Chenilla al frente, fieltro bordado atrás"
+        ],
+        "agotadas": [],
+        "_provisional": [
+          "precio"
+        ],
+        "en_perchero": false,
+        "look": {
+          "tono": "#3c3d3e"
+        }
+      },
+      "categoria_plural": "Chamarras",
+      "slug": "varsity-knit-zip",
+      "escala": 0.96
     }
   ],
   "sitio": {
