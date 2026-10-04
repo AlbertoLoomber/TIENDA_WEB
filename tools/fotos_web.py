@@ -28,7 +28,7 @@ PAPER = (231, 230, 225)
 # Tamaño final por prefijo de archivo: (ancho, alto). Cuadradas para los círculos
 # de la vista "De cerca" de la ficha; 3:4 para la prenda tapada; 4:5 para la calle.
 SIZES = {
-    "cerca-": (600, 600),
+    "cerca-": (960, 1200),       # vista "De cerca" de la ficha, 4:5
     "drop-": (750, 1000),
     "calle-": (800, 1000),      # se muestran a ~370 px (740 en pantallas retina)
 }
