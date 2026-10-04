@@ -138,6 +138,8 @@
       $("tag-hang").classList.add("has-drop");
       if (drop.photo) {
         const img = $("drop-photo");
+        img.loading = "lazy";
+        img.decoding = "async";
         img.src = drop.photo.src;
         img.hidden = false;
         $("drop-bag").remove();

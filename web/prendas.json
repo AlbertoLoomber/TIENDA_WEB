@@ -581,7 +581,10 @@
         "title": "Ya está en el perchero",
         "button": "Ver el drop"
       },
-      "photo": null
+      "photo": {
+        "src": "fotos/drop-02.webp",
+        "sample": false
+      }
     },
     "street": {
       "eyebrow": "Así se usa",

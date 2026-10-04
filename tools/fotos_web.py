@@ -30,7 +30,7 @@ PAPER = (231, 230, 225)
 SIZES = {
     "cerca-": (600, 600),
     "drop-": (750, 1000),
-    "calle-": (1000, 1250),
+    "calle-": (800, 1000),      # se muestran a ~370 px (740 en pantallas retina)
 }
 SAMPLE_SIZE = (800, 1000)   # las muestras de la calle, 4:5
 
@@ -69,6 +69,27 @@ def size_for(name):
     return next((s for p, s in SIZES.items() if name.startswith(p)), None)
 
 
+def hang(im, size, hook_y=0.029, height=0.92):
+    """Quita el fondo (rembg) si hace falta y coloca la prenda con la punta del
+    gancho arriba al centro (hook_y del alto), ocupando `height` del lienzo."""
+    import numpy as np
+    if im.mode not in ("RGBA", "LA"):
+        from rembg import new_session, remove
+        im = remove(im.convert("RGB"), session=new_session("isnet-general-use"))
+    arr = np.array(im.convert("RGBA"))
+    a = arr[:, :, 3]
+    a[a < 12] = 0
+    ys, xs = np.where(a > 128)
+    top, bottom = ys.min(), ys.max()
+    hook_x = xs[ys < top + max(6, int((bottom - top) * 0.015))].mean()
+    w, h = size
+    scale = h * height / (bottom - top)
+    img = Image.fromarray(arr).resize((round(arr.shape[1] * scale), round(arr.shape[0] * scale)), Image.LANCZOS)
+    canvas = Image.new("RGBA", size, (0, 0, 0, 0))
+    canvas.alpha_composite(img, (round(w / 2 - hook_x * scale), round(h * hook_y - top * scale)))
+    return canvas
+
+
 def convert_real():
     done = []
     for src in sorted(RAW.glob("*")) if RAW.exists() else []:
@@ -79,13 +100,14 @@ def convert_real():
             print(f"  ¿{src.name}? no sé de qué sección es; revisa el nombre (PROMPTS.md §24)")
             continue
         im = Image.open(src)
-        if im.mode in ("RGBA", "LA") and src.stem.startswith("drop-"):
-            # La prenda tapada llega recortada: se queda transparente.
-            out = cover(im.convert("RGBA"), size)
+        if src.stem.startswith("drop-"):
+            # La prenda tapada cuelga del tubo como las demás: sin fondo y con
+            # el gancho en el mismo punto que los recortes del perchero.
+            out = hang(im, size)
         else:
             out = cover(im.convert("RGB"), size)
         OUT.mkdir(parents=True, exist_ok=True)
-        out.save(OUT / f"{src.stem}.webp", quality=82, method=6)
+        out.save(OUT / f"{src.stem}.webp", quality=78 if src.stem.startswith("calle-") else 82, method=6)
         done.append(src.stem)
     return done
 

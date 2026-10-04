@@ -904,16 +904,16 @@ body {
 @media (min-width: 821px) {
   .tag-hang.has-drop {
     width: min(812px, 100%);
-    padding-left: 272px;           /* the garment's column (220px) and the gap */
+    padding-left: 312px;           /* the garment's column (260px) and the gap */
     box-sizing: border-box;
   }
   /* the rod runs from the garment's hook to the tag's string */
-  .tag-hang.has-drop .tag-hang__rod { left: 60px; margin-left: 0; width: calc(50% + 116px); }
+  .tag-hang.has-drop .tag-hang__rod { left: 90px; margin-left: 0; width: calc(50% + 106px); }
   .drop-hang {
     position: absolute;
     left: 0;
     top: -6px;                     /* the hook's curl sits on the tube */
-    width: 220px;
+    width: 260px;
   }
 }
 @media (max-width: 820px) { .drop-hang { display: none; } }

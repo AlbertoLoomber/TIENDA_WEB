@@ -28,11 +28,24 @@
       const a = li.querySelector("a");
       a.href = `#/prenda/${item.slug}`;
       const img = li.querySelector("img");
-      img.src = shot.photo.src;
+      img.dataset.src = shot.photo.src;   // set when the section is near (see below)
       img.alt = `${item.name} en la calle`;
       li.querySelector(".street__name").textContent = item.name;
       grid.appendChild(li);
     });
+    // The photos come in only when the section is about to be seen: it sits
+    // high on the page, close enough that the browser's own lazy loading would
+    // fetch them with the first screen.
+    const imgs = [...grid.querySelectorAll("img[data-src]")];
+    const load = () => imgs.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; delete im.dataset.src; } });
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) { load(); io.disconnect(); }
+      }, { rootMargin: "300px 0px" });
+      io.observe(grid);
+    } else {
+      load();
+    }
     N.swipeHint?.(grid, "calle");
   }
 
