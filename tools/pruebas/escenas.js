@@ -59,7 +59,9 @@ module.exports = async function escenas() {
     const p = await abrir(b, t);
     const fotos = await p.$$eval(".street__card", (l) => l.map((a) => a.getAttribute("href")));
     if (fotos.length !== 6) fallas.push(`${t.nombre}: ${fotos.length} fotos de calle`);
-    if (await p.isHidden("#street-sample")) fallas.push(`${t.nombre}: sin leyenda de muestra`);
+    // la leyenda "Fotos de muestra" aparece solo mientras alguna lo sea
+    const debe = await p.evaluate(() => window.NOMAD.site.street.sample);
+    if (debe === (await p.isHidden("#street-sample"))) fallas.push(`${t.nombre}: leyenda de muestra ${debe ? "faltante" : "sobrante"}`);
     const esperado = await p.evaluate(() => window.NOMAD.site.street.shots.map((s) => `#/prenda/${window.NOMAD.items.find((i) => i.id === s.item).slug}`));
     if (fotos.join() !== esperado.join()) fallas.push(`${t.nombre}: enlaces ${fotos}`);
     for (const k of [1, 3]) {

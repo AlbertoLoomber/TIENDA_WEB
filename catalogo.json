@@ -595,10 +595,10 @@
     },
     "video_estudio": "video-estudio",
     "calle": {
-      "_nota": "muestra: true mientras no sean fotos reales de clientes (la página lo dice). Sin nombres de usuarios ni reseñas inventadas.",
+      "_nota": "Fotos generadas con IA para la tienda (docs/PROMPTS.md). muestra: true solo si alguna foto vuelve a ser de muestra. Sin nombres de usuarios ni reseñas inventadas.",
       "encabezado": "Así se usa",
       "titulo": "En la calle.",
-      "muestra": true,
+      "muestra": false,
       "boton": "Etiquétanos en Instagram",
       "fotos": [
         {

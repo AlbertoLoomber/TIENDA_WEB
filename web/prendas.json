@@ -586,7 +586,7 @@
     "street": {
       "eyebrow": "Así se usa",
       "title": "En la calle.",
-      "sample": true,
+      "sample": false,
       "button": "Etiquétanos en Instagram",
       "shots": [
         {
@@ -626,8 +626,8 @@
         },
         {
           "photo": {
-            "src": "fotos/muestra/calle-6.webp",
-            "sample": true
+            "src": "fotos/calle-6.webp",
+            "sample": false
           },
           "item": "06-cream-tee-nomad"
         }
