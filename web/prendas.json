@@ -591,8 +591,8 @@
       "shots": [
         {
           "photo": {
-            "src": "fotos/muestra/calle-1.webp",
-            "sample": true
+            "src": "fotos/calle-1.webp",
+            "sample": false
           },
           "item": "01-camo-overshirt"
         },
