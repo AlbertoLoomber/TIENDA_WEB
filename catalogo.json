@@ -548,11 +548,19 @@
         ],
         "agotadas": [],
         "_provisional": [
-          "precio"
+          "precio",
+          "look.modelo"
         ],
         "en_perchero": true,
         "look": {
-          "tono": "#3c3d3e"
+          "tono": "#3c3d3e",
+          "foto": "fotos/look-10-frente.webp",
+          "foto_espalda": "fotos/look-10-espalda.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.83,
+            "talla": "L"
+          }
         }
       },
       "categoria_plural": "Chamarras",
