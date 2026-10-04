@@ -558,7 +558,9 @@
       "categoria_plural": "Chamarras",
       "slug": "varsity-knit-zip",
       "escala": 0.96,
-      "side": "assets/raw/10-charcoal-knit-zip-side.png"
+      "side": "assets/raw/10-charcoal-knit-zip-side.png",
+      "suavizado": 0.8,
+      "calidad": 76
     }
   ],
   "sitio": {

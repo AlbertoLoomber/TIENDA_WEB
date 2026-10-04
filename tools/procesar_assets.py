@@ -138,13 +138,27 @@ def main():
             _, t, b = hook_anchor(arr[:, :, 3])
             return place(arr, height / (b - t))
 
+        # Telas con textura muy fina (punto grueso) pesan el doble en WebP: un
+        # suavizado leve ("suavizado", radio en px) y "calidad" las dejan en el
+        # peso de las demás sin que se note al tamaño en que se muestran.
+        blur = item.get("suavizado", 0)
+        quality = item.get("calidad", 86)
+
+        def save(canvas, path):
+            if blur:
+                from PIL import ImageFilter
+                alpha = canvas.getchannel("A")
+                canvas = canvas.convert("RGB").filter(ImageFilter.GaussianBlur(blur)).convert("RGBA")
+                canvas.putalpha(alpha)
+            canvas.save(path, "WEBP", quality=quality, method=6)
+
         front = placed(cutouts[0])
         frames = []
         for angle, arr in cutouts.items():
             canvas = front if angle == 0 else placed(arr)
             if angle not in (0, 80):
                 canvas = match_color(canvas, front)
-            canvas.save(out_dir / f"{angle}.webp", "WEBP", quality=86, method=6)
+            save(canvas, out_dir / f"{angle}.webp")
             left, right = extent(canvas)
             frames.append({"angle": angle, "src": f"prendas/{item_id}/{angle}.webp", "left": left, "right": right})
             print(item_id, angle, "ok", left, right)
@@ -159,7 +173,7 @@ def main():
         back_src = ROOT / "assets/raw" / f"{item_id}-back.png"
         if back_src.exists():
             back = placed(cutout(back_src, session))
-            back.save(out_dir / "back.webp", "WEBP", quality=86, method=6)
+            save(back, out_dir / "back.webp")
             entry["back"] = f"prendas/{item_id}/back.webp"
             print(item_id, "espalda ok")
         items.append(entry)
