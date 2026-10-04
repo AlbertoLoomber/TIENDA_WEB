@@ -464,6 +464,54 @@
       "spin": null,
       "inBetweens": false,
       "onRack": false
+    },
+    {
+      "id": "09-black-longsleeve-noise",
+      "name": "Noise Long Sleeve",
+      "category": "Manga larga",
+      "frames": [
+        {
+          "angle": 0,
+          "src": "prendas/09-black-longsleeve-noise/0.webp",
+          "left": 0.094,
+          "right": 0.907
+        }
+      ],
+      "back": "prendas/09-black-longsleeve-noise/back.webp",
+      "categoryPlural": "Mangas largas",
+      "price": 890,
+      "isNew": true,
+      "description": "Manga larga negra deslavada de corte boxy en algodón pesado. NOMAD chico al frente y el NOMAD gigante, cortado por los lados, en la espalda.",
+      "details": [
+        "Algodón pesado 280 g",
+        "Corte boxy, hombro caído",
+        "Puños de rib",
+        "Serigrafía frente y espalda"
+      ],
+      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "soldOut": [],
+      "slug": "noise-long-sleeve",
+      "look": {
+        "tone": "#2b2b2b",
+        "ink": null,
+        "photo": "fotos/look-09-frente.webp",
+        "photoBack": "fotos/look-09-espalda.webp",
+        "model": {
+          "articulo": "El",
+          "estatura": 1.87,
+          "talla": "L"
+        }
+      },
+      "closeup": null,
+      "spin": null,
+      "inBetweens": false,
+      "onRack": false
     }
   ],
   "site": {

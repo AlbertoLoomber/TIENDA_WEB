@@ -453,6 +453,61 @@
       "categoria_plural": "Playeras",
       "slug": "archive-01-tee",
       "escala": 0.86
+    },
+    {
+      "id": "09-black-longsleeve-noise",
+      "nombre": "Noise Long Sleeve",
+      "categoria": "Manga larga",
+      "immutable_description": "Manga larga negra deslavada boxy heavyweight; frente con NOMAD chico en crema y dos rayas inclinadas terracota y azul; espalda con NOMAD gigante en crema cortado por los lados y tres líneas: MOVEMENT WITHOUT DIRECTION IS JUST NOISE, CRAFTED IN MÉXICO © 2026, ALWAYS MOVING.",
+      "front": "assets/raw/09-black-longsleeve-noise-front.png",
+      "back": "assets/raw/09-black-longsleeve-noise-back.png",
+      "approved_angles": [
+        0
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        80,
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+        "precio": 890,
+        "nuevo": true,
+        "descripcion": "Manga larga negra deslavada de corte boxy en algodón pesado. NOMAD chico al frente y el NOMAD gigante, cortado por los lados, en la espalda.",
+        "detalles": [
+          "Algodón pesado 280 g",
+          "Corte boxy, hombro caído",
+          "Puños de rib",
+          "Serigrafía frente y espalda"
+        ],
+        "look": {
+          "tono": "#2b2b2b",
+          "foto": "fotos/look-09-frente.webp",
+          "foto_espalda": "fotos/look-09-espalda.webp",
+          "modelo": {
+            "articulo": "El",
+            "estatura": 1.87,
+            "talla": "L"
+          }
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio",
+          "look.modelo"
+        ],
+        "en_perchero": false
+      },
+      "categoria_plural": "Mangas largas",
+      "slug": "noise-long-sleeve",
+      "escala": 0.86
     }
   ],
   "sitio": {
