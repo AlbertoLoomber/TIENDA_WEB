@@ -83,7 +83,11 @@ module.exports = async function drop() {
     const z = await leer(p);
     if (z.cuenta.join() !== "00,00,00") fallas.push(`reloj: cuenta ${z.cuenta} a las 19:59`);
     if (a.xs.join() !== z.xs.join()) fallas.push(`reloj: los dígitos se movieron (${a.xs} → ${z.xs})`);
-    await p.clock.fastForward(31000); await p.waitForTimeout(800);
+    await p.clock.fastForward(31000);
+    // Con toda la suite corriendo, el aviso del minuto puede tardar más de un
+    // instante en llegar a la página: se espera a que cambie (hasta 5 s).
+    await p.waitForFunction(() => document.getElementById("tag-eyebrow").textContent.endsWith("ya disponible"),
+      null, { timeout: 5000 }).catch(() => {});
     const d = await leer(p);
     if (!d.ceja.endsWith("ya disponible")) fallas.push(`reloj: a las 20:00 dice "${d.ceja}"`);
     await p.close();
