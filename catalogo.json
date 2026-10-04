@@ -408,11 +408,11 @@
       "front": "assets/raw/08-cream-tee-archive-front.png",
       "back": "assets/raw/08-cream-tee-archive-back.png",
       "approved_angles": [
-        0
+        0,
+        80
       ],
       "review_angles": [],
       "missing_angles": [
-        80,
         60,
         45,
         25
@@ -448,11 +448,12 @@
           "precio",
           "look.modelo"
         ],
-        "en_perchero": false
+        "en_perchero": true
       },
       "categoria_plural": "Playeras",
       "slug": "archive-01-tee",
-      "escala": 0.86
+      "escala": 0.96,
+      "side": "assets/raw/08-cream-tee-archive-side.png"
     },
     {
       "id": "09-black-longsleeve-noise",
@@ -462,11 +463,11 @@
       "front": "assets/raw/09-black-longsleeve-noise-front.png",
       "back": "assets/raw/09-black-longsleeve-noise-back.png",
       "approved_angles": [
-        0
+        0,
+        80
       ],
       "review_angles": [],
       "missing_angles": [
-        80,
         60,
         45,
         25
@@ -503,11 +504,12 @@
           "precio",
           "look.modelo"
         ],
-        "en_perchero": false
+        "en_perchero": true
       },
       "categoria_plural": "Mangas largas",
       "slug": "noise-long-sleeve",
-      "escala": 0.86
+      "escala": 0.96,
+      "side": "assets/raw/09-black-longsleeve-noise-side.png"
     }
   ],
   "sitio": {

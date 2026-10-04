@@ -424,10 +424,16 @@
       "category": "Playera",
       "frames": [
         {
+          "angle": 80,
+          "src": "prendas/08-cream-tee-archive/80.webp",
+          "left": 0.384,
+          "right": 0.675
+        },
+        {
           "angle": 0,
           "src": "prendas/08-cream-tee-archive/0.webp",
-          "left": 0.092,
-          "right": 0.9
+          "left": 0.045,
+          "right": 0.947
         }
       ],
       "back": "prendas/08-cream-tee-archive/back.webp",
@@ -463,7 +469,7 @@
       "closeup": null,
       "spin": null,
       "inBetweens": false,
-      "onRack": false
+      "onRack": true
     },
     {
       "id": "09-black-longsleeve-noise",
@@ -471,10 +477,16 @@
       "category": "Manga larga",
       "frames": [
         {
+          "angle": 80,
+          "src": "prendas/09-black-longsleeve-noise/80.webp",
+          "left": 0.373,
+          "right": 0.677
+        },
+        {
           "angle": 0,
           "src": "prendas/09-black-longsleeve-noise/0.webp",
-          "left": 0.094,
-          "right": 0.907
+          "left": 0.046,
+          "right": 0.953
         }
       ],
       "back": "prendas/09-black-longsleeve-noise/back.webp",
@@ -511,7 +523,7 @@
       "closeup": null,
       "spin": null,
       "inBetweens": false,
-      "onRack": false
+      "onRack": true
     }
   ],
   "site": {
