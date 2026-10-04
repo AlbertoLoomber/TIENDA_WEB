@@ -63,7 +63,8 @@
           "agotadas",
           "look.modelo"
         ],
-        "cerca": "cerca-01-estampado.webp"
+        "cerca": "cerca-01-estampado.webp",
+        "en_perchero": false
       },
       "categoria_plural": "Sobrecamisas",
       "slug": "camo-overshirt"
@@ -122,7 +123,8 @@
           "agotadas",
           "look.modelo"
         ],
-        "cerca": "cerca-02-estampado.webp"
+        "cerca": "cerca-02-estampado.webp",
+        "en_perchero": false
       },
       "categoria_plural": "Playeras",
       "slug": "nomad-minimal-tee"

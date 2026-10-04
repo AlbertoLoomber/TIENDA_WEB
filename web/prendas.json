@@ -77,7 +77,7 @@
       },
       "spin": null,
       "inBetweens": false,
-      "onRack": true,
+      "onRack": false,
       "back": null,
       "rackOrder": null
     },
@@ -140,7 +140,7 @@
       },
       "spin": null,
       "inBetweens": false,
-      "onRack": true,
+      "onRack": false,
       "back": null,
       "rackOrder": null
     },
