@@ -274,8 +274,8 @@
     s.setProperty("--rail-over", `${over}px`);
     s.setProperty("--rail-h", `${RAIL.height * k}px`);
     s.setProperty("--rail-tube-top", `${RAIL.tubeTop * k}px`);
-    s.setProperty("--rail-lw", `${RAIL.left * k}px`);
-    s.setProperty("--rail-rw", `${RAIL.right * k}px`);
+    s.setProperty("--rail-lw", `${Math.round(RAIL.left * k)}px`);   // whole px: no hairline at the joints
+    s.setProperty("--rail-rw", `${Math.round(RAIL.right * k)}px`);
     s.setProperty("--rack-w", `${perHeight * garmentH}px`);
     rackInner.style.paddingInline = narrow ? `${over + 16}px` : "";
 

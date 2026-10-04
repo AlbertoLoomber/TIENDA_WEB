@@ -190,7 +190,10 @@ body {
   background-size: 100% 100%;
 }
 .rail__end--left { flex: none; width: var(--rail-lw, 59px); background-image: url("rail/left.webp"); }
-.rail__mid { flex: 1; background-image: url("rail/mid.webp"); }
+/* The tube slips 1px under each mount, so a fractional width never leaves a
+   light hairline at the joints. */
+.rail__end { position: relative; z-index: 1; }
+.rail__mid { flex: 1; margin: 0 -1px; background-image: url("rail/mid.webp"); }
 .rail__end--right { flex: none; width: var(--rail-rw, 60px); background-image: url("rail/right.webp"); }
 
 /* ---------- garments ---------- */
