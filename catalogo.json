@@ -1,5 +1,5 @@
 {
-  "project": "NOMAD 6 prendas",
+  "project": "NOMAD 7 prendas",
   "angles": [
     80,
     60,
@@ -353,6 +353,52 @@
       "categoria_plural": "Playeras",
       "slug": "nomad-embroidered-tee",
       "giro_intermedios": true
+    },
+    {
+      "id": "07-navy-tee-hanger",
+      "nombre": "Hanger Line Tee",
+      "categoria": "Playera",
+      "immutable_description": "Playera azul marino lavado heavyweight oversize; gancho dibujado en una sola línea crema y NOMAD pequeño debajo, al centro del pecho.",
+      "front": "assets/raw/07-navy-tee-hanger-front.png",
+      "approved_angles": [
+        0
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        80,
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+        "precio": 690,
+        "nuevo": true,
+        "descripcion": "Playera azul marino lavado de algodón pesado con un gancho dibujado en una sola línea y NOMAD pequeño en el pecho. Cuerpo amplio y hombro caído.",
+        "detalles": [
+          "Algodón pesado",
+          "Corte oversized",
+          "Teñida en prenda",
+          "Serigrafía"
+        ],
+        "look": {
+          "tono": "#c9ccd6",
+          "foto": null
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio"
+        ],
+        "en_perchero": false
+      },
+      "categoria_plural": "Playeras",
+      "slug": "hanger-line-tee"
     }
   ],
   "sitio": {

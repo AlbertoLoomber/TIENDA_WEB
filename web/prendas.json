@@ -361,6 +361,48 @@
       "spin": null,
       "inBetweens": true,
       "onRack": true
+    },
+    {
+      "id": "07-navy-tee-hanger",
+      "name": "Hanger Line Tee",
+      "category": "Playera",
+      "frames": [
+        {
+          "angle": 0,
+          "src": "prendas/07-navy-tee-hanger/0.webp",
+          "left": 0.078,
+          "right": 0.908
+        }
+      ],
+      "categoryPlural": "Playeras",
+      "price": 690,
+      "isNew": true,
+      "description": "Playera azul marino lavado de algodón pesado con un gancho dibujado en una sola línea y NOMAD pequeño en el pecho. Cuerpo amplio y hombro caído.",
+      "details": [
+        "Algodón pesado",
+        "Corte oversized",
+        "Teñida en prenda",
+        "Serigrafía"
+      ],
+      "care": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "soldOut": [],
+      "slug": "hanger-line-tee",
+      "look": {
+        "tone": "#c9ccd6",
+        "ink": null,
+        "photo": null,
+        "model": null
+      },
+      "closeup": null,
+      "spin": null,
+      "inBetweens": false,
+      "onRack": false
     }
   ],
   "site": {

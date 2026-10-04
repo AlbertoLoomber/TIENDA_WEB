@@ -402,8 +402,9 @@
     // Views: front and side on the rod, plus the worn photo when there is one.
     const views = [
       { key: "front", label: "Frente", alt: "vista de frente", src: frontSrc(item), kind: "garment" },
-      { key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" },
     ];
+    // A piece photographed only from the front (collection only) has no side view.
+    if (item.frames.length > 1) views.push({ key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" });
     if (item.look?.photo) views.push({ key: "worn", label: "Puesta", alt: "puesta", src: item.look.photo, kind: "photo" });
     // The print up close (a sample crop until the macro photo arrives).
     if (item.closeup?.src) views.push({ key: "closeup", label: "De cerca", alt: "detalle del estampado", src: item.closeup.src, kind: "photo", sample: item.closeup.sample });
@@ -434,7 +435,9 @@
     });
     stage.classList.toggle("is-photo", false);
     $("sheet-sample").hidden = true;
-    stage.setAttribute("aria-label", `${item.name}: vista de frente. Usa las flechas o arrastra para girarla.`);
+    const turns = item.frames.length > 1;
+    stage.classList.toggle("no-turn", !turns);
+    stage.setAttribute("aria-label", `${item.name}: vista de frente.${turns ? " Usa las flechas o arrastra para girarla." : ""}`);
     paintSticky();
   }
 
@@ -532,7 +535,7 @@
     };
 
     stage.addEventListener("pointerdown", (e) => {
-      if (busy || !current || !N.turn || e.button > 0) return;
+      if (busy || !current || !N.turn || e.button > 0 || current.frames.length < 2) return;
       const view = viewNow();
       if (view !== "front" && view !== "side") return;
       st = { id: e.pointerId, x: e.clientX, y: e.clientY, p0: view === "side" ? 1 : 0, p: view === "side" ? 1 : 0, v: 0, lastX: e.clientX, lastT: performance.now(), box: null };
@@ -564,7 +567,7 @@
   // "Arrastra para girar": once per visit, gone at the first drag or after 4 s.
   let hintTimer = 0;
   function showHint() {
-    if (N.features?.dragTurn === false) return;
+    if (N.features?.dragTurn === false || (current && current.frames.length < 2)) return;
     try { if (sessionStorage.getItem("nomad.arrastra") === "1") return; } catch (e) { /* show it */ }
     const hint = $("sheet-drag-hint");
     hint.hidden = false;

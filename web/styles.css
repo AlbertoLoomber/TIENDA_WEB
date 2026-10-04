@@ -1867,6 +1867,7 @@ body {
 
 /* drag to turn in the sheet */
 .sheet__stage { touch-action: pan-y; cursor: grab; }
+.sheet__stage.no-turn { cursor: default; }
 .sheet__stage.is-photo { cursor: default; }
 .sheet__stage.is-turning { cursor: grabbing; }
 .sheet__stage.is-turning .sheet__img--garment { visibility: hidden; }
