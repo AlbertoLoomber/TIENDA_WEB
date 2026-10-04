@@ -312,6 +312,12 @@
           "right": 0.626
         },
         {
+          "angle": 60,
+          "src": "prendas/06-cream-tee-nomad/60.webp",
+          "left": 0.275,
+          "right": 0.773
+        },
+        {
           "angle": 0,
           "src": "prendas/06-cream-tee-nomad/0.webp",
           "left": 0.089,
