@@ -3,7 +3,7 @@
 const path = require("path");
 const { OUT, TAMANOS, navegador, abrir, ir } = require("./comun");
 
-async function abrirFicha(p, n = 3) {
+async function abrirFicha(p, n = 2) {
   await ir(p, "#shop"); await p.waitForTimeout(1500);
   await p.click(`.piece:nth-child(${n}) .piece__hang`); await p.waitForTimeout(1400);
 }
@@ -17,7 +17,7 @@ module.exports = async function bolsa() {
   // 1. ficha → sin talla no agrega; con talla agrega y vuela
   let p = await abrir(b, t);
   await p.evaluate(() => localStorage.clear());
-  await abrirFicha(p, 3);
+  await abrirFicha(p, 2);
   await p.click("#sheet-add"); await p.waitForTimeout(400);
   if (await cuenta(p) !== 0) fallas.push("agregó sin talla");
   if (!(await p.textContent("#sheet-status")).includes("Elige")) fallas.push("no pidió talla");

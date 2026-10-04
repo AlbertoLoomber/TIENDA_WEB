@@ -718,7 +718,7 @@
       return;
     }
     // Placeholder: a few pieces from the collection on the studio rail.
-    const pick = [["02-black-tee-minimal", 0], ["01-camo-overshirt", -1], ["03-white-tee-dollar", 0], ["05-green-crewneck", 0]];
+    const pick = [["02-black-tee-minimal", 0], ["01-camo-overshirt", -1], ["06-cream-tee-nomad", 0], ["05-green-crewneck", 0]];
     const row = $("studio-row");
     pick.forEach(([id, f]) => {
       const item = items.find((it) => it.id === id);

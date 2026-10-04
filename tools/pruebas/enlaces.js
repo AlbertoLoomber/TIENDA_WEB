@@ -9,7 +9,7 @@ module.exports = async function enlaces() {
   let p = await abrir(b, t);
   // abrir desde la colección pone la dirección; atrás la cierra
   await ir(p, "#shop"); await p.waitForTimeout(1500);
-  await p.click(".piece:nth-child(5) .piece__hang"); await p.waitForTimeout(1400);
+  await p.click(".piece:nth-child(3) .piece__hang"); await p.waitForTimeout(1400);
   if (!p.url().endsWith("#/prenda/create-good-habits-crewneck")) fallas.push(`dirección al abrir: ${p.url()}`);
   if (!(await p.title()).startsWith("Create Good Habits Crewneck")) fallas.push(`título: ${await p.title()}`);
   await p.goBack(); await p.waitForTimeout(1500);
@@ -27,10 +27,10 @@ module.exports = async function enlaces() {
     await p.click("#sheet-share"); await p.waitForTimeout(200);
     if (await p.isHidden("#share-menu")) fallas.push("no abrió el menú de compartir");
     const wa = await p.getAttribute("#share-wa", "href");
-    if (!wa.startsWith("https://wa.me/?text=") || !decodeURIComponent(wa).includes("#/prenda/more-than-money-tee")) fallas.push(`enlace de WhatsApp: ${wa}`);
+    if (!wa.startsWith("https://wa.me/?text=") || !decodeURIComponent(wa).includes("#/prenda/create-good-habits-crewneck")) fallas.push(`enlace de WhatsApp: ${wa}`);
     await p.click("#share-copy"); await p.waitForTimeout(300);
     const copied = await p.evaluate(() => navigator.clipboard.readText()).catch(() => "");
-    if (!copied.endsWith("#/prenda/more-than-money-tee")) fallas.push(`copiado: ${copied}`);
+    if (!copied.endsWith("#/prenda/create-good-habits-crewneck")) fallas.push(`copiado: ${copied}`);
   }
   await p.keyboard.press("Escape"); await p.waitForTimeout(1500);
   // tallas rápidas: con el cursor encima aparecen y agregan sin abrir la ficha
@@ -45,7 +45,7 @@ module.exports = async function enlaces() {
   if (p.errores.length) fallas.push(`consola: ${p.errores.join(" / ")}`);
   await p.close();
   // enlace directo y enlace inválido
-  for (const [hash, espera] of [["#/prenda/good-people-tee", "Good People Tee"], ["#/prenda/no-existe", null]]) {
+  for (const [hash, espera] of [["#/prenda/archive-01-tee", "Archive 01 Tee"], ["#/prenda/no-existe", null]]) {
     p = await abrirEn(b, t, hash);
     const open = !(await p.evaluate(() => document.getElementById("sheet").hidden));
     if (espera && (!open || (await p.textContent("#sheet-name")) !== espera)) fallas.push(`${hash} no abrió ${espera}`);

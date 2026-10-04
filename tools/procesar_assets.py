@@ -116,6 +116,8 @@ def main():
         previous = {it["id"]: it for it in json.loads(OUT_JSON.read_text(encoding="utf8"))["items"]}
     items = []
     for item in catalog["items"]:
+        if not item.get("tienda", {}).get("en_tienda", True):
+            continue   # retirada de la tienda (ver catalogo_web.py)
         if only and item["id"] not in only:
             if item["id"] in previous:
                 items.append(previous[item["id"]])

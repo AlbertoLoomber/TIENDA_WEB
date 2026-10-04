@@ -81,6 +81,9 @@ def main():
     web = json.loads(web_path.read_text(encoding="utf8"))
     site = catalog.get("sitio", {})
     by_id = {it["id"]: it for it in catalog["items"]}
+    # Prendas retiradas de la tienda (tienda.en_tienda = false): sus fotos se
+    # quedan en assets/ por si vuelven, pero la página ya no las muestra.
+    web["items"] = [it for it in web["items"] if by_id[it["id"]].get("tienda", {}).get("en_tienda", True)]
 
     for item in web["items"]:
         src = by_id[item["id"]]

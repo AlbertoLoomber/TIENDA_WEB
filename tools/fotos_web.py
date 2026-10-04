@@ -38,8 +38,6 @@ SAMPLE_SIZE = (800, 1000)   # las muestras de la calle, 4:5
 SAMPLES = {
     "cerca-01-estampado": ("01-camo-overshirt", 590, 590, 300),
     "cerca-02-estampado": ("02-black-tee-minimal", 500, 492, 190),
-    "cerca-03-estampado": ("03-white-tee-dollar", 500, 600, 400),
-    "cerca-04-estampado": ("04-black-tee-script", 500, 560, 420),
     "cerca-05-estampado": ("05-green-crewneck", 500, 640, 440),
     "cerca-06-bordado": ("06-cream-tee-nomad", 636, 522, 190),
 }
@@ -49,8 +47,6 @@ SAMPLES = {
 STREET = {
     "calle-1": ("foto", "look-01-camo.webp", 0.5, 0.42, 1.0),
     "calle-2": ("prenda", "02-black-tee-minimal", "#cdd0d4"),
-    "calle-3": ("foto", "look-03-money.webp", 0.5, 0.4, 1.0),
-    "calle-4": ("prenda", "04-black-tee-script", "#c4b5a3"),
     "calle-5": ("foto", "look-05-habits.webp", 0.5, 0.42, 1.0),
     "calle-6": ("prenda", "06-cream-tee-nomad", "#d9d3c4"),
 }

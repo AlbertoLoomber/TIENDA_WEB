@@ -169,7 +169,7 @@
         "look": {
           "tono": "#3e4874",
           "tinta": "#eceae3",
-          "foto": "fotos/look-03-money.webp",
+          "foto": "../assets/raw/descartadas/look-03-money.webp",
           "modelo": {
             "articulo": "El",
             "estatura": 1.78,
@@ -183,7 +183,8 @@
           "look.modelo"
         ],
         "cerca": "cerca-03-estampado.webp",
-        "en_perchero": false
+        "en_perchero": false,
+        "en_tienda": false
       },
       "categoria_plural": "Playeras",
       "slug": "more-than-money-tee"
@@ -243,7 +244,8 @@
           "look.modelo"
         ],
         "cerca": "cerca-04-estampado.webp",
-        "en_perchero": false
+        "en_perchero": false,
+        "en_tienda": false
       },
       "categoria_plural": "Playeras",
       "slug": "good-people-tee"

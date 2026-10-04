@@ -18,7 +18,7 @@ module.exports = async function recomendador() {
   }
   await p.evaluate(() => localStorage.removeItem("nomad.medidas"));
   await ir(p, "#shop"); await p.waitForTimeout(1500);
-  await p.click(".piece:nth-child(3) .piece__hang"); await p.waitForTimeout(1400);
+  await p.click(".piece:nth-child(6) .piece__hang"); await p.waitForTimeout(1400);
   await p.click("#sheet-fit-open"); await p.waitForTimeout(800);
   await p.fill("#fit-height", "17"); await p.fill("#fit-weight", "70"); await p.press("#fit-weight", "Tab");
   await p.press("#fit-height", "Tab"); await p.waitForTimeout(200);
@@ -29,7 +29,7 @@ module.exports = async function recomendador() {
   const marcada = await p.$eval('#sheet-sizes [aria-checked="true"]', (n) => n.textContent).catch(() => null);
   if (marcada !== "M") fallas.push(`"Usar talla" marcó ${marcada}`);
   if (!(await p.textContent("#sheet-suggest")).includes("M")) fallas.push("no mostró la talla sugerida");
-  if (!(await p.textContent("#sheet-model")).includes("1.78")) fallas.push(`línea del modelo: ${await p.textContent("#sheet-model")}`);
+  if (!(await p.textContent("#sheet-model")).includes("1.85")) fallas.push(`línea del modelo: ${await p.textContent("#sheet-model")}`);
   // prenda con la sugerida agotada (Camo, XL)
   await p.keyboard.press("Escape"); await p.waitForTimeout(1500);
   await p.evaluate(() => localStorage.setItem("nomad.medidas", JSON.stringify({ height: 188, weight: 80, fit: "normal" })));
