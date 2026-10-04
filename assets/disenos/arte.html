@@ -1,0 +1,63 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Wide;src:url(../../fonts-pendiente/f2.ttf)}
+@font-face{font-family:Cond;src:url(../../fonts-pendiente/f4.ttf)}
+@font-face{font-family:Reg;src:url(../../fonts-pendiente/f3.ttf)}
+@font-face{font-family:Anton;src:url(../../fonts-pendiente/f1.ttf)}
+body{margin:0;background:transparent}
+.board{position:relative;display:inline-block}
+</style></head><body>
+
+<!-- A · ESPALDA (playera crema): verde botella + negro -->
+<svg id="a-back" width="2400" height="1500" viewBox="0 0 2400 1500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <mask id="speed">
+      <rect width="2400" height="1500" fill="#fff"/>
+      <!-- cortes de velocidad: franjas inclinadas que cruzan las letras de la derecha -->
+      <g fill="#000">
+        <rect x="1180" y="560" width="1100" height="22"/>
+        <rect x="1180" y="618" width="1100" height="22"/>
+        <rect x="1180" y="676" width="1100" height="22"/>
+      </g>
+    </mask>
+  </defs>
+  <text x="1200" y="300" text-anchor="middle" font-family="Reg" font-size="88" letter-spacing="6" fill="#151515">NOMAD<tspan font-size="52" dy="-34">®</tspan></text>
+  <text x="230" y="780" font-family="Wide" font-size="560" textLength="1940" lengthAdjust="spacingAndGlyphs" fill="#1f4a35" mask="url(#speed)">nomad</text>
+  <text x="1200" y="960" text-anchor="middle" font-family="Cond" font-size="104" letter-spacing="2" fill="#151515">MADE TO MOVE, BUILT TO LAST</text>
+  <text x="300" y="1060" font-family="Cond" font-size="62" letter-spacing="1" fill="#151515">NOMAD MÉXICO</text>
+  <text x="2100" y="1060" text-anchor="end" font-family="Cond" font-size="62" letter-spacing="1" fill="#151515">ALWAYS MOVING</text>
+  <g transform="translate(1200 1180)">
+    <polygon points="-300,-52 360,-52 340,52 -320,52" fill="none" stroke="#151515" stroke-width="7"/>
+    <g transform="skewX(-20)"><rect x="-250" y="-28" width="120" height="10" fill="#151515"/><rect x="-250" y="-6" width="120" height="10" fill="#151515"/><rect x="-250" y="16" width="120" height="10" fill="#151515"/></g>
+    <text x="105" y="23" text-anchor="middle" font-family="Wide" font-size="56" fill="#151515">ARCHIVE 01</text>
+  </g>
+</svg>
+
+<!-- A · FRENTE: logo chico al centro + etiqueta en el pecho derecho -->
+<svg id="a-front" width="2400" height="1200" viewBox="0 0 2400 1200" xmlns="http://www.w3.org/2000/svg">
+  <text x="760" y="420" text-anchor="middle" font-family="Reg" font-size="96" letter-spacing="6" fill="#151515">NOMAD<tspan font-size="56" dy="-36">®</tspan></text>
+  <g transform="translate(1720 340)">
+    <text x="0" y="0" font-family="Wide" font-size="150" letter-spacing="-6" fill="#151515">nmd</text>
+    <g transform="skewX(-22)"><rect x="40" y="40" width="330" height="16" fill="#151515"/><rect x="40" y="72" width="330" height="16" fill="#151515"/></g>
+    <text x="0" y="150" font-family="Cond" font-size="40" fill="#151515">NOMAD MÉXICO — EST. 2026</text>
+    <text x="0" y="196" font-family="Cond" font-size="40" fill="#151515">HEAVYWEIGHT COTTON 240 G</text>
+  </g>
+  <text x="1880" y="900" font-family="Cond" font-size="40" fill="#151515">NOMAD®</text>
+  <text x="1880" y="944" font-family="Reg" font-size="30" fill="#151515">Always moving, never lost.</text>
+</svg>
+
+<!-- B · ESPALDA (manga larga negra): blanco, palabra enorme cortada -->
+<svg id="b-back" width="2400" height="1500" viewBox="0 0 2400 1500" xmlns="http://www.w3.org/2000/svg">
+  <text x="1200" y="760" text-anchor="middle" font-family="Wide" font-size="760" letter-spacing="-30" fill="#f3efe6">NOMAD</text>
+  <text x="560" y="930" font-family="Wide" font-size="54" fill="#f3efe6">MOVEMENT WITHOUT DIRECTION IS JUST NOISE</text>
+  <text x="560" y="1000" font-family="Wide" font-size="54" fill="#f3efe6">CRAFTED IN MÉXICO © 2026</text>
+  <text x="560" y="1070" font-family="Wide" font-size="54" fill="#f3efe6">ALWAYS MOVING</text>
+</svg>
+
+<!-- B · FRENTE: logo chico al centro con dos rayas de color -->
+<svg id="b-front" width="1600" height="600" viewBox="0 0 1600 600" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(800 330)">
+    <g transform="skewX(-22)"><rect x="-560" y="-110" width="26" height="150" fill="#c4663f"/><rect x="-522" y="-110" width="26" height="150" fill="#4a6fa5"/></g>
+    <text x="40" y="38" text-anchor="middle" font-family="Wide" font-size="190" letter-spacing="-6" fill="#f3efe6">NOMAD</text>
+  </g>
+</svg>
+</body></html>
