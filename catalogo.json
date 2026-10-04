@@ -316,13 +316,13 @@
       "side": "assets/raw/06-cream-tee-nomad-side.png",
       "approved_angles": [
         0,
+        25,
         60,
         80
       ],
       "review_angles": [],
       "missing_angles": [
-        45,
-        25
+        45
       ],
       "tienda": {
         "tallas": [
