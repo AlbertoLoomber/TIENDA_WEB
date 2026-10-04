@@ -419,6 +419,12 @@
       "category": "Chamarra",
       "frames": [
         {
+          "angle": 80,
+          "src": "prendas/10-charcoal-knit-zip/80.webp",
+          "left": 0.37,
+          "right": 0.64
+        },
+        {
           "angle": 0,
           "src": "prendas/10-charcoal-knit-zip/0.webp",
           "left": 0.038,
@@ -454,7 +460,7 @@
       "closeup": null,
       "spin": null,
       "inBetweens": false,
-      "onRack": false
+      "onRack": true
     }
   ],
   "site": {

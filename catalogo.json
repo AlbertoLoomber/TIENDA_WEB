@@ -521,11 +521,11 @@
       "front": "assets/raw/10-charcoal-knit-zip-front.png",
       "back": "assets/raw/10-charcoal-knit-zip-back.png",
       "approved_angles": [
-        0
+        0,
+        80
       ],
       "review_angles": [],
       "missing_angles": [
-        80,
         60,
         45,
         25
@@ -550,14 +550,15 @@
         "_provisional": [
           "precio"
         ],
-        "en_perchero": false,
+        "en_perchero": true,
         "look": {
           "tono": "#3c3d3e"
         }
       },
       "categoria_plural": "Chamarras",
       "slug": "varsity-knit-zip",
-      "escala": 0.96
+      "escala": 0.96,
+      "side": "assets/raw/10-charcoal-knit-zip-side.png"
     }
   ],
   "sitio": {
