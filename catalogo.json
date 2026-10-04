@@ -820,20 +820,20 @@
       "boton": "Etiquétanos en Instagram",
       "fotos": [
         {
-          "foto": "calle-1.webp",
-          "prenda": "01-camo-overshirt"
+          "foto": "calle-7.webp",
+          "prenda": "10-charcoal-knit-zip"
         },
         {
-          "foto": "calle-2.webp",
-          "prenda": "02-black-tee-minimal"
+          "foto": "calle-8.webp",
+          "prenda": "08-cream-tee-archive"
+        },
+        {
+          "foto": "calle-9.webp",
+          "prenda": "09-black-longsleeve-noise"
         },
         {
           "foto": "calle-5.webp",
           "prenda": "05-green-crewneck"
-        },
-        {
-          "foto": "calle-7.webp",
-          "prenda": "10-charcoal-knit-zip"
         }
       ]
     }
