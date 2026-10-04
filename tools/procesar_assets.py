@@ -147,12 +147,20 @@ def main():
             frames.append({"angle": angle, "src": f"prendas/{item_id}/{angle}.webp", "left": left, "right": right})
             print(item_id, angle, "ok", left, right)
 
-        items.append({
+        entry = {
             "id": item_id,
             "name": item.get("nombre", item_id),
             "category": item.get("categoria", ""),
             "frames": frames,
-        })
+        }
+        # Espalda (opcional): misma altura y gancho que el frente, para la vista "Espalda".
+        back_src = ROOT / "assets/raw" / f"{item_id}-back.png"
+        if back_src.exists():
+            back = placed(cutout(back_src, session))
+            back.save(out_dir / "back.webp", "WEBP", quality=86, method=6)
+            entry["back"] = f"prendas/{item_id}/back.webp"
+            print(item_id, "espalda ok")
+        items.append(entry)
 
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps({"canvas": [CANVAS_W, CANVAS_H], "items": items}, ensure_ascii=False, indent=2) + "\n", encoding="utf8")

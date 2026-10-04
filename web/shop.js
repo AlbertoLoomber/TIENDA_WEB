@@ -403,6 +403,7 @@
     const views = [
       { key: "front", label: "Frente", alt: "vista de frente", src: frontSrc(item), kind: "garment" },
     ];
+    if (item.back) views.push({ key: "back", label: "Espalda", alt: "vista de espalda", src: item.back, kind: "garment" });
     // A piece photographed only from the front (collection only) has no side view.
     if (item.frames.length > 1) views.push({ key: "side", label: "Lado", alt: "vista de lado", src: sideSrc(item), kind: "garment" });
     if (item.look?.photo) views.push({ key: "worn", label: "Puesta", alt: "puesta", src: item.look.photo, kind: "photo" });

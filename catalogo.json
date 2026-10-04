@@ -1,5 +1,5 @@
 {
-  "project": "NOMAD 7 prendas",
+  "project": "NOMAD 8 prendas",
   "angles": [
     80,
     60,
@@ -399,6 +399,53 @@
       },
       "categoria_plural": "Playeras",
       "slug": "hanger-line-tee"
+    },
+    {
+      "id": "08-cream-tee-archive",
+      "nombre": "Archive 01 Tee",
+      "categoria": "Playera",
+      "immutable_description": "Playera crema boxy heavyweight; frente con NOMAD®, etiqueta nmd y nota chica en negro; espalda con 'nomad' verde botella con cortes de velocidad, MADE TO MOVE, BUILT TO LAST e insignia ARCHIVE 01.",
+      "front": "assets/raw/08-cream-tee-archive-front.png",
+      "back": "assets/raw/08-cream-tee-archive-back.png",
+      "approved_angles": [
+        0
+      ],
+      "review_angles": [],
+      "missing_angles": [
+        80,
+        60,
+        45,
+        25
+      ],
+      "tienda": {
+        "tallas": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ],
+        "cuidados": "Lava en frío y al revés, sin blanqueador. Seca colgada. Plancha por el revés sin tocar el estampado.",
+        "precio": 790,
+        "nuevo": true,
+        "descripcion": "Playera crema de corte boxy en algodón pesado. Detalles chicos al frente y el gráfico \"nomad\" en verde botella en la espalda.",
+        "detalles": [
+          "Algodón pesado 280 g",
+          "Corte boxy",
+          "Serigrafía frente y espalda"
+        ],
+        "look": {
+          "tono": "#d9d3c4",
+          "foto": null
+        },
+        "agotadas": [],
+        "_provisional": [
+          "precio"
+        ],
+        "en_perchero": false
+      },
+      "categoria_plural": "Playeras",
+      "slug": "archive-01-tee",
+      "escala": 0.86
     }
   ],
   "sitio": {

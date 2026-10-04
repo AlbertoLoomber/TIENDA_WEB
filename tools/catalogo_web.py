@@ -107,6 +107,7 @@ def main():
             "inBetweens": bool(src.get("giro_intermedios")),
             # false: solo en la colección, no en el perchero de la portada.
             "onRack": shop.get("en_perchero", True),
+            "back": item.get("back"),
         })
 
     web["site"] = {

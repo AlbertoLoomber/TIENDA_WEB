@@ -1161,9 +1161,11 @@ body {
   text-align: center;
   margin-inline: -12px;          /* the label may use half the gap on each side */
 }
+.piece__meta { min-width: 0; grid-template-columns: minmax(0, 1fr); }   /* long names wrap inside the slot instead of widening it */
 .piece__name {
   margin: 0;
   max-width: 100%;
+  overflow-wrap: anywhere;
   align-self: end;
   font: italic 400 15px/1.25 var(--font-ui);
   color: var(--ink);
