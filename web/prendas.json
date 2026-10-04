@@ -612,8 +612,8 @@
         },
         {
           "photo": {
-            "src": "fotos/muestra/calle-4.webp",
-            "sample": true
+            "src": "fotos/calle-4.webp",
+            "sample": false
           },
           "item": "04-black-tee-script"
         },
