@@ -51,18 +51,6 @@ def spin(item_id, giro):
     return {"frames": frames}
 
 
-def closeup(c):
-    if not c:
-        return None
-    points = []
-    for p in c.get("puntos", []):
-        assert 0 <= p["x"] <= 1 and 0 <= p["y"] <= 1, f"cerca: {p['id']} fuera del lienzo"
-        assert p.get("lado") in ("izq", "der"), f"cerca: {p['id']} sin lado"
-        points.append({"id": p["id"], "title": p["titulo"], "text": p["texto"], "photo": photo(p.get("foto")),
-                       "x": p["x"], "y": p["y"], "side": p["lado"]})
-    return {"item": c["prenda"], "eyebrow": c.get("encabezado", ""), "title": c.get("titulo", ""), "points": points}
-
-
 def street(c, by_id, catalog):
     if not c:
         return None
@@ -146,7 +134,6 @@ def main():
             "days": site.get("cambios", {}).get("dias"),
             "firstFree": site.get("cambios", {}).get("primer_cambio_gratis", False),
         },
-        "closeup": closeup(site.get("cerca")),
         "drop": drop(site.get("drop")),
         "street": street(site.get("calle"), by_id, catalog),
     }
@@ -156,9 +143,6 @@ def main():
     for it in web["items"]:
         assert all(c.isalnum() or c == "-" for c in it["slug"]), f"slug inválido: {it['slug']}"
         assert set(it["soldOut"]) <= set(it["sizes"]), f"{it['id']}: agotadas fuera de tallas"
-    cu = web["site"].get("closeup")
-    if cu:
-        assert cu["item"] in by_id, f"cerca: no existe la prenda {cu['item']}"
     rec = web["site"].get("recommender")
     if rec:
         limits = [m for m, _ in rec["peso"]]

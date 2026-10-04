@@ -572,49 +572,6 @@
       "days": 30,
       "firstFree": true
     },
-    "closeup": {
-      "item": "03-white-tee-dollar",
-      "eyebrow": "De cerca",
-      "title": "Hecha para durar.",
-      "points": [
-        {
-          "id": "estampado",
-          "title": "Serigrafía",
-          "text": "Tintas base agua, impresas a mano.",
-          "photo": {
-            "src": "fotos/muestra/cerca-03-estampado.webp",
-            "sample": true
-          },
-          "x": 0.42,
-          "y": 0.43,
-          "side": "izq"
-        },
-        {
-          "id": "cuello",
-          "title": "Cuello",
-          "text": "Acanalado que no se deforma con las lavadas.",
-          "photo": {
-            "src": "fotos/muestra/cerca-03-cuello.webp",
-            "sample": true
-          },
-          "x": 0.59,
-          "y": 0.215,
-          "side": "der"
-        },
-        {
-          "id": "tela",
-          "title": "Tela",
-          "text": "100% algodón de 240 g/m².",
-          "photo": {
-            "src": "fotos/muestra/cerca-tela.webp",
-            "sample": true
-          },
-          "x": 0.66,
-          "y": 0.76,
-          "side": "der"
-        }
-      ]
-    },
     "drop": {
       "name": "Drop 02",
       "date": "2026-10-24T20:00:00-06:00",

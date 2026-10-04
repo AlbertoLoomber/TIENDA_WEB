@@ -154,7 +154,6 @@
     dragTurn: true,      // drag the garment in the sheet to turn it
     flyToBag: true,      // a copy of the garment flies into the bag
     quickAdd: true,      // sizes under each piece on hover
-    closeupLines: true,  // "De cerca": lines draw and circles open
     dropCountdown: true, // the newsletter tag counts down to the next drop
   };
 

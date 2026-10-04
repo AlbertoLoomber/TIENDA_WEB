@@ -26,7 +26,7 @@ SAMPLE = OUT / "muestra"
 PAPER = (231, 230, 225)
 
 # Tamaño final por prefijo de archivo: (ancho, alto). Cuadradas para los círculos
-# de "De cerca"; 3:4 para la prenda tapada; 4:5 para la calle.
+# de la vista "De cerca" de la ficha; 3:4 para la prenda tapada; 4:5 para la calle.
 SIZES = {
     "cerca-": (600, 600),
     "drop-": (750, 1000),
@@ -42,8 +42,6 @@ SAMPLES = {
     "cerca-04-estampado": ("04-black-tee-script", 500, 560, 420),
     "cerca-05-estampado": ("05-green-crewneck", 500, 640, 440),
     "cerca-06-bordado": ("06-cream-tee-nomad", 636, 522, 190),
-    "cerca-03-cuello": ("03-white-tee-dollar", 548, 296, 190),
-    "cerca-tela": ("03-white-tee-dollar", 540, 980, 200),
 }
 
 

@@ -923,7 +923,6 @@
     window.NOMAD.bag?.setup();
     window.NOMAD.shop?.setup();   // the collection sits above everything else: build it first
     window.NOMAD.info?.setup();
-    window.NOMAD.closeup?.setup();
     buildStudio();
     window.NOMAD.scenes?.setup();
     setupNewsletter();

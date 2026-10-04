@@ -183,6 +183,8 @@ de texto con el precio en 15px (T1.2).
 
 ## T3.4 Sección "De cerca"
 
+> **Quitada** (2026-10-04). Solo se queda la vista "De cerca" en la ficha de cada prenda.
+
 > **Hecho (sesión 7).** `web/closeup.js`; datos en `sitio.cerca`; prueba `tools/pruebas/cerca.js`. Las fotos son muestras recortadas de las prendas (`tools/fotos_web.py`) hasta que lleguen las macros (PROMPTS 17). En celular, la prenda lleva puntos numerados.
 
 | | |

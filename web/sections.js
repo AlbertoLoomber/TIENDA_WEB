@@ -5,7 +5,6 @@
  *   titles    → rise line by line from behind a mask
  *   about     → "Nomad" writes itself; the studio photo opens from the centre;
  *               the fact lines draw in
- *   de cerca  → closeup.js: the details' lines draw themselves once
  *   newsletter→ the hang tag swings in on its string, then its title; the
  *               covered Drop 02 garment follows a beat later
  *   footer    → uncovered from underneath as the newsletter lifts away

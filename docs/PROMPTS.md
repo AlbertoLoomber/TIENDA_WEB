@@ -332,6 +332,8 @@ Archivo: `giro-03-espalda.mp4`
 
 ## 17. Fotos "De cerca" (macro)
 
+> La sección de la página se quitó; solo hacen falta las fotos `cerca-NN-estampado` (vista "De cerca" de la ficha). `cerca-03-cuello` y `cerca-tela` ya no.
+
 **Para qué:** la sección "De cerca" (plan, T3.4) y la vista "De cerca" de la ficha.
 **Formato:** cuadrado 1:1, 2048×2048 (mínimo 1600). Sube siempre la foto de frente de la prenda como referencia (sirve `assets/para-video/<prenda>/frente.jpg`).
 
