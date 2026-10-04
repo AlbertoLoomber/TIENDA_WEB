@@ -598,8 +598,8 @@
         },
         {
           "photo": {
-            "src": "fotos/muestra/calle-2.webp",
-            "sample": true
+            "src": "fotos/calle-2.webp",
+            "sample": false
           },
           "item": "02-black-tee-minimal"
         },
